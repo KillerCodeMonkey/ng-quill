@@ -178,7 +178,7 @@
                     }
 
                     // provide event to get recognized when editor is created -> pass editor object.
-                    $scope.$broadcast('editorCreated', editor);
+                    $scope.$emit('editorCreated', editor);
 
                     // set initial value
                     $scope.$watch(function () {
