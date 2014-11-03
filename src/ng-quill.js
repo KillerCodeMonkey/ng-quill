@@ -2,7 +2,7 @@
 (function () {
 
     var app;
-    // declar ngQuill module
+    // declare ngQuill module
     app = angular.module("ngQuill", []);
 
     app.service('ngQuillService', function () {
@@ -102,7 +102,8 @@
                             if ($scope.required && (!$scope.modelLength || $scope.modelLength <= 1)) {
                                 element.addClass('ng-invalid');
                                 element.removeClass('ng-valid');
-                                if ($scope.errorClass && changed) {
+                                // if form was reseted and input field set to empty
+                                if ($scope.errorClass && changed && element.hasClass('ng-dirty')) {
                                     element.children().addClass($scope.errorClass);
                                 }
                             } else { // set to valid
