@@ -13,6 +13,7 @@ Usage
 - add dependency to your app module `var myAppModule = angular.module('quillTest', ['ngQuill']);`
 - use ngquill directive in your html
 `<ng-quill-editor ng-model="message" toolbar="true" link-tooltip="true" image-tooltip="true" toolbar-entries="font size bold list bullet italic underline strike align color background link image" editor-required="true" required="" error-class="input-error"></ng-quill-editor>`
+- if you use it in a form and you are resetting it via $setPristine() -> you have to set editor.setHTML('') -> it will add the error class only, if the model has ng-dirty class
 
 Configuration
 =============
