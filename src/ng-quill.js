@@ -214,12 +214,14 @@
         '$window',
         function ($templateCache, $rootScope, $window) {
 
+            // reset all quill editors (to not flood window object)
             $rootScope.$on('$locationChangeSuccess', function () {
                 if ($window.Quill && $window.Quill.editors) {
                     $window.Quill.editors.length = 0;
                 }
             });
 
+            // put template in template cache
             return $templateCache.put('ngQuill/template.html',
                 '<div id="content-container">' +
                     '<div class="advanced-wrapper">' +
