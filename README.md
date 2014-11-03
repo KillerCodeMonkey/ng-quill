@@ -1,6 +1,6 @@
 # ngQuill
 
-ngQuickDate is an [Angular.js](http://angularjs.org/) directive for [Quill](http://quilljs.com/) rich text editor.
+ngQuill is an [Angular.js](http://angularjs.org/) directive for [Quill](http://quilljs.com/) rich text editor.
 
 Installation
 ============
