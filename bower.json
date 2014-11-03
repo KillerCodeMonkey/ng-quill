@@ -1,12 +1,12 @@
 {
   "name": "ngQuill",
   "version": "1.0.0",
-  "main": ["src/ng-quill.js"],
+  "main": ["src/ng-quill.js", "src/ng-quill.min.js"],
   "ignore": [
     "bower_components",
     "node_modules",
     "spec",
-    "src",
+    "demo.html",
     "package.json",
     "Gruntfile.js"
   ],
