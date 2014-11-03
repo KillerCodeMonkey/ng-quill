@@ -1,0 +1,28 @@
+{
+  "name": "ngQuill",
+  "description": "Angular directive for rich text editor Quill",
+  "author": "Bnegt Weiße <bengtler@gmail.com>",
+  "homepage": "https://github.com/KillerCodeMonkey/ngQuill",
+  "devDependencies": {
+    "grunt": "~0.4.3",
+    "grunt-contrib-uglify": "~0.6.0"
+  },
+  "engines": {
+    "node": ">=0.10"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KillerCodeMonkey/ngQuill"
+  },
+  "bugs": {
+    "url": "https://github.com/KillerCodeMonkey/ngQuill/issues"
+  },
+  "keywords": [
+    "editor",
+    "rich text",
+    "wysiwyg",
+    "angular",
+    "directive"
+  ]
+}
