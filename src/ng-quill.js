@@ -186,7 +186,7 @@
                         return $scope.ngModel;
                     }, function (newText) {
                         if (newText !== undefined && !changed) {
-                            //setDefault = true;
+                            // Set initial value;
                             editor.setHTML(newText);
                         }
                     });
