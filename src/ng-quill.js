@@ -186,23 +186,27 @@
                         return $scope.ngModel;
                     }, function (newText) {
                         if (newText !== undefined && !changed) {
+                            //setDefault = true;
                             editor.setHTML(newText);
-                            $scope.modelLength = editor.getLength();
                         }
                     });
 
+                    $scope.regEx = /^([2-9]|[1-9][0-9]+)$/;
+
                     // Update model on textchange
                     editor.on('text-change', function () {
-                        // initial change
-                        if (!changed) {
-                            changed = true;
-                        } else {
-                            $timeout(function () {
-                                $scope.modelLength = editor.getLength();
+                        var oldChange = changed;
+                        changed = true;
+                        $timeout(function () {
+                            // Calculate content length
+                            $scope.modelLength = editor.getLength();
+                            // Check if error class should be set
+                            if (oldChange) {
                                 setClass();
-                                ngModel.$setViewValue(editor.getHTML());
-                            }, 0);
-                        }
+                            }
+                            // Set new model value
+                            ngModel.$setViewValue(editor.getHTML());
+                        }, 0);
                     });
                 }
             };
