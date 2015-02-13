@@ -65,7 +65,7 @@ Events
 
 - editorCreated: triggered after editor is created and provides editor-object
 
-Advanved Usage and Configuration
+Advanced Usage and Configuration
 ================================
 
 After editor creation you can use everything from the ordinary quill editor -> listen to editorCreated and work with the editor instance in your controller like you want ;).
