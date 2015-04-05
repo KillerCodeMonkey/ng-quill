@@ -195,8 +195,8 @@
 
                     $scope.regEx = /^([2-9]|[1-9][0-9]+)$/;
 
-                    // Update model on textchange
-                    editor.on('text-change', function () {
+                    // Update model on text change events
+                    editor.on('text-change paste input keyup mouseup', function () {
                         var oldChange = changed;
                         changed = true;
                         $timeout(function () {
