@@ -1,4 +1,4 @@
-<html ng-app="quillTest">
+<html>
     <head>
         <title>Quill Test</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -13,15 +13,15 @@
         </style>
 
         <!-- Scripts -->
-        <script type="text/javascript" src="bower_components/quill/dist/quill.min.js"></script>
-        <script type="text/javascript" src="bower_components/angularjs/angular.min.js"></script>
+        <script type="text/javascript" src="bower_components/quill/dist/quill.js"></script>
+        <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
         <script type="text/javascript" src="src/ng-quill.min.js"></script>
         <script>
             // declare a module and load quillModule
             var myAppModule = angular.module('quillTest', ['ngQuill']);
         </script>
 
-    <body>
+    <body ng-app="quillTest">
         <div style="width: 500px; height: 300px;">
             <ng-quill-editor ng-model="message" toolbar="true" link-tooltip="true" image-tooltip="true" toolbar-entries="font size bold list bullet italic underline strike align color background link image" editor-required="true" required="" error-class="input-error"></ng-quill-editor>
         </div>

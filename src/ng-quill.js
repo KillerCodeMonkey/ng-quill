@@ -1,12 +1,12 @@
 /*global Quill*/
 (function () {
-
+    'use strict';
     var app;
     // declare ngQuill module
     app = angular.module("ngQuill", []);
 
     app.service('ngQuillService', function () {
-        // formats lists
+        // formats list
         this.formats = [
             'link',
             'image',
@@ -49,6 +49,7 @@
             change: 'Change',
             done: 'Done',
             cancel: 'Cancel',
+            remove: 'Remove',
             insert: 'Insert',
             preview: 'Preview'
         };
@@ -151,6 +152,7 @@
                                         + '<input class="input" type="text">'
                                         + '<span>&nbsp;&#45;&nbsp;</span>'
                                         + '<a href="javascript:;" class="change">' + $scope.dict.change + '</a>'
+                                        + '<a href="javascript:;" class="remove">' + $scope.dict.remove + '</a>'
                                         + '<a href="javascript:;" class="done">' + $scope.dict.done + '</a>'
                         };
                     }
@@ -215,10 +217,12 @@
         '$window',
         function ($templateCache, $rootScope, $window) {
 
-            // reset all quill editors (to not flood window object)
+            // reset all quill editors (to not flood window object works only with ui-router)
             $rootScope.$on('$locationChangeSuccess', function () {
-                if ($window.Quill && $window.Quill.editors) {
-                    $window.Quill.editors.length = 0;
+                if ($window.Quill && $window.Quill.editors && $window.Quill.editors.length) {
+                    angular.forEach($window.Quill.editors, function (editor) {
+                        editor.destroy();
+                    });
                 }
             });
 
