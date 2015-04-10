@@ -55,6 +55,7 @@ Translations
 - image: 'Image',
 - visitURL: 'Visit URL',
 - change: 'Change',
+- remove: 'Remove',
 - done: 'Done',
 - cancel: 'Cancel',
 - insert: 'Insert',
