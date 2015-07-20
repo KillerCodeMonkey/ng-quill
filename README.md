@@ -26,7 +26,7 @@ Configuration
 - set to required: editor-required="true" (adds hidden text-input that checks length of content) and you have to add html5 attribute `required` to carry about form validation for the model (sets correct classes at the dom-node - ng-dirty, invalid and so on)
 - customized error class added to editors container div: `error-class="input-error"`
 - set theme name: `theme="snow"` (default: 'snow')
-- set readOnly: `read-only="true"` (default: false)
+- set readOnly: `read-only=""` (default: false) - requires function to be executed
 - set translations: `translations="dict.editor"` (object with editor translations -> default is english)
 
 Translations
