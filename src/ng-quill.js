@@ -82,7 +82,7 @@
                     'theme': '@?',
                     'translations': '=?',
                     'required': '@?editorRequired',
-                    'readOnly': '@?',
+                    'readOnly': '&?',
                     'errorClass': '@?',
                     'ngModel': '='
                 },
@@ -194,6 +194,15 @@
                             editor.setHTML(newText);
                         }
                     });
+
+                    // toggle readOnly
+                    if ($scope.readOnly) {
+                        $scope.$watch(function () {
+                            return $scope.readOnly();
+                        }, function (readOnly) {
+                            editor.editor[readOnly ? 'disable' : 'enable']();
+                        });
+                    }
 
                     $scope.regEx = /^([2-9]|[1-9][0-9]+)$/;
 
