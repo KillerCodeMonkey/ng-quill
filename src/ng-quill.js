@@ -3,7 +3,7 @@
     'use strict';
     var app;
     // declare ngQuill module
-    app = angular.module("ngQuill", []);
+    app = angular.module('ngQuill', []);
 
     app.service('ngQuillService', function () {
         // formats list
@@ -69,7 +69,7 @@
         };
     });
 
-    app.directive("ngQuillEditor", [
+    app.directive('ngQuillEditor', [
         '$timeout',
         'ngQuillService',
         function ($timeout, ngQuillService) {
