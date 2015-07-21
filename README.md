@@ -5,7 +5,7 @@ ngQuill is an [Angular.js](http://angularjs.org/) directive for [Quill](http://q
 Installation
 ============
 - run `bower install ngquill` or `bower ng-quill`
-- or 'npm install ng-quill`
+- or `npm install ng-quill`
 - or download zip from release page: https://github.com/KillerCodeMonkey/ngQuill/releases
 
 Usage
