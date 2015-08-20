@@ -1,4 +1,5 @@
 # ngQuill
+[![NPM](https://nodei.co/npm/ng-quill.png)](https://nodei.co/npm/ng-quill/)
 
 ngQuill is an [Angular.js](http://angularjs.org/) directive for [Quill](http://quilljs.com/) rich text editor.
 
