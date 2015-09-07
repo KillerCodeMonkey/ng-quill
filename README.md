@@ -74,3 +74,7 @@ Advanced Usage and Configuration
 After editor creation you can use everything from the ordinary quill editor -> listen to editorCreated and work with the editor instance in your controller like you want ;).
 Add modules, use the quill API or listen to Events. Keep in mind to use $timeout if you are listening / working with quill-Events and updating some $scope stuff to notify angular about it ;).
 [Quill Documentation](http://quilljs.com/docs/quickstart/)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/KillerCodeMonkey/ngquill/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
