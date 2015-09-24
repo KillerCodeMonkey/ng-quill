@@ -180,7 +180,7 @@
                                 container: element[0].querySelector('.advanced-wrapper .toolbar-container')
                             });
                             $scope.toolbarCreated = true;
-                            $scope.showToolbar = $scope.showToolbar || true
+                            $scope.showToolbar = $scope.hasOwnProperty('showToolbar') ? $scope.showToolbar : true;
                         }, 0);
                     }
 
