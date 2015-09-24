@@ -78,6 +78,8 @@
                     'toolbarEntries': '@?',
                     'toolbar': '@?',
                     'showToolbar': '=?',
+                    'fontfamilyOptions': '=?',
+                    'fontsizeOptions': '=?',
                     'linkTooltip': '@?',
                     'imageTooltip': '@?',
                     'theme': '@?',
@@ -244,12 +246,18 @@
                     '<div class="advanced-wrapper">' +
                         '<div class="toolbar toolbar-container" ng-if="toolbar" ng-show="toolbarCreated && showToolbar">' +
                             '<span class="ql-format-group" ng-if="shouldShow([\'font\', \'size\'])">' +
-                                '<select title="{{dict.font}}" class="ql-font" ng-if="shouldShow([\'font\'])">' +
+                                '<select title="{{dict.font}}" class="ql-font" ng-if="shouldShow([\'font\']) && fontfamilyOptions">' +
+                                    '<option ng-repeat="option in fontfamilyOptions" value="{{option.value}}">{{option.label}}</option>' +
+                                '</select>' +
+                                '<select title="{{dict.font}}" class="ql-font" ng-if="shouldShow([\'font\']) && !fontfamilyOptions">' +
                                     '<option value="sans-serif" selected="">Sans Serif</option>' +
                                     '<option value="serif">Serif</option>' +
                                     '<option value="monospace">Monospace</option>' +
                                 '</select>' +
-                                '<select title="{{dict.size}}" class="ql-size" ng-if="shouldShow([\'size\'])">' +
+                                '<select title="{{dict.size}}" class="ql-size" ng-if="shouldShow([\'size\']) && fontsizeOptions">' +
+                                    '<option ng-repeat="option in fontsizeOptions" value="{{option.value}}">{{option.label}}</option>' +
+                                '</select>' +
+                                '<select title="{{dict.size}}" class="ql-size" ng-if="shouldShow([\'size\']) && !fontsizeOptions">' +
                                     '<option value="10px">{{dict.small}}</option>' +
                                     '<option value="13px" selected="">{{dict.normal}}</option>' +
                                     '<option value="18px">{{dict.large}}</option>' +

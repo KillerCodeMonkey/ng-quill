@@ -19,20 +19,67 @@
         <script>
             // declare a module and load quillModule
             var myAppModule = angular.module('quillTest', ['ngQuill']);
-
             myAppModule.run(function($rootScope) {
+                $rootScope.fontsizeOptions = [{
+                    label: '10',
+                    value: '10px'
+                }, {
+                    label: '12',
+                    value: '12px'
+                }, {
+                    label: '14',
+                    value: '14px'
+                }, {
+                    label: '16',
+                    value: '16px'
+                }, {
+                    label: '18',
+                    value: '18px'
+                }, {
+                    label: '20',
+                    value: '20px'
+                }, {
+                    label: '22',
+                    value: '22px'
+                }, {
+                    label: '24',
+                    value: '24px'
+                }];
+
+                $rootScope.fontfamilyOptions = [{
+                    label: 'Arial',
+                    value: 'Arial'
+                }, {
+                    label: 'Sans Serif',
+                    value: 'sans-serif'
+                }, {
+                    label: 'Serif',
+                    value: 'serif'
+                }, {
+                    label: 'Monospace',
+                    value: 'monospace'
+                }, {
+                    label: 'Trebuchet MS',
+                    value: '"Trebuchet MS"'
+                }, {
+                    label: 'Verdana',
+                    value: 'Verdana'
+                }];
+
                 $rootScope.showToolbar = false;
 
                 $rootScope.toggle = function() {
                     $rootScope.showToolbar = !$rootScope.showToolbar;
                 }
             });
+
         </script>
 
     <body ng-app="quillTest">
         <button ng-click="toggle()">toggle toolbar</button>
         <div style="width: 500px; height: 300px;">
-            <ng-quill-editor ng-model="message" show-toolbar="showToolbar" toolbar="true" link-tooltip="true" image-tooltip="true" toolbar-entries="font size bold list bullet italic underline strike align color background link image" editor-required="true" required="" error-class="input-error"></ng-quill-editor>
+            <ng-quill-editor ng-model="message" toolbar="true" show-toolbar="showToolbar" link-tooltip="true" image-tooltip="true" toolbar-entries="font size bold list bullet italic underline strike align color background link image" editor-required="true" required="" error-class="input-error"
+            fontsize-options="fontsizeOptions" fontfamily-options="fontfamilyOptions"></ng-quill-editor>
         </div>
     </body>
 </html>
