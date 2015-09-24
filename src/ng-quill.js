@@ -77,6 +77,7 @@
                 scope: {
                     'toolbarEntries': '@?',
                     'toolbar': '@?',
+                    'showToolbar': '=?',
                     'linkTooltip': '@?',
                     'imageTooltip': '@?',
                     'theme': '@?',
@@ -177,6 +178,7 @@
                                 container: element[0].querySelector('.advanced-wrapper .toolbar-container')
                             });
                             $scope.toolbarCreated = true;
+                            $scope.showToolbar = $scope.showToolbar || true
                         }, 0);
                     }
 
@@ -240,7 +242,7 @@
             return $templateCache.put('ngQuill/template.html',
                 '<div id="content-container">' +
                     '<div class="advanced-wrapper">' +
-                        '<div class="toolbar toolbar-container" ng-if="toolbar" ng-show="toolbarCreated">' +
+                        '<div class="toolbar toolbar-container" ng-if="toolbar" ng-show="toolbarCreated && showToolbar">' +
                             '<span class="ql-format-group" ng-if="shouldShow([\'font\', \'size\'])">' +
                                 '<select title="{{dict.font}}" class="ql-font" ng-if="shouldShow([\'font\'])">' +
                                     '<option value="sans-serif" selected="">Sans Serif</option>' +
