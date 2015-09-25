@@ -13,6 +13,7 @@ Usage
 =====
 - load angular, quill, ngquill scripts in your index.html
 - add dependency to your app module `var myAppModule = angular.module('quillTest', ['ngQuill']);`
+- use ngQuillConfigProvider to overwrite global settings in your config-Block
 - use ngquill directive in your html
 `<ng-quill-editor ng-model="message" toolbar="true" link-tooltip="true" image-tooltip="true" toolbar-entries="font size bold list bullet italic underline strike align color background link image" editor-required="true" required="" error-class="input-error"></ng-quill-editor>`
 - if you use it in a form and you are resetting it via $setPristine() -> you have to set editor.setHTML('') -> it will add the error class only, if the model has ng-dirty class
@@ -20,7 +21,8 @@ Usage
 Configuration
 =============
 
-- show toolbar: `toolbar="true"` (default: false)
+- use ngQuillConfigProvider.set(fontSizes, fontFamilies) to set fonts and available sizes
+- show toolbar: `toolbar="isVisible"` (default: false)
 - connect model: `ng-model="message"` (required)
 - set toolbar entries (formats): `toolbar-enries="font bold ..."` (separated by whitespace, if you want all -> delete the attribute, default: all)
 - show link tooltip: `link-tooltip="true"` (default: false)
@@ -30,6 +32,7 @@ Configuration
 - set theme name: `theme="snow"` (default: 'snow')
 - set readOnly: `read-only=""` (default: false) - requires function to be executed
 - set translations: `translations="dict.editor"` (object with editor translations -> default is english)
+- overwrite global config for each editor: `fontsize-options="fontsizeOptions" fontfamily-options="fontfamilyOptions"`
 
 Translations
 ============
@@ -77,4 +80,3 @@ Add modules, use the quill API or listen to Events. Keep in mind to use $timeout
 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/KillerCodeMonkey/ngquill/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
