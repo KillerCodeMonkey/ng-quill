@@ -19,66 +19,70 @@
         <script>
             // declare a module and load quillModule
             var myAppModule = angular.module('quillTest', ['ngQuill']);
-            myAppModule.run(function($rootScope) {
-                $rootScope.fontsizeOptions = [{
-                    label: '10',
-                    value: '10px'
+            myAppModule.config(['ngQuillConfigProvider', function (ngQuillConfigProvider) {
+                ngQuillConfigProvider.set([{
+                    alias: '10',
+                    size: '10px'
                 }, {
-                    label: '12',
-                    value: '12px'
+                    alias: '12',
+                    size: '12px'
                 }, {
-                    label: '14',
-                    value: '14px'
+                    alias: '14',
+                    size: '14px'
                 }, {
-                    label: '16',
-                    value: '16px'
+                    alias: '16',
+                    size: '16px'
                 }, {
-                    label: '18',
-                    value: '18px'
+                    alias: '18',
+                    size: '18px'
                 }, {
-                    label: '20',
-                    value: '20px'
+                    alias: '20',
+                    size: '20px'
                 }, {
-                    label: '22',
-                    value: '22px'
+                    alias: '22',
+                    size: '22px'
                 }, {
-                    label: '24',
-                    value: '24px'
-                }];
-
-                $rootScope.fontfamilyOptions = [{
+                    alias: '24',
+                    size: '24px'
+                }], [{
                     label: 'Arial',
-                    value: 'Arial'
+                    alias: 'Arial'
                 }, {
                     label: 'Sans Serif',
-                    value: 'sans-serif'
+                    alias: 'sans-serif'
                 }, {
                     label: 'Serif',
-                    value: 'serif'
+                    alias: 'serif'
                 }, {
                     label: 'Monospace',
-                    value: 'monospace'
+                    alias: 'monospace'
                 }, {
                     label: 'Trebuchet MS',
-                    value: '"Trebuchet MS"'
+                    alias: '"Trebuchet MS"'
                 }, {
                     label: 'Verdana',
-                    value: 'Verdana'
-                }];
+                    alias: 'Verdana'
+                }])
+            }]);
+            myAppModule.controller('AppCtrl',['$scope', 'ngQuillConfig', function($scope, ngQuillConfig) {
 
-                $rootScope.showToolbar = false;
+                $scope.showToolbar = true;
 
-                $rootScope.toggle = function() {
-                    $rootScope.showToolbar = !$rootScope.showToolbar;
-                }
-            });
+                $scope.translations = angular.extend({}, ngQuillConfig.translations, {
+                    10: 'smallest'
+                });
+
+                $scope.toggle = function() {
+                    $scope.showToolbar = !$rootScope.showToolbar;
+                };
+            }]);
 
         </script>
 
-    <body ng-app="quillTest">
-        <button ng-click="toggle()">toggle toolbar</button>
+    <body ng-app="quillTest" ng-controller="AppCtrl">
+        <button ng-click="toggle()">Toggle toolbar</button>
         <div style="width: 500px; height: 300px;">
-            <ng-quill-editor ng-model="message" toolbar="true" show-toolbar="showToolbar" link-tooltip="true" image-tooltip="true" toolbar-entries="font size bold list bullet italic underline strike align color background link image" editor-required="true" required="" error-class="input-error"
+            <ng-quill-editor ng-model="message" translations="translations" toolbar="true" show-toolbar="showToolbar" link-tooltip="true" image-tooltip="true" toolbar-entries="font size bold list bullet italic underline strike align color background link image" editor-required="true" required="" error-class="input-error"
             fontsize-options="fontsizeOptions" fontfamily-options="fontfamilyOptions"></ng-quill-editor>
         </div>
     </body>

@@ -5,74 +5,117 @@
     // declare ngQuill module
     app = angular.module('ngQuill', []);
 
-    app.service('ngQuillService', function () {
-        // formats list
-        this.formats = [
-            'link',
-            'image',
-            'bold',
-            'italic',
-            'underline',
-            'strike',
-            'color',
-            'background',
-            'align',
-            'font',
-            'size',
-            'bullet',
-            'list'
-        ];
-        // default translations
-        this.defaultTranslation = {
-            font: 'Font',
-            size: 'Size',
-            small: 'Small',
-            normal: 'Normal',
-            large: 'Large',
-            huge: 'Huge',
-            bold: 'Bold',
-            italic: 'Italic',
-            underline: 'Underline',
-            strike: 'Strikethrough',
-            textColor: 'Text Color',
-            backgroundColor: 'Background Color',
-            list: 'List',
-            bullet: 'Bullet',
-            textAlign: 'Text Align',
-            left: 'Left',
-            center: 'Center',
-            right: 'Right',
-            justify: 'Justify',
-            link: 'Link',
-            image: 'Image',
-            visitURL: 'Visit URL',
-            change: 'Change',
-            done: 'Done',
-            cancel: 'Cancel',
-            remove: 'Remove',
-            insert: 'Insert',
-            preview: 'Preview'
+    app.provider('ngQuillConfig', function () {
+        var config = {
+            // default fontFamilies
+            fontSizes: [{
+                size: '10px',
+                alias: 'small'
+            }, {
+                size: '13px',
+                alias: 'normal'
+            }, {
+                size: '18px',
+                alias: 'large'
+            }, {
+                size: '32px',
+                alias: 'huge'
+            }],
+            // default fontFamilies
+            fontFamilies: [{
+                label: 'Sans Serif',
+                alias: 'sans-serif'
+            }, {
+                label: 'Serif',
+                alias: 'serif'
+            }, {
+                label: 'Monospace',
+                alias: 'monospace'
+            }],
+            // formats list
+            formats: [
+                'link',
+                'image',
+                'bold',
+                'italic',
+                'underline',
+                'strike',
+                'color',
+                'background',
+                'align',
+                'font',
+                'size',
+                'bullet',
+                'list'
+            ],
+            // default translations
+            translations: {
+                font: 'Font',
+                size: 'Size',
+                small: 'Small',
+                normal: 'Normal',
+                large: 'Large',
+                huge: 'Huge',
+                bold: 'Bold',
+                italic: 'Italic',
+                underline: 'Underline',
+                strike: 'Strikethrough',
+                textColor: 'Text Color',
+                backgroundColor: 'Background Color',
+                list: 'List',
+                bullet: 'Bullet',
+                textAlign: 'Text Align',
+                left: 'Left',
+                center: 'Center',
+                right: 'Right',
+                justify: 'Justify',
+                link: 'Link',
+                image: 'Image',
+                visitURL: 'Visit URL',
+                change: 'Change',
+                done: 'Done',
+                cancel: 'Cancel',
+                remove: 'Remove',
+                insert: 'Insert',
+                preview: 'Preview'
+            }
         };
+
+        this.set = function (fontSizes, fontFamilies) {
+            if (fontSizes) {
+                config.fontSizes = fontSizes;
+            }
+            if (fontFamilies) {
+                config.fontFamilies = fontFamilies;
+            }
+        };
+
+        this.$get = function () {
+            return config;
+        };
+    });
+
+    app.service('ngQuillService', ['ngQuillConfig', function (ngQuillConfig) {
         // validate formats
         this.validateFormats = function (checkFormats) {
             var correctFormats = [],
-                self = this,
                 i = 0;
 
             for (i; i < checkFormats.length; i = i + 1) {
-                if (self.formats.indexOf(checkFormats[i]) !== -1) {
+                if (ngQuillConfig.formats.indexOf(checkFormats[i]) !== -1) {
                     correctFormats.push(checkFormats[i]);
                 }
             }
 
             return correctFormats;
         };
-    });
+    }]);
 
     app.directive('ngQuillEditor', [
         '$timeout',
         'ngQuillService',
-        function ($timeout, ngQuillService) {
+        'ngQuillConfig',
+        function ($timeout, ngQuillService, ngQuillConfig) {
             return {
                 scope: {
                     'toolbarEntries': '@?',
@@ -96,7 +139,7 @@
                     var config = {
                             theme: $scope.theme || 'snow',
                             readOnly: $scope.readOnly || false,
-                            formats: $scope.toolbarEntries ? ngQuillService.validateFormats($scope.toolbarEntries.split(' ')) : ngQuillService.formats,
+                            formats: $scope.toolbarEntries ? ngQuillService.validateFormats($scope.toolbarEntries.split(' ')) : ngQuillConfig.formats,
                             modules: {}
                         },
                         changed = false,
@@ -126,8 +169,12 @@
                         $scope.required = false;
                     }
 
+                    // overwrite global settings dynamically
+                    $scope.fontsizeOptions = $scope.fontsizeOptions || ngQuillConfig.fontSizes;
+                    $scope.fontfamilyOptions = $scope.fontfamilyOptions || ngQuillConfig.fontFamilies;
+
                     // default translations
-                    $scope.dict = ngQuillService.defaultTranslation;
+                    $scope.dict = ngQuillConfig.translations;
 
                     $scope.shouldShow = function (formats) {
                         var okay = false,
@@ -246,22 +293,11 @@
                     '<div class="advanced-wrapper">' +
                         '<div class="toolbar toolbar-container" ng-if="toolbar" ng-show="toolbarCreated && showToolbar">' +
                             '<span class="ql-format-group" ng-if="shouldShow([\'font\', \'size\'])">' +
-                                '<select title="{{dict.font}}" class="ql-font" ng-if="shouldShow([\'font\']) && fontfamilyOptions">' +
-                                    '<option ng-repeat="option in fontfamilyOptions" value="{{option.value}}">{{option.label}}</option>' +
+                                '<select title="{{dict.font}}" class="ql-font" ng-if="shouldShow([\'font\'])">' +
+                                    '<option ng-repeat="option in fontfamilyOptions" value="{{option.alias}}">{{option.label}}</option>' +
                                 '</select>' +
-                                '<select title="{{dict.font}}" class="ql-font" ng-if="shouldShow([\'font\']) && !fontfamilyOptions">' +
-                                    '<option value="sans-serif" selected="">Sans Serif</option>' +
-                                    '<option value="serif">Serif</option>' +
-                                    '<option value="monospace">Monospace</option>' +
-                                '</select>' +
-                                '<select title="{{dict.size}}" class="ql-size" ng-if="shouldShow([\'size\']) && fontsizeOptions">' +
-                                    '<option ng-repeat="option in fontsizeOptions" value="{{option.value}}">{{option.label}}</option>' +
-                                '</select>' +
-                                '<select title="{{dict.size}}" class="ql-size" ng-if="shouldShow([\'size\']) && !fontsizeOptions">' +
-                                    '<option value="10px">{{dict.small}}</option>' +
-                                    '<option value="13px" selected="">{{dict.normal}}</option>' +
-                                    '<option value="18px">{{dict.large}}</option>' +
-                                    '<option value="32px">{{dict.huge}}</option>' +
+                                '<select title="{{dict.size}}" class="ql-size" ng-if="shouldShow([\'size\'])">' +
+                                    '<option ng-repeat="option in fontsizeOptions" ng-selected="$index === 1" value="{{option.size}}">{{dict[option.alias] || option.alias}}</option>' +
                                 '</select>' +
                             '</span>' +
                             '<span class="ql-format-group" ng-if="shouldShow([\'bold\', \'italic\', \'underline\', \'strike\'])">' +
