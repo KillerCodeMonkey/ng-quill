@@ -1,6 +1,6 @@
 {
   "name": "ng-quill",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Angular directive for rich text editor Quill",
   "author": "Bengt Weiße <bengtler@gmail.com>",
   "homepage": "https://github.com/KillerCodeMonkey/ngQuill",
@@ -13,8 +13,8 @@
     "node": ">=0.10"
   },
   "dependencies": {
-    "quill": "~0.20.0",
-    "angular": "~1.4.3"
+    "quill": "0.20.1",
+    "angular": "1.4.7"
   },
   "license": "MIT",
   "repository": {
