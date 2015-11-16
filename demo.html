@@ -64,22 +64,26 @@
                     alias: 'Verdana'
                 }])
             }]);
-            myAppModule.controller('AppCtrl',['$scope', 'ngQuillConfig', function($scope, ngQuillConfig) {
+            myAppModule.controller('AppCtrl', [
+                '$scope',
+                'ngQuillConfig',
+                function($scope, ngQuillConfig) {
 
-                $scope.showToolbar = true;
+                    $scope.showToolbar = true;
 
-                $scope.translations = angular.extend({}, ngQuillConfig.translations, {
-                    10: 'smallest'
-                });
+                    $scope.translations = angular.extend({}, ngQuillConfig.translations, {
+                        10: 'smallest'
+                    });
 
-                $scope.toggle = function() {
-                    $scope.showToolbar = !$rootScope.showToolbar;
-                };
-            }]);
+                    $scope.toggle = function() {
+                        $scope.showToolbar = !$scope.showToolbar;
+                    };
+                }
+            ]);
 
         </script>
 
-    <body ng-app="quillTest" ng-controller="AppCtrl">
+    <body ng-app="quillTest" ng-strict-di ng-controller="AppCtrl">
         <button ng-click="toggle()">Toggle toolbar</button>
         <div style="width: 500px; height: 300px;">
             <ng-quill-editor ng-model="message" translations="translations" toolbar="true" show-toolbar="showToolbar" link-tooltip="true" image-tooltip="true" toolbar-entries="font size bold list bullet italic underline strike align color background link image" editor-required="true" required="" error-class="input-error"
