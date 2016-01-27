@@ -236,12 +236,19 @@
                        $scope.$emit('editorCreated', editor);
                     });
 
+                    var updateFromPlugin = false;
+                    var updateInPlugin = false;
+
                     // set initial value
                     $scope.$watch(function () {
                         return $scope.ngModel;
                     }, function (newText) {
-                        if (newText !== undefined && !changed) {
-                            // Set initial value;
+                        if (updateFromPlugin) {
+                            return;
+                        }
+
+                        if (newText !== undefined) {
+                            updateInPlugin = true;
                             editor.setHTML(newText);
                         }
                     });
@@ -261,16 +268,21 @@
                     editor.on('text-change', function () {
                         var oldChange = changed;
                         changed = true;
-                        $timeout(function () {
-                            // Calculate content length
-                            $scope.modelLength = editor.getLength();
-                            // Check if error class should be set
-                            if (oldChange) {
-                                setClass();
-                            }
-                            // Set new model value
-                            ngModel.$setViewValue(editor.getHTML());
-                        }, 0);
+                        updateFromPlugin = true;
+                        if (!updateInPlugin) {
+                            $scope.$apply(function () {
+                                // Calculate content length
+                                $scope.modelLength = editor.getLength();
+                                // Check if error class should be set
+                                if (oldChange) {
+                                    setClass();
+                                }
+                                // Set new model value
+                                ngModel.$setViewValue(editor.getHTML());
+                            });
+                        }
+                        updateInPlugin = false;
+                        updateFromPlugin = false;
                     });
 
                     // Clean-up
