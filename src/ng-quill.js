@@ -126,6 +126,7 @@
                     'linkTooltip': '@?',
                     'imageTooltip': '@?',
                     'theme': '@?',
+                    'save': '@?',
                     'translations': '=?',
                     'required': '@?editorRequired',
                     'readOnly': '&?',
@@ -138,6 +139,7 @@
                 link: function ($scope, element, attr, ngModel) {
                     var config = {
                             theme: $scope.theme || 'snow',
+                            save: $scope.save || 'html',
                             readOnly: $scope.readOnly || false,
                             formats: $scope.toolbarEntries ? ngQuillService.validateFormats($scope.toolbarEntries.split(' ')) : ngQuillConfig.formats,
                             modules: {}
@@ -249,7 +251,13 @@
 
                         if (newText !== undefined) {
                             updateInPlugin = true;
-                            editor.setHTML(newText);
+                            if (config.save === 'text') {
+                                editor.setText(newText);
+                            } else if (config.save === 'contents') {
+                                editor.setContents(newText);
+                            } else {
+                                editor.setHTML(newText);
+                            }
                         }
                     });
 
@@ -277,8 +285,16 @@
                                 if (oldChange) {
                                     setClass();
                                 }
+                                var setValue;
+                                if (config.save === 'text') {
+                                    setValue = editor.getText();
+                                } else if (config.save === 'contents') {
+                                    setValue = editor.getContents();
+                                } else {
+                                    setValue = editor.getHTML();
+                                }
                                 // Set new model value
-                                ngModel.$setViewValue(editor.getHTML());
+                                ngModel.$setViewValue(setValue);
                             });
                         }
                         updateInPlugin = false;
