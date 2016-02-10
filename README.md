@@ -1,4 +1,4 @@
-# ngQuill 
+# ngQuill
 <img src="https://cloud.githubusercontent.com/assets/2264672/12809927/fd4c3416-cb22-11e5-9b02-80ebd9138255.png" width="120">
 [![NPM](https://nodei.co/npm/ng-quill.png)](https://nodei.co/npm/ng-quill/)
 
@@ -9,6 +9,13 @@ Installation
 - run `bower install ngquill` or `bower ng-quill`
 - or `npm install ng-quill`
 - or download zip from release page: https://github.com/KillerCodeMonkey/ngQuill/releases
+
+
+Contribution
+============
+
+I am using GitFlow --> All Changes and Pull-Requests have to be on develop-branch!
+Changes directly in the master branch are not longer allowed and will be rejected.
 
 Usage
 =====
@@ -35,6 +42,8 @@ Configuration
 - set readOnly: `read-only=""` (default: false) - requires function to be executed
 - set translations: `translations="dict.editor"` (object with editor translations -> default is english)
 - overwrite global config for each editor: `fontsize-options="fontsizeOptions" fontfamily-options="fontfamilyOptions"`
+- name: `name="editoreName"` (optional, String) --> editor name is passed to the editorCreated event if set
+- callback `callback="functionName(editor, name)"` --> another usage to get editor instance if created --> call custom function with parameters editor and optional name
 
 Translations
 ============
@@ -71,7 +80,7 @@ Translations
 Events
 ======
 
-- editorCreated: triggered after editor is created and provides editor-object
+- editorCreated: triggered after editor is created and provides editor-object and the optional editor name
 
 Advanced Usage and Configuration
 ================================

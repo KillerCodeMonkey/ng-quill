@@ -132,7 +132,8 @@
                     'readOnly': '&?',
                     'errorClass': '@?',
                     'ngModel': '=',
-                    'callback': '='
+                    'callback': '&?',
+                    'name': '@?'
                 },
                 require: 'ngModel',
                 restrict: 'E',
@@ -236,10 +237,13 @@
 
                     // provide event to get recognized when editor is created -> pass editor object.
                     $timeout(function(){
-                       $scope.$emit('editorCreated', editor);
-                       if($scope.callback) {
-                          $scope.callback(editor);
-                       }
+                        $scope.$emit('editorCreated', editor, $scope.name);
+                        if ($scope.callback) {
+                            $scope.callback({
+                               editor: editor,
+                               name: $scope.name
+                            });
+                        }
                     });
 
                     var updateFromPlugin = false;
