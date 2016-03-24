@@ -238,12 +238,16 @@
                     // provide event to get recognized when editor is created -> pass editor object.
                     $timeout(function(){
                         $scope.$emit('editorCreated', editor, $scope.name);
+
                         if ($scope.callback) {
                             $scope.callback({
                                editor: editor,
                                name: $scope.name
                             });
                         }
+
+                        // clear history of undo manager to avoid removing inital model value via ctrl + z
+                        editor.getModule('undo-manager').clear();
                     });
 
                     var updateFromPlugin = false;
