@@ -4,6 +4,8 @@
 
 ngQuill is an [Angular.js](http://angularjs.org/) directive for [Quill](http://quilljs.com/) rich text editor.
 
+You can get an ugly as hell demo here: [ngQuill in action](http://killercodemonkey.github.io/ngQuill/demo.html)
+
 Installation
 ============
 - run `bower install ngquill` or `bower ng-quill`
