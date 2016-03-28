@@ -133,7 +133,8 @@
                     'errorClass': '@?',
                     'ngModel': '=',
                     'callback': '&?',
-                    'name': '@?'
+                    'name': '@?',
+                    'editorStyles': '=?'
                 },
                 require: 'ngModel',
                 restrict: 'E',
@@ -144,7 +145,8 @@
                             save: $scope.save || 'html',
                             readOnly: $scope.readOnly || false,
                             formats: $scope.toolbarEntries ? ngQuillService.validateFormats($scope.toolbarEntries.split(' ')) : ngQuillConfig.formats,
-                            modules: {}
+                            modules: {},
+                            styles: $scope.editorStyles || false
                         },
                         changed = false,
                         editor,
