@@ -44,6 +44,7 @@ Configuration
 - overwrite global config for each editor: `fontsize-options="fontsizeOptions" fontfamily-options="fontfamilyOptions"`
 - name: `name="editoreName"` (optional, String) --> editor name is passed to the editorCreated event if set
 - callback `callback="functionName(editor, name)"` --> another usage to get editor instance if created --> call custom function with parameters editor and optional name
+- styles: `editor-styles="true"` (optional, Bool) (default: false) -  attach CSS to HEAD, do not set if you use a theme
 
 Translations
 ============
