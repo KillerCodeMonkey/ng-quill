@@ -16,7 +16,7 @@
   ],
   "dependencies": {
     "quill": "0.20.1",
-    "angular": "1.4.7"
+    "angular": "^1.4.7"
   },
   "keywords": [
     "quill",
