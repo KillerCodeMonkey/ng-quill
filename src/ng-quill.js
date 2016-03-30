@@ -263,7 +263,7 @@
                             return;
                         }
 
-                        if (newText !== undefined) {
+                        if (newText) {
                             updateInPlugin = true;
                             if (config.save === 'text') {
                                 editor.setText(newText);
@@ -308,7 +308,11 @@
                                     setValue = editor.getHTML();
                                 }
                                 // Set new model value
-                                ngModel.$setViewValue(setValue);
+                                if(editor.getLength() <= 1) {
+                                    ngModel.$setViewValue('');
+                                } else {
+                                    ngModel.$setViewValue(setValue);
+                                }
                             });
                         }
                         updateInPlugin = false;
