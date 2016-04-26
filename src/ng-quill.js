@@ -226,6 +226,16 @@
                     // init editor
                     editor = new Quill(element[0].querySelector('.advanced-wrapper .editor-container'), config);
 
+                    // mark model as touched if editor lost focus
+                    editor.on('selection-change', function (range) {
+                        if (range) {
+                            return;
+                        }
+                        $timeout(function () {
+                            ngModel.$setTouched();
+                        });
+                    });
+
                     // add toolbar afterwards with a timeout to be sure that translations has replaced.
                     if ($scope.toolbar && $scope.toolbar === 'true') {
                         $timeout(function () {
