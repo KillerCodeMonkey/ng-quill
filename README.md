@@ -13,6 +13,14 @@ Installation
 - or download zip from release page: https://github.com/KillerCodeMonkey/ngQuill/releases
 
 
+Breaking Changes since 1.5.0
+============================
+
+- usage of AngularJS >1.5.6
+- the editor directive is now a component
+- all two way bindings are now one-way bindings
+- read-only is a simple one-way data binding, too (previously an function binding '&')
+
 Contribution
 ============
 
@@ -41,7 +49,7 @@ Configuration
 - customized error class added to editors container div: `error-class="input-error"`
 - set save format: `save="html"` (default: 'html', supports 'html', 'text', 'contents')
 - set theme name: `theme="snow"` (default: 'snow')
-- set readOnly: `read-only=""` (default: false) - requires function to be executed
+- set readOnly: `read-only=""` (default: false) - requires true or false
 - set translations: `translations="dict.editor"` (object with editor translations -> default is english)
 - overwrite global config for each editor: `fontsize-options="fontsizeOptions" fontfamily-options="fontfamilyOptions"`
 - name: `name="editoreName"` (optional, String) --> editor name is passed to the editorCreated event if set

@@ -13,8 +13,8 @@
         </style>
 
         <!-- Scripts -->
+        <script type="text/javascript" src="//code.angularjs.org/1.5.6/angular.min.js"></script>
         <script type="text/javascript" src="//cdn.quilljs.com/0.20.1/quill.js"></script>
-        <script type="text/javascript" src="//code.angularjs.org/1.4.7/angular.min.js"></script>
         <script type="text/javascript" src="src/ng-quill.js"></script>
         <script>
             // declare a module and load quillModule
@@ -66,8 +66,11 @@
             }]);
             myAppModule.controller('AppCtrl', [
                 '$scope',
+                '$timeout',
                 'ngQuillConfig',
-                function($scope, ngQuillConfig) {
+                function($scope, $timeout, ngQuillConfig) {
+
+                    $scope.message = 'Test';
 
                     $scope.showToolbar = true;
 
@@ -82,20 +85,38 @@
                     $scope.editorCallback = function (editor, name) {
                         console.log('createCallback', editor, name);
                     };
+
+                    $scope.readOnly = false;
+
+                    $scope.isReadonly = function () {
+                        return $scope.readOnly;
+                    };
+
+                    $scope.clear = function () {
+                        return $scope.message = '';
+                    };
+
                     // Event after an editor is created --> gets the editor instance on optional the editor name if set
                     $scope.$on('editorCreated', function (event, editor, name) {
                         console.log('createEvent', editor, name);
                     });
+
+                    $timeout(function () {
+                        $scope.message = 'Async Test content';
+                        console.log($scope.message);
+                    }, 3000);
                 }
             ]);
 
         </script>
 
-    <body ng-app="quillTest" ng-strict-di ng-controller="AppCtrl">
-        <button ng-click="toggle()">Toggle toolbar</button>
+    <body ng-app="quillTest" ng-controller="AppCtrl">
+        <button ng-click="toggle()">Toggle toolbar</button><button ng-click="readOnly = !readOnly">Toggle readonly</button><button ng-click="clear()">clear model</button>
         <div style="width: 500px; height: 300px;">
-            <ng-quill-editor name="editor1" callback="editorCallback(editor, name)" ng-model="message" translations="translations" toolbar="true" show-toolbar="showToolbar" link-tooltip="true" image-tooltip="true" toolbar-entries="font size bold list bullet italic underline strike align color background link image" editor-required="true" required="" error-class="input-error"
+            <ng-quill-editor name="editor1" callback="editorCallback(editor, name)" ng-model="message" translations="translations" toolbar="true" show-toolbar="showToolbar" link-tooltip="true" image-tooltip="true" toolbar-entries="font size bold list bullet italic underline strike align color background link image" editor-required="true" required="" read-only="isReadonly()" error-class="input-error"
             fontsize-options="fontsizeOptions" fontfamily-options="fontfamilyOptions"></ng-quill-editor>
         </div>
+
+        <b>current value</b><pre>{{message}}</pre>
     </body>
 </html>
