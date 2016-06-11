@@ -13,8 +13,8 @@
         </style>
 
         <!-- Scripts -->
+        <script type="text/javascript" src="//code.angularjs.org/1.5.6/angular.min.js"></script>
         <script type="text/javascript" src="//cdn.quilljs.com/0.20.1/quill.js"></script>
-        <script type="text/javascript" src="//code.angularjs.org/1.4.7/angular.min.js"></script>
         <script type="text/javascript" src="src/ng-quill.js"></script>
         <script>
             // declare a module and load quillModule
@@ -91,7 +91,7 @@
 
         </script>
 
-    <body ng-app="quillTest" ng-strict-di ng-controller="AppCtrl">
+    <body ng-app="quillTest" ng-controller="AppCtrl">
         <button ng-click="toggle()">Toggle toolbar</button>
         <div style="width: 500px; height: 300px;">
             <ng-quill-editor name="editor1" callback="editorCallback(editor, name)" ng-model="message" translations="translations" toolbar="true" show-toolbar="showToolbar" link-tooltip="true" image-tooltip="true" toolbar-entries="font size bold list bullet italic underline strike align color background link image" editor-required="true" required="" error-class="input-error"
