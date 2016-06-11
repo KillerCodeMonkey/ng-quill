@@ -124,9 +124,9 @@
             'save': '@?',
             'translations': '<?',
             'required': '@?editorRequired',
-            'readOnly': '&?',
+            'readOnly': '<?',
             'errorClass': '@?',
-            'ngModel': '=',
+            'ngModel': '<',
             'callback': '&?',
             'name': '@?',
             'editorStyles': '<?'
@@ -137,6 +137,7 @@
         restrict: 'E',
         templateUrl: 'ngQuill/template.html',
         controller: function ($scope, $element, $timeout, ngQuillService, ngQuillConfig) {
+            console.log(this.ngModel);
             var config = {
                     theme: this.theme || 'snow',
                     save: this.save || 'html',
@@ -220,6 +221,47 @@
                 };
             }
 
+            var settingInitValues = false;
+            var settingWithEditor = false;
+
+            function setChanges(changes) {
+                // toggle readOnly
+                if (changes.readOnly && changes.readOnly.currentValue !== changes.readOnly.previousValue) {
+                    editor.editor[changes.readOnly.currentValue ? 'disable' : 'enable']();
+                }
+
+                // set initial value
+                if (changes.ngModel && changes.ngModel.currentValue !== changes.ngModel.previousValue) {
+                    if (config.save === 'text') {
+                        return editor.setText(changes.ngModel.currentValue);
+                    }
+                    if (config.save === 'contents') {
+                        return editor.setContents(changes.ngModel.currentValue);
+                    }
+                    return editor.setHTML(changes.ngModel.currentValue);
+                }
+            }
+
+            this.$onChanges = function (changes) {
+                // initial bindings
+                if (!editor) {
+                    var deregister = $scope.$on('editorCreated', function () {
+                        deregister();
+                        settingInitValues = true;
+
+                        setChanges(changes);
+                    });
+
+                    return;
+                }
+
+                if (settingWithEditor) {
+                    return;
+                }
+
+                setChanges(changes);
+            };
+
             this.$onInit = function () {
                 console.log(this);
                 // init editor
@@ -262,64 +304,44 @@
                     editor.getModule('undo-manager').clear();
                 }.bind(this));
 
-                var updateFromPlugin = false;
-                var updateInPlugin = false;
-
-                this.$onChanges = function (changes) {
-                    // toggle readOnly
-                    if (changes.readOnly) {
-                        editor.editor[readOnly ? 'disable' : 'enable']();
-                    }
-
-                    // set initial value
-                    if (!changes.ngModel || updateFromPlugin) {
-                        return;
-                    }
-                    if (newText) {
-                        updateInPlugin = true;
-                        if (config.save === 'text') {
-                            return editor.setText(newText);
-                        }
-                        if (config.save === 'contents') {
-                            return editor.setContents(newText);
-                        }
-                        return editor.setHTML(newText);
-                    }
-                };
-
                 this.regEx = /^([2-9]|[1-9][0-9]+)$/;
 
                 // Update model on textchange
                 editor.on('text-change', function () {
                     var oldChange = changed;
                     changed = true;
-                    updateFromPlugin = true;
-                    if (!updateInPlugin) {
-                        $scope.$apply(function () {
-                            // Calculate content length
-                            this.modelLength = editor.getLength();
-                            // Check if error class should be set
-                            if (oldChange) {
-                                setClass();
-                            }
-                            var setValue;
-                            if (config.save === 'text') {
-                                setValue = editor.getText();
-                            } else if (config.save === 'contents') {
-                                setValue = editor.getContents();
-                            } else {
-                                setValue = editor.getHTML();
-                            }
-                            // Set new model value
-                            if(editor.getLength() <= 1) {
-                                this.ngModelController.$setViewValue('');
-                            } else {
-                                this.ngModelController.$setViewValue(setValue);
-                            }
-                        }.bind(this));
+
+                    if (settingInitValues) {
+                        settingInitValues = false;
+                        return;
                     }
-                    updateInPlugin = false;
-                    updateFromPlugin = false;
+
+                    settingWithEditor = true;
+
+                    $timeout(function () {
+                        // Calculate content length
+                        this.modelLength = editor.getLength();
+                        // Check if error class should be set
+                        if (oldChange) {
+                            setClass();
+                        }
+                        var setValue;
+                        if (config.save === 'text') {
+                            setValue = editor.getText();
+                        } else if (config.save === 'contents') {
+                            setValue = editor.getContents();
+                        } else {
+                            setValue = editor.getHTML();
+                        }
+                        // Set new model value
+                        if(editor.getLength() <= 1) {
+                            this.ngModelController.$setViewValue('');
+                        } else {
+                            this.ngModelController.$setViewValue(setValue);
+                        }
+
+                        settingWithEditor = false;
+                    }.bind(this));
                 }.bind(this));
 
                 // Clean-up
