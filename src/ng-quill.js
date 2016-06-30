@@ -135,7 +135,6 @@ app.component('ngQuillEditor', {
     restrict: 'E',
     templateUrl: 'ngQuill/template.html',
     controller: ['$scope', '$element', '$timeout', 'ngQuillService', 'ngQuillConfig', function ($scope, $element, $timeout, ngQuillService, ngQuillConfig) {
-        console.log(this.ngModel);
         var config = {
                 theme: this.theme || 'snow',
                 save: this.save || 'html',
@@ -261,7 +260,6 @@ app.component('ngQuillEditor', {
         };
 
         this.$onInit = function () {
-            console.log(this);
             // init editor
             editor = new Quill($element[0].querySelector('.advanced-wrapper .editor-container'), config);
 
