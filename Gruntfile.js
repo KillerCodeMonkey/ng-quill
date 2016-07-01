@@ -16,8 +16,8 @@ module.exports = function (grunt) {
                     src: 'src/ng-quill.js',
                     dest: 'src/ng-quill.min.js', // optional, if missing the src will be used
                     deps: { // optional, `default` is used as a fallback for rest!
-                        'default': ['quill', 'angular'],
-                        amd: ['quill', 'angular'],
+                        'default': ['Quill', 'angular'],
+                        amd: ['Quill', 'angular'],
                         cjs: ['quill', 'angular']
                     }
                 }
