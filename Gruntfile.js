@@ -18,7 +18,7 @@ module.exports = function (grunt) {
                     deps: { // optional, `default` is used as a fallback for rest!
                         'default': ['Quill', 'angular'],
                         amd: ['Quill', 'angular'],
-                        cjs: ['Quill', 'angular']
+                        cjs: ['quill', 'angular']
                     }
                 }
             }
