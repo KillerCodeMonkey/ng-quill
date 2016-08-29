@@ -23,9 +23,9 @@ describe('ng-quill-component', function() {
 		var config; 
 		var service;
 
-		beforeEach(inject(function($injector) {
-			config = $injector.get('ngQuillConfig');
-			service = $injector.get('ngQuillService');
+		beforeEach(inject(function(_ngQuillConfig_, _ngQuillService_) {
+			config = _ngQuillConfig_;
+			service = _ngQuillService_;
 		}));
 
 		it('should load default config dependency', function() {
@@ -47,6 +47,43 @@ describe('ng-quill-component', function() {
 	});
 
 	describe('ngQuillEditor', function() {
+
+		var $compile;
+		var $rootScope;
+
+		var invalidFormat = "<ng-quill-editor></ng-quill-editor>";
+		var validFormat = '<ng-quill-editor name="editor1" callback="editorCallback(editor, name)" ' + 
+			'ng-model="message" translations="translations" toolbar="true" show-toolbar="showToolbar" ' + 
+			'link-tooltip="true" image-tooltip="true" toolbar-entries="font size bold list bullet italic ' +
+			'underline strike align color background link image" editor-required="true" required="" ' +
+			'read-only="isReadonly()" error-class="input-error" fontsize-options="fontsizeOptions" ' + 
+			'fontfamily-options="fontfamilyOptions"></ng-quill-editor>';
+
+		beforeEach(inject(function(_$compile_, _$rootScope_) {
+			$compile = _$compile_;
+			$rootScope = _$rootScope_.$new();
+		}));
+
+		describe('creates component correctly', function() {
+
+			it('should not create componenet without required attributes and configuration', function() {
+				var elem = $compile(invalidFormat)($rootScope);
+				var divElements = elem.find('div');
+				var spanElements = elem.find('span');
+				expect(divElements.length).toBe(0);
+				expect(spanElements.length).toBe(0);
+			});
+
+			it('should compile component', function() {
+				var elem = $compile(validFormat)($rootScope);
+				$rootScope.$digest();
+				var divElements = elem.find('div');
+				var spanElements = elem.find('span');
+				expect(divElements.length).not.toBe(0);
+				expect(spanElements.length).not.toBe(0);
+			});
+		});
+
 
 	});
 
