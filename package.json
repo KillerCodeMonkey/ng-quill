@@ -6,9 +6,16 @@
   "homepage": "https://github.com/KillerCodeMonkey/ngQuill",
   "main": "src/ng-quill.min.js",
   "devDependencies": {
+    "angular-mocks": "^1.5.8",
     "grunt": "~0.4.3",
     "grunt-contrib-uglify": "~0.6.0",
-    "grunt-umd": "~2.3.6"
+    "grunt-karma": "^2.0.0",
+    "grunt-umd": "~2.3.6",
+    "jasmine-core": "^2.4.1",
+    "karma": "^1.2.0",
+    "karma-jasmine": "^1.0.2",
+    "karma-phantomjs-launcher": "^1.0.1",
+    "karma-spec-reporter": "0.0.26"
   },
   "engines": {
     "node": ">=0.10"
