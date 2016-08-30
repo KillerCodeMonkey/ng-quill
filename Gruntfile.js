@@ -22,11 +22,18 @@ module.exports = function (grunt) {
                     }
                 }
             }
+        },
+        karma: {
+            unit: {
+                configFile: './karma.conf.js'
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-umd');
+    grunt.loadNpmTasks('grunt-karma');
 
+    grunt.registerTask('test', ['karma']);
     grunt.registerTask('default', ['umd', 'uglify']);
 };
