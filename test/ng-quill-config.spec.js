@@ -1,4 +1,4 @@
-// tests for config provider and service
+// tests for ng-quill config provider and service
 
 describe('ngQuill', function() {
 
