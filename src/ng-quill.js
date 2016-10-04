@@ -235,6 +235,11 @@ app.component('ngQuillEditor', {
                 if (config.save === 'contents') {
                     return editor.setContents(changes.ngModel.currentValue);
                 }
+
+                if (changes.ngModel.currentValue === undefined) {
+                    changes.ngModel.currentValue = '';
+                }
+
                 return editor.setHTML(changes.ngModel.currentValue);
             }
         }
@@ -330,7 +335,7 @@ app.component('ngQuillEditor', {
                         setValue = editor.getHTML();
                     }
                     // Set new model value
-                    if(editor.getLength() <= 1) {
+                    if(editor.getLength() < 1) {
                         this.ngModelController.$setViewValue('');
                     } else {
                         this.ngModelController.$setViewValue(setValue);
