@@ -2,7 +2,7 @@
 <img src="https://cloud.githubusercontent.com/assets/2264672/12809927/fd4c3416-cb22-11e5-9b02-80ebd9138255.png" width="120">
 [![NPM](https://nodei.co/npm/ng-quill.png)](https://nodei.co/npm/ng-quill/)
 
-ngQuill is an [Angular.js](http://angularjs.org/) directive for [Quill](http://quilljs.com/) rich text editor.
+ngQuill is an [Angular.js](http://angularjs.org/) directive for [Quill](http://quilljs.com/) rich text editor (v0.20.x).
 
 You can get an ugly as hell demo here: [ngQuill in action](http://killercodemonkey.github.io/ngQuill/demo.html)
 
