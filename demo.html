@@ -5,118 +5,48 @@
         <meta charset="utf-8">
 
         <!-- Style -->
-        <link rel="stylesheet" href="//cdn.quilljs.com/0.20.1/quill.snow.css">
-        <style>
-            .input-error {
-                border: 2px dashed red;
-            }
-        </style>
-
+        <link rel="stylesheet" href="//cdn.quilljs.com/1.1.5/quill.snow.css">
+        <link rel="stylesheet" href="//cdn.quilljs.com/1.1.5/quill.bubble.css">
         <!-- Scripts -->
-        <script type="text/javascript" src="//code.angularjs.org/1.5.6/angular.min.js"></script>
-        <script type="text/javascript" src="//cdn.quilljs.com/0.20.1/quill.js"></script>
+        <script type="text/javascript" src="//code.angularjs.org/1.5.8/angular.min.js"></script>
+        <script type="text/javascript" src="//cdn.quilljs.com/1.1.5/quill.js"></script>
         <script type="text/javascript" src="src/ng-quill.min.js"></script>
         <script>
             // declare a module and load quillModule
             var myAppModule = angular.module('quillTest', ['ngQuill']);
             myAppModule.config(['ngQuillConfigProvider', function (ngQuillConfigProvider) {
-                ngQuillConfigProvider.set([{
-                    alias: '10',
-                    size: '10px'
-                }, {
-                    alias: '12',
-                    size: '12px'
-                }, {
-                    alias: '14',
-                    size: '14px'
-                }, {
-                    alias: '16',
-                    size: '16px'
-                }, {
-                    alias: '18',
-                    size: '18px'
-                }, {
-                    alias: '20',
-                    size: '20px'
-                }, {
-                    alias: '22',
-                    size: '22px'
-                }, {
-                    alias: '24',
-                    size: '24px'
-                }], [{
-                    label: 'Arial',
-                    alias: 'Arial'
-                }, {
-                    label: 'Sans Serif',
-                    alias: 'sans-serif'
-                }, {
-                    label: 'Serif',
-                    alias: 'serif'
-                }, {
-                    label: 'Monospace',
-                    alias: 'monospace'
-                }, {
-                    label: 'Trebuchet MS',
-                    alias: '"Trebuchet MS"'
-                }, {
-                    label: 'Verdana',
-                    alias: 'Verdana'
-                }])
+                ngQuillConfigProvider.set();
             }]);
             myAppModule.controller('AppCtrl', [
                 '$scope',
                 '$timeout',
-                'ngQuillConfig',
-                function($scope, $timeout, ngQuillConfig) {
-
-                    $scope.message = 'Test';
-
-                    $scope.showToolbar = true;
-
-                    $scope.translations = angular.extend({}, ngQuillConfig.translations, {
-                        10: 'smallest'
-                    });
-
-                    $scope.toggle = function() {
-                        $scope.showToolbar = !$scope.showToolbar;
-                    };
-                    // Own callback after Editor-Creation
-                    $scope.editorCallback = function (editor, name) {
-                        console.log('createCallback', editor, name);
-                    };
-
-                    $scope.readOnly = false;
-
-                    $scope.isReadonly = function () {
-                        return $scope.readOnly;
-                    };
-
-                    $scope.clear = function () {
-                        return $scope.message = '';
-                    };
-
-                    // Event after an editor is created --> gets the editor instance on optional the editor name if set
-                    $scope.$on('editorCreated', function (event, editor, name) {
-                        console.log('createEvent', editor, name);
-                    });
+                function($scope, $timeout) {
+                    $scope.title = 'Quill works';
 
                     $timeout(function () {
-                        $scope.message = 'Async Test content';
-                        console.log($scope.message);
-                    }, 3000);
+                        $scope.title += ' awsome!!!'
+                    }, 2000);
+
+                    $scope.editorCreated = function (editor) {
+                        console.log(editor);
+                    };
+                    $scope.contentChanged = function (editor, html, text) {
+                        console.log('editor: ', editor, 'html: ', html, 'text:', text);
+                    };
                 }
             ]);
 
         </script>
 
     <body ng-app="quillTest" ng-controller="AppCtrl">
-        <button ng-click="toggle()">Toggle toolbar</button><button ng-click="readOnly = !readOnly">Toggle readonly</button><button ng-click="clear()">clear model</button>
-        <div style="width: 500px; height: 300px;">
-            <ng-quill-editor name="editor1" callback="editorCallback(editor, name)" ng-model="message" translations="translations" toolbar="true" show-toolbar="showToolbar" link-tooltip="true" image-tooltip="true" toolbar-entries="font size bold list bullet italic underline strike align color background link image" editor-required="true" required="" read-only="isReadonly()" error-class="input-error"
-            fontsize-options="fontsizeOptions" fontfamily-options="fontfamilyOptions"></ng-quill-editor>
-        </div>
+        <h3>Default editor + Callbacks/Outputs in JS console</h3>
+        {{model.title}}
+        <ng-quill-editor ng-model="title" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text)"></ng-quill-editor>
 
-        <b>current value</b><pre>{{message}}</pre>
+        <h3>Bubble editor</h3>
+        <ng-quill-editor theme="bubble" ng-model="title"></ng-quill-editor>
+
+        <h3>Editor without toolbar + required and ngModule</h3>
+        <ng-quill-editor ng-model="title" required="true" modules="{toolbar: false}"></ng-quill-editor>
     </body>
 </html>

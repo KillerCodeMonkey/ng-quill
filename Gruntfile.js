@@ -32,8 +32,6 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-umd');
-    grunt.loadNpmTasks('grunt-karma');
 
-    grunt.registerTask('test', ['karma']);
     grunt.registerTask('default', ['umd', 'uglify']);
 };
