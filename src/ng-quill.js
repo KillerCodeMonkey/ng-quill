@@ -280,13 +280,13 @@ app.component('ngQuillEditor', {
 
             // add toolbar afterwards with a timeout to be sure that translations have been replaced.
             if (this.toolbar && this.toolbar === 'true') {
-                $timeout(function () {
+                $scope.$applyAsync(function () {
                     editor.addModule('toolbar', {
                         container: $element[0].querySelector('.advanced-wrapper .toolbar-container')
                     });
                     this.toolbarCreated = true;
                     this.showToolbar = this.hasOwnProperty('showToolbar') ? this.showToolbar : true;
-                }.bind(this), 0);
+                }.bind(this));
             }
 
             // provide event to get informed when editor is created -> pass editor object.
