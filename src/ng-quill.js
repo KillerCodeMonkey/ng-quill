@@ -75,7 +75,7 @@ app.component('ngQuillEditor', {
         ngModelCtrl: 'ngModel'
     },
     template: '<div></div>',
-    controller: ['$element', '$timeout', 'ngQuillConfig', function ($element, $timeout, ngQuillConfig) {
+    controller: ['$scope', '$element', 'ngQuillConfig', function ($scope, $element, ngQuillConfig) {
         var config = {
                 theme: this.theme || ngQuillConfig.theme,
                 readOnly: this.readOnly || ngQuillConfig.readOnly,
@@ -130,7 +130,7 @@ app.component('ngQuillEditor', {
                 if (range) {
                     return;
                 }
-                $timeout(function () {
+                $scope.$apply(function () {
                     this.ngModelCtrl.$setTouched();
                 }.bind(this));
             }.bind(this));
@@ -145,8 +145,10 @@ app.component('ngQuillEditor', {
                 }
 
                 if (!modelChanged) {
-                    $timeout(function () {
+                    $scope.$apply(function () {
                         editorChanged = true;
+
+                        this.ngModelCtrl.$setViewValue(html);
 
                         if (this.onContentChanged) {
                             this.onContentChanged({
@@ -155,8 +157,6 @@ app.component('ngQuillEditor', {
                                 text: text
                             });
                         }
-
-                        this.ngModelCtrl.$setViewValue(html);
                     }.bind(this));
                 }
                 modelChanged = false;
