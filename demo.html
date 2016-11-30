@@ -48,7 +48,7 @@
 
     <body ng-app="quillTest" ng-controller="AppCtrl">
         <h3>Default editor + Callbacks/Outputs in JS console</h3>
-        {{model.title}}
+        <pre><code>{{title}}</code></pre>
         <ng-quill-editor ng-model="title" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text)"></ng-quill-editor>
 
         <h3>Bubble editor</h3>
