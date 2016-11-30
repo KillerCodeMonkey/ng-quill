@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "quill": "1.1.5",
-    "angular": "^1.5.8"
+    "angular": "^1.5.3"
   },
   "license": "MIT",
   "repository": {
