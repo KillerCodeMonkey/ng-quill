@@ -29,6 +29,7 @@
                 '$timeout',
                 function($scope, $timeout) {
                     $scope.title = 'Quill works';
+                    $scope.readOnly = false;
 
                     $timeout(function () {
                         $scope.title += ' awsome!!!'
@@ -54,6 +55,8 @@
         <ng-quill-editor theme="bubble" ng-model="title"></ng-quill-editor>
 
         <h3>Editor without toolbar + required and ngModule</h3>
-        <ng-quill-editor ng-model="title" required="true" modules="{toolbar: false}"></ng-quill-editor>
+        <button ng-click="readOnly = !readOnly;">toggle readOnly</button>
+        {{readOnly}}
+        <ng-quill-editor ng-model="title" read-only="readOnly" required="true" modules="{toolbar: false}"></ng-quill-editor>
     </body>
 </html>

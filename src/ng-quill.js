@@ -104,6 +104,9 @@ app.component('ngQuillEditor', {
                 }
                 editorChanged = false;
             }
+            if (editor && changes.readOnly) {
+                editor.enable(!changes.readOnly.currentValue);
+            }
         };
 
         this.$postLink = function () {
