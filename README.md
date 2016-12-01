@@ -1,12 +1,14 @@
-# ngQuill
+# ng-quill
 <img src="https://cloud.githubusercontent.com/assets/2264672/12809927/fd4c3416-cb22-11e5-9b02-80ebd9138255.png" width="120">
 [![NPM](https://nodei.co/npm/ng-quill.png)](https://nodei.co/npm/ng-quill/)
 
-ngQuill is an [Angular.js](http://angularjs.org/) component for [Quill](http://quilljs.com/) rich text editor.
+ng-quill is an [Angular.js](http://angularjs.org/) component for [Quill](http://quilljs.com/) rich text editor.
 You can get an ugly as hell demo here: [ngQuill in action](http://killercodemonkey.github.io/ng-quill/demo.html)
 
 The new version is complete rewritten and is using QuillJS 1.x.
 For the latest old version (0.20.1) checkout the special branch for it.
+
+**Repo name changed** from ngQuill to ng-quill!
 
 Installation
 ============
