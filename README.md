@@ -19,7 +19,7 @@ Installation
 Breaking Changes since 2.0.0
 ============================
 
-- usage of AngularJS >=1.5.8
+- usage of AngularJS ^1.5.3
 - usage of QuillJS 1.1.5
 - generic usage and configuration
 - complete refactured
