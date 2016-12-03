@@ -47,6 +47,7 @@ Usage
 - use ngQuillConfigProvider to overwrite global settings in your config-Block
 - use ngquill directive in your html
 `<ng-quill-editor ng-model="message"></ng-quill-editor>`
+- add this line to your css `[ng-quill-editor] { display: block; }`
 - if you use it in a form and you are resetting it via $setPristine() -> you have to set editor.setHTML('') -> it will add the error class only, if the model has ng-dirty class
 
 Configuration
