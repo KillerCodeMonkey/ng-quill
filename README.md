@@ -1,12 +1,14 @@
-# ngQuill
+# ng-quill
 <img src="https://cloud.githubusercontent.com/assets/2264672/12809927/fd4c3416-cb22-11e5-9b02-80ebd9138255.png" width="120">
 [![NPM](https://nodei.co/npm/ng-quill.png)](https://nodei.co/npm/ng-quill/)
 
-ngQuill is an [Angular.js](http://angularjs.org/) component for [Quill](http://quilljs.com/) rich text editor.
+ng-quill is an [Angular.js](http://angularjs.org/) component for [Quill](http://quilljs.com/) rich text editor.
 You can get an ugly as hell demo here: [ngQuill in action](http://killercodemonkey.github.io/ng-quill/demo.html)
 
 The new version is complete rewritten and is using QuillJS 1.x.
 For the latest old version (0.20.1) checkout the special branch for it.
+
+**Repo name changed** from ngQuill to ng-quill!
 
 Installation
 ============
@@ -17,7 +19,7 @@ Installation
 Breaking Changes since 2.0.0
 ============================
 
-- usage of AngularJS >=1.5.8
+- usage of AngularJS ^1.5.3
 - usage of QuillJS 1.1.5
 - generic usage and configuration
 - complete refactured
@@ -45,6 +47,7 @@ Usage
 - use ngQuillConfigProvider to overwrite global settings in your config-Block
 - use ngquill directive in your html
 `<ng-quill-editor ng-model="message"></ng-quill-editor>`
+- add this line to your css `[ng-quill-editor] { display: block; }`
 - if you use it in a form and you are resetting it via $setPristine() -> you have to set editor.setHTML('') -> it will add the error class only, if the model has ng-dirty class
 
 Configuration

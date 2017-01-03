@@ -6,7 +6,6 @@
   "homepage": "https://github.com/KillerCodeMonkey/ngQuill",
   "main": "src/ng-quill.min.js",
   "devDependencies": {
-    "angular-mocks": "^1.5.8",
     "grunt": "~1.0.1",
     "grunt-contrib-uglify": "~2.0.0",
     "grunt-umd": "~2.4.0"
@@ -15,7 +14,7 @@
     "node": ">=0.10"
   },
   "dependencies": {
-    "quill": "1.1.5",
+    "quill": "^1.1.7",
     "angular": "^1.5.3"
   },
   "license": "MIT",
@@ -32,5 +31,8 @@
     "wysiwyg",
     "angular",
     "directive"
-  ]
+  ],
+  "contributors": [{
+    "name": "Bengt Weiße"
+  }]
 }
