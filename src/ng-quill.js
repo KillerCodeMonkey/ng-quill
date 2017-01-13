@@ -76,14 +76,7 @@ app.component('ngQuillEditor', {
     },
     template: '<div></div>',
     controller: ['$scope', '$element', 'ngQuillConfig', function ($scope, $element, ngQuillConfig) {
-        var config = {
-                theme: this.theme || ngQuillConfig.theme,
-                readOnly: this.readOnly || ngQuillConfig.readOnly,
-                modules: this.modules || ngQuillConfig.modules,
-                formats: this.formats || ngQuillConfig.formats,
-                placeholder: this.placeholder ||  ngQuillConfig.placeholder,
-                bounary: ngQuillConfig.boundary,
-            },
+        var config = {},
             content,
             editorElem,
             modelChanged = false,
@@ -106,6 +99,17 @@ app.component('ngQuillEditor', {
             }
             if (editor && changes.readOnly) {
                 editor.enable(!changes.readOnly.currentValue);
+            }
+        };
+
+        this.$onInit = function () {
+             config = {
+                theme: this.theme || ngQuillConfig.theme,
+                readOnly: this.readOnly || ngQuillConfig.readOnly,
+                modules: this.modules || ngQuillConfig.modules,
+                formats: this.formats || ngQuillConfig.formats,
+                placeholder: this.placeholder ||  ngQuillConfig.placeholder,
+                bounary: ngQuillConfig.boundary,
             }
         };
 
