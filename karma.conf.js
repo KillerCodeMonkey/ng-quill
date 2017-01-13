@@ -21,10 +21,10 @@ module.exports = function(config) {
 
     reporters: ['mocha', 'coverage'],
 
+    browsers: ['PhantomJS'],
     singleRun: true,
-
     coverageReporter: {
-      reporter: [{
+      reporters: [{
         type : 'html',
         dir : 'coverage/'
       }, {
