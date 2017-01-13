@@ -13,15 +13,23 @@ module.exports = function(config) {
       './tests/ng-quill.spec.js',
     ],
 
+    preprocessors: { './src/ng-quill.js': 'coverage' },
+
     autoWatch: true,
 
     frameworks: ['jasmine'],
 
-    reporters: ['mocha'],
+    reporters: ['mocha', 'coverage'],
 
-    browsers: ['PhantomJS'],
+    singleRun: true,
 
-    singleRun: true
-
+    coverageReporter: {
+      reporter: [{
+        type : 'html',
+        dir : 'coverage/'
+      }, {
+        type: 'text-summary'
+      }]
+    }
   });
 };

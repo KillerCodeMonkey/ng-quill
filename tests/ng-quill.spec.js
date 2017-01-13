@@ -1,4 +1,34 @@
 describe('ng-quill', function () {
+    var defaultConfig = {
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                ['blockquote', 'code-block'],
+
+                [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
+                [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+                [{ 'direction': 'rtl' }],                         // text direction
+
+                [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+                [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+                [{ 'font': [] }],
+                [{ 'align': [] }],
+
+                ['clean'],                                         // remove formatting button
+
+                ['link', 'image', 'video']                         // link and image, video
+            ]
+        },
+        theme: 'snow',
+        placeholder: 'Insert text here ...',
+        readOnly: false,
+        boundary: document.body
+    };
+
     beforeEach(module('ngQuill'));
 
     describe('component: ngQuillEditor', function () {
@@ -57,6 +87,34 @@ describe('ng-quill', function () {
             scope.$apply();
 
             expect(element[0].querySelector('div.ql-editor').textContent).toEqual('1234');
+        });
+
+        it('should render editor with changed model', function () {
+            var scope = $rootScope.$new();
+            scope.model = '1234';
+            var element = angular.element('<ng-quill-editor ng-model="model"></ng-quill-editor>');
+            $compile(element)(scope);
+
+            scope.$apply();
+
+            scope.model = '12345';
+            scope.$apply();
+
+            expect(element[0].querySelector('div.ql-editor').textContent).toEqual('12345');
+        });
+
+        it('should render editor without changed model', function () {
+            var scope = $rootScope.$new();
+            scope.model = '1234';
+            var element = angular.element('<ng-quill-editor ng-model="model"></ng-quill-editor>');
+            $compile(element)(scope);
+
+            scope.$apply();
+
+            scope.model = '';
+            scope.$apply();
+
+            expect(element[0].querySelector('div.ql-editor').textContent).toEqual('');
         });
 
         it('should render editor with custom placeholder', function () {
@@ -126,6 +184,30 @@ describe('ng-quill', function () {
 
             expect(scope.contentChanged).toHaveBeenCalledWith(editor, '<p>1234</p>', '1234\n');
         });
+
+        it('should not call onContentChanged after editor content changed', function () {
+            var scope = $rootScope.$new();
+            var editor;
+
+            scope.editorCreated = function (editor_) {
+                editor = editor_;
+            };
+
+            scope.contentChanged = angular.noop;
+
+            spyOn(scope, 'contentChanged');
+
+            var element = angular.element('<ng-quill-editor ng-model="model" on-editor-created="editorCreated(editor)"></ng-quill-editor>');
+            $compile(element)(scope);
+
+            scope.$apply();
+
+            editor.setText('1234');
+            scope.$apply();
+
+            expect(scope.contentChanged).not.toHaveBeenCalled();
+            expect(scope.model).toEqual('<p>1234</p>');
+        });
     });
 
     describe('service: ngQuillConfig', function () {
@@ -136,39 +218,11 @@ describe('ng-quill', function () {
         }));
 
         it('should return default config', function () {
-            expect(ngQuillConfig).toEqual({
-                modules: {
-                    toolbar: [
-                        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-                        ['blockquote', 'code-block'],
-
-                        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                        [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-                        [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-                        [{ 'direction': 'rtl' }],                         // text direction
-
-                        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-                        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-                        [{ 'font': [] }],
-                        [{ 'align': [] }],
-
-                        ['clean'],                                         // remove formatting button
-
-                        ['link', 'image', 'video']                         // link and image, video
-                    ]
-                },
-                theme: 'snow',
-                placeholder: 'Insert text here ...',
-                readOnly: false,
-                boundary: document.body
-            });
+            expect(ngQuillConfig).toEqual(defaultConfig);
         });
     });
 
-    describe('provider: ngQuillConfigProvider', function () {
+    describe('provider: ngQuillConfigProvider - change everything', function () {
         var ngQuillConfigProvider;
         var ngQuillConfig;
 
@@ -178,12 +232,9 @@ describe('ng-quill', function () {
                 ngQuillConfigProvider.set({}, 'test', ' ', [], true, true);
             });
         });
-        beforeEach(inject(function (_ngQuillConfig_) {
-            ngQuillConfig = _ngQuillConfig_; 
-        }));
 
-        it('should return custom config', function () {
-            expect(ngQuillConfig).toEqual({
+        it('should return custom config', inject(function (_ngQuillConfig_) {
+            expect(_ngQuillConfig_).toEqual({
                 modules: {},
                 theme: 'test',
                 placeholder: ' ',
@@ -191,6 +242,22 @@ describe('ng-quill', function () {
                 readOnly: true,
                 boundary: true
             });
+        }));
+    });
+
+    describe('provider: ngQuillConfigProvider - change nothing', function () {
+        var ngQuillConfigProvider;
+        var ngQuillConfig;
+
+        beforeEach(function () {
+            module(function (_ngQuillConfigProvider_) {
+                ngQuillConfigProvider = _ngQuillConfigProvider_;
+                ngQuillConfigProvider.set();
+            });
         });
-    })
+
+        it('should return custom config', inject(function (_ngQuillConfig_) {
+            expect(_ngQuillConfig_).toEqual(defaultConfig);
+        }));
+    });
 });
