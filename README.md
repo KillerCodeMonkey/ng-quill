@@ -1,5 +1,7 @@
-# ng-quill
+# ng-quill [![Build Status](https://travis-ci.org/KillerCodeMonkey/ng-quill.svg?branch=develop)](https://travis-ci.org/KillerCodeMonkey/ng-quill)
+
 <img src="https://cloud.githubusercontent.com/assets/2264672/12809927/fd4c3416-cb22-11e5-9b02-80ebd9138255.png" width="120">
+
 [![NPM](https://nodei.co/npm/ng-quill.png)](https://nodei.co/npm/ng-quill/)
 
 ng-quill is an [Angular.js](http://angularjs.org/) component for [Quill](http://quilljs.com/) rich text editor.
