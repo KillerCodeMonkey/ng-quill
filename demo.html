@@ -57,6 +57,6 @@
         <h3>Editor without toolbar + required and ngModule</h3>
         <button ng-click="readOnly = !readOnly;">toggle readOnly</button>
         {{readOnly}}
-        <ng-quill-editor ng-model="title" read-only="readOnly" required="true" modules="{toolbar: false}"></ng-quill-editor>
+        <ng-quill-editor ng-model="title" read-only="readOnly" required="true" max-length="5" min-length="2" modules="{toolbar: false}"></ng-quill-editor>
     </body>
 </html>

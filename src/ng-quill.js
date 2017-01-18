@@ -69,7 +69,9 @@ app.component('ngQuillEditor', {
         'placeholder': '@?',
         'onEditorCreated': '&?',
         'onContentChanged': '&?',
-        'ngModel': '<'
+        'ngModel': '<',
+        'maxLength': '<',
+        'minLength': '<'
     },
     require: {
         ngModelCtrl: 'ngModel'
@@ -82,6 +84,24 @@ app.component('ngQuillEditor', {
             modelChanged = false,
             editorChanged = false,
             editor;
+
+        this.validate = function (text) {
+            if (this.maxLength) {
+                if (text.length > this.maxLength + 1) {
+                    this.ngModelCtrl.$setValidity('maxlength', false)
+                } else {
+                    this.ngModelCtrl.$setValidity('maxlength', true)
+                }
+            }
+
+            if (this.minLength) {
+                if (text.length <= this.minLength) {
+                    this.ngModelCtrl.$setValidity('minlength', false)
+                } else {
+                    this.ngModelCtrl.$setValidity('minlength', true)
+                }
+            }
+        }
 
         this.$onChanges = function (changes) {
             if (changes.ngModel && changes.ngModel.currentValue !== changes.ngModel.previousValue) {
@@ -118,17 +138,6 @@ app.component('ngQuillEditor', {
             // init editor
             editor = new Quill(editorElem, config);
 
-            if (content) {
-                modelChanged = true;
-
-                editor.pasteHTML(content);
-            }
-
-            // provide event to get informed when editor is created -> pass editor object.
-            if (this.onEditorCreated) {
-                this.onEditorCreated({editor: editor});
-            }
-
             // mark model as touched if editor lost focus
             editor.on('selection-change', function (range) {
                 if (range) {
@@ -147,6 +156,7 @@ app.component('ngQuillEditor', {
                 if (html === '<p><br></p>') {
                     html = null;
                 }
+                this.validate(text);
 
                 if (!modelChanged) {
                     $scope.$apply(function () {
@@ -165,6 +175,18 @@ app.component('ngQuillEditor', {
                 }
                 modelChanged = false;
             }.bind(this));
+
+            // set initial content
+            if (content) {
+                modelChanged = true;
+
+                editor.pasteHTML(content);
+            }
+
+            // provide event to get informed when editor is created -> pass editor object.
+            if (this.onEditorCreated) {
+                this.onEditorCreated({editor: editor});
+            }
         };
     }]
 });
