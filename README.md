@@ -6,6 +6,7 @@
 
 ng-quill is an [Angular.js](http://angularjs.org/) component for [Quill](http://quilljs.com/) rich text editor.
 You can get an ugly as hell demo here: [ngQuill in action](http://killercodemonkey.github.io/ng-quill/demo.html)
+or with AMD (RequireJS) [ngQuill requirejs](http://killercodemonkey.github.io/ng-quill/demo-amd.html)
 
 The new version is complete rewritten and is using QuillJS 1.x.
 For the latest old version (0.20.1) checkout the special branch for it.
