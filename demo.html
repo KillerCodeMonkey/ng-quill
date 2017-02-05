@@ -22,7 +22,7 @@
             // declare a module and load quillModule
             var myAppModule = angular.module('quillTest', ['ngQuill']);
             myAppModule.config(['ngQuillConfigProvider', function (ngQuillConfigProvider) {
-                ngQuillConfigProvider.set();
+                ngQuillConfigProvider.set(null, null, 'custom placeholder');
             }]);
             myAppModule.controller('AppCtrl', [
                 '$scope',
@@ -49,7 +49,7 @@
     <body ng-app="quillTest" ng-controller="AppCtrl">
         <h3>Default editor + Callbacks/Outputs in JS console</h3>
         <pre><code>{{title}}</code></pre>
-        <ng-quill-editor ng-model="title" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text)"></ng-quill-editor>
+        <ng-quill-editor ng-model="title" placeholder="override default placeholder" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text)"></ng-quill-editor>
 
         <h3>Bubble editor</h3>
         <ng-quill-editor theme="bubble" ng-model="title"></ng-quill-editor>
