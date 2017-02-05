@@ -15,9 +15,9 @@ For the latest old version (0.20.1) checkout the special branch for it.
 
 Installation
 ============
-- run `bower install ngquill` or `bower ng-quill`
-- or `npm install ng-quill`
+- `npm install ng-quill`
 - or download zip from release page: https://github.com/KillerCodeMonkey/ngQuill/releases
+- or grab the latest release from cdn: https://cdnjs.com/libraries/ng-quill
 
 Breaking Changes since 2.0.0
 ============================
