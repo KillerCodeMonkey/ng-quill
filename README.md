@@ -64,7 +64,7 @@ Configuration
 - set placeholder: `placeholder="Inser your text here"`
 - override formats: `formats="formatsArray"`, per default all quill formats are allowed
 - set max-length: `max-length="5"`, adds validation for maxlength (sets model state to `invalid` and adds `ng-invalid-maxlength` class)
-- set max-length: `min-length="5"`, adds validation for minlength (sets model state to `invalid` and adds `ng-invalid-minlength` class)
+- set max-length: `min-length="5"`, adds validation for minlength (sets model state to `invalid` and adds `ng-invalid-minlength` class), only works for values > 1, if you only want to check if there is a value --> use required/ng-required
 
 Callback/Outputs
 ================

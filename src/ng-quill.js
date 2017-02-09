@@ -105,8 +105,9 @@
                     }
                 }
 
-                if (this.minLength) {
-                    if (text.length <= this.minLength) {
+                if (this.minLength > 1) {
+                    // validate only if text.length > 1
+                    if (text.length <= this.minLength && text.length > 1) {
                         this.ngModelCtrl.$setValidity('minlength', false)
                     } else {
                         this.ngModelCtrl.$setValidity('minlength', true)

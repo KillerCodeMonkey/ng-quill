@@ -211,8 +211,8 @@ describe('ng-quill', function () {
 
         it('should set invalid if init model > maxlength', function () {
             var scope = $rootScope.$new();
-            scope.model = "1234";
-           
+            scope.model = '1234';
+
             var element = angular.element('<ng-quill-editor ng-model="model" max-length="3"></ng-quill-editor>');
             $compile(element)(scope);
 
@@ -222,8 +222,8 @@ describe('ng-quill', function () {
 
         it('should set valid if init model <= maxlength', function () {
             var scope = $rootScope.$new();
-            scope.model = "1234";
-           
+            scope.model = '1234';
+
             var element = angular.element('<ng-quill-editor ng-model="model" max-length="4"></ng-quill-editor>');
             $compile(element)(scope);
 
@@ -233,8 +233,8 @@ describe('ng-quill', function () {
 
         it('should set invalid if init model < minlength', function () {
             var scope = $rootScope.$new();
-            scope.model = "12";
-           
+            scope.model = '12';
+
             var element = angular.element('<ng-quill-editor ng-model="model" min-length="3"></ng-quill-editor>');
             $compile(element)(scope);
 
@@ -242,10 +242,44 @@ describe('ng-quill', function () {
             expect(element[0].className).toMatch('ng-invalid-minlength');
         });
 
+        it('should set valid if minlength <= 1', function () {
+            var scope = $rootScope.$new();
+            scope.model = '12';
+
+            var element = angular.element('<ng-quill-editor ng-model="model" min-length="1"></ng-quill-editor>');
+            $compile(element)(scope);
+
+            scope.$apply();
+            expect(element[0].className).not.toMatch('ng-invalid-minlength');
+
+            scope.model = '2';
+            scope.$apply();
+            expect(element[0].className).not.toMatch('ng-invalid-minlength');
+        });
+
+        it('should not set invalid-min-length if empty', function () {
+            var scope = $rootScope.$new();
+            scope.model = '';
+
+            var element = angular.element('<ng-quill-editor ng-model="model" min-length="8"></ng-quill-editor>');
+            $compile(element)(scope);
+
+            scope.$apply();
+            expect(element[0].className).not.toMatch('ng-invalid-minlength');
+
+            scope.model = '1234';
+            scope.$apply();
+            expect(element[0].className).toMatch('ng-invalid-minlength');
+
+            scope.model = '';
+            scope.$apply();
+            expect(element[0].className).toMatch('ng-valid-minlength');
+        });
+
         it('should set valid if init model >= minlength', function () {
             var scope = $rootScope.$new();
-            scope.model = "1234";
-           
+            scope.model = '1234';
+
             var element = angular.element('<ng-quill-editor ng-model="model" min-length="4"></ng-quill-editor>');
             $compile(element)(scope);
 
@@ -258,7 +292,7 @@ describe('ng-quill', function () {
         var ngQuillConfig;
 
         beforeEach(inject(function (_ngQuillConfig_) {
-            ngQuillConfig = _ngQuillConfig_; 
+            ngQuillConfig = _ngQuillConfig_;
         }));
 
         it('should return default config', function () {
