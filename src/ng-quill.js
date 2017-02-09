@@ -203,5 +203,3 @@
         }]
     });
 }));
-
-    //"build": "grunt", // && cat src/ng-quill.umd.js | uglifyjs > src/ng-quill.umd.min.js && grunt && src/
