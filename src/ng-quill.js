@@ -155,7 +155,7 @@
                     if (range) {
                         return;
                     }
-                    $scope.$apply(function () {
+                    $scope.$applyAsync(function () {
                         this.ngModelCtrl.$setTouched();
                     }.bind(this));
                 }.bind(this));
@@ -171,7 +171,7 @@
                     this.validate(text);
 
                     if (!modelChanged) {
-                        $scope.$apply(function () {
+                        $scope.$applyAsync(function () {
                             editorChanged = true;
 
                             this.ngModelCtrl.$setViewValue(html);
