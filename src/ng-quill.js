@@ -88,34 +88,37 @@
             ngModelCtrl: 'ngModel'
         },
         template: '<div></div>',
-        controller: ['$scope', '$element', 'ngQuillConfig', function ($scope, $element, ngQuillConfig) {
-            var config = {},
+        controller: ['$scope', '$element', '$q', 'ngQuillConfig', function ($scope, $element, $q, ngQuillConfig) {
+            var vm = this,
+                config = {},
                 content,
                 editorElem,
                 modelChanged = false,
                 editorChanged = false,
-                editor;
+                editor,
+                editorCreatedDeferred = $q.defer(),
+                editorCreatedPromise = editorCreatedDeferred.promise;
 
-            this.validate = function (text) {
-                if (this.maxLength) {
-                    if (text.length > this.maxLength + 1) {
-                        this.ngModelCtrl.$setValidity('maxlength', false)
+            vm.validate = function (text) {
+                if (vm.maxLength) {
+                    if (text.length > vm.maxLength + 1) {
+                        vm.ngModelCtrl.$setValidity('maxlength', false)
                     } else {
-                        this.ngModelCtrl.$setValidity('maxlength', true)
+                        vm.ngModelCtrl.$setValidity('maxlength', true)
                     }
                 }
 
-                if (this.minLength > 1) {
+                if (vm.minLength > 1) {
                     // validate only if text.length > 1
-                    if (text.length <= this.minLength && text.length > 1) {
-                        this.ngModelCtrl.$setValidity('minlength', false)
+                    if (text.length <= vm.minLength && text.length > 1) {
+                        vm.ngModelCtrl.$setValidity('minlength', false)
                     } else {
-                        this.ngModelCtrl.$setValidity('minlength', true)
+                        vm.ngModelCtrl.$setValidity('minlength', true)
                     }
                 }
             }
 
-            this.$onChanges = function (changes) {
+            vm.$onChanges = function (changes) {
                 if (changes.ngModel && changes.ngModel.currentValue !== changes.ngModel.previousValue) {
                     content = changes.ngModel.currentValue;
 
@@ -134,71 +137,77 @@
                 }
             };
 
-            this.$onInit = function () {
+            vm.$onInit = function () {
                  config = {
-                    theme: this.theme || ngQuillConfig.theme,
-                    readOnly: this.readOnly || ngQuillConfig.readOnly,
-                    modules: this.modules || ngQuillConfig.modules,
-                    formats: this.formats || ngQuillConfig.formats,
-                    placeholder: this.placeholder ||  ngQuillConfig.placeholder,
+                    theme: vm.theme || ngQuillConfig.theme,
+                    readOnly: vm.readOnly || ngQuillConfig.readOnly,
+                    modules: vm.modules || ngQuillConfig.modules,
+                    formats: vm.formats || ngQuillConfig.formats,
+                    placeholder: vm.placeholder ||  ngQuillConfig.placeholder,
                     boundary: ngQuillConfig.boundary,
                 }
             };
 
-            this.$postLink = function () {
+            vm.$postLink = function () {
                 editorElem = $element[0].children[0];
-                // init editor
-                editor = new Quill(editorElem, config);
 
-                // mark model as touched if editor lost focus
-                editor.on('selection-change', function (range) {
-                    if (range) {
-                        return;
-                    }
-                    $scope.$applyAsync(function () {
-                        this.ngModelCtrl.$setTouched();
-                    }.bind(this));
-                }.bind(this));
+                $scope.$applyAsync(function() {
+                    // init editor
+                    editor = new Quill(editorElem, config);
+                    editorCreatedDeferred.resolve(editor);
+                });
 
-                // update model if text changes
-                editor.on('text-change', function () {
-                    var html = editorElem.children[0].innerHTML;
-                    var text = editor.getText();
-
-                    if (html === '<p><br></p>') {
-                        html = null;
-                    }
-                    this.validate(text);
-
-                    if (!modelChanged) {
+                editorCreatedPromise.then(function() {
+                    // mark model as touched if editor lost focus
+                    editor.on('selection-change', function (range) {
+                        if (range) {
+                            return;
+                        }
                         $scope.$applyAsync(function () {
-                            editorChanged = true;
+                            vm.ngModelCtrl.$setTouched();
+                        });
+                    });
 
-                            this.ngModelCtrl.$setViewValue(html);
+                    // update model if text changes
+                    editor.on('text-change', function () {
+                        var html = editorElem.children[0].innerHTML;
+                        var text = editor.getText();
 
-                            if (this.onContentChanged) {
-                                this.onContentChanged({
-                                    editor: editor,
-                                    html: html,
-                                    text: text
-                                });
-                            }
-                        }.bind(this));
+                        if (html === '<p><br></p>') {
+                            html = null;
+                        }
+                        vm.validate(text);
+
+                        if (!modelChanged) {
+                            $scope.$applyAsync(function () {
+                                editorChanged = true;
+
+                                vm.ngModelCtrl.$setViewValue(html);
+
+                                if (vm.onContentChanged) {
+                                    vm.onContentChanged({
+                                        editor: editor,
+                                        html: html,
+                                        text: text
+                                    });
+                                }
+                            });
+                        }
+                        modelChanged = false;
+                    });
+
+                    // set initial content
+                    if (content) {
+                        modelChanged = true;
+
+                        editor.pasteHTML(content);
                     }
-                    modelChanged = false;
-                }.bind(this));
 
-                // set initial content
-                if (content) {
-                    modelChanged = true;
-
-                    editor.pasteHTML(content);
-                }
-
-                // provide event to get informed when editor is created -> pass editor object.
-                if (this.onEditorCreated) {
-                    this.onEditorCreated({editor: editor});
-                }
+                    // provide event to get informed when editor is created -> pass editor object.
+                    if (vm.onEditorCreated) {
+                        vm.onEditorCreated({editor: editor});
+                    }
+                });
             };
         }]
     });
