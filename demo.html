@@ -17,7 +17,7 @@
         <!-- Scripts -->
         <script type="text/javascript" src="//code.angularjs.org/1.5.8/angular.min.js"></script>
         <script type="text/javascript" src="//cdn.quilljs.com/1.1.5/quill.js"></script>
-        <script type="text/javascript" src="src/ng-quill.js"></script>
+        <script type="text/javascript" src="src/ng-quill.min.js"></script>
         <script>
             // declare a module and load quillModule
             var myAppModule = angular.module('quillTest', ['ngQuill']);
@@ -63,11 +63,8 @@
         </form>
 
         <h3>ng-quill - custom toolbar</h3>
-        <!-- avoid flickering toolbar -->
         <ng-quill-editor
             ng-model="title"
-            modules="{ toolbar: '#ng-quill-toolbar' }"
-            toolbar="true"
         >
             <ng-quill-toolbar>
                 <div id="ng-quill-toolbar">
