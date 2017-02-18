@@ -17,7 +17,7 @@
         <!-- Scripts -->
         <script type="text/javascript" src="//code.angularjs.org/1.5.8/angular.min.js"></script>
         <script type="text/javascript" src="//cdn.quilljs.com/1.1.5/quill.js"></script>
-        <script type="text/javascript" src="src/ng-quill.min.js"></script>
+        <script type="text/javascript" src="src/ng-quill.js"></script>
         <script>
             // declare a module and load quillModule
             var myAppModule = angular.module('quillTest', ['ngQuill']);
@@ -32,7 +32,7 @@
                     $scope.readOnly = false;
 
                     $timeout(function () {
-                        $scope.title += ' awsome!!!'
+                        $scope.title += ' awsome!!!';
                     }, 2000);
 
                     $scope.editorCreated = function (editor) {
@@ -61,5 +61,36 @@
             <ng-quill-editor ng-model="title" read-only="readOnly" required="true" max-length="5" min-length="2" modules="{toolbar: false}"></ng-quill-editor>
             form invalid?: {{form.$invalid}}
         </form>
+
+        <h3>ng-quill - custom toolbar</h3>
+        <!-- avoid flickering toolbar -->
+        <ng-quill-editor
+            ng-model="title"
+            modules="{ toolbar: '#ng-quill-toolbar' }"
+            toolbar="true"
+        >
+            <ng-quill-toolbar>
+                <div id="ng-quill-toolbar">
+                    <span class="ql-formats">
+                        <button class="ql-bold" ng-attr-title="{{'Bold'}}"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <select class="ql-align" ng-attr-title="{{'Aligment'}}">
+                            <option selected></option>
+                            <option value="center"></option>
+                            <option value="right"></option>
+                            <option value="justify"></option>
+                        </select>
+                        <select class="ql-align">
+                            <option selected></option>
+                            <option value="center"></option>
+                            <option value="right"></option>
+                            <option value="justify"></option>
+                        </select>
+                    </span>
+                </div>
+            </ng-quill-toolbar>
+        </ng-quill-editor>
+
     </body>
 </html>

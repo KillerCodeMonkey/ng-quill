@@ -87,8 +87,11 @@
         require: {
             ngModelCtrl: 'ngModel'
         },
-        template: '<div></div>',
-        controller: ['$scope', '$element', 'ngQuillConfig', function ($scope, $element, ngQuillConfig) {
+        transclude: {
+            'toolbar': '?ngQuillToolbar'
+        },
+        template: '<div class="ng-hide" ng-show="$ctrl.ready"><ng-transclude ng-transclude-slot="toolbar"></ng-transclude></div>',
+        controller: ['$scope', '$element', '$timeout', '$transclude', 'ngQuillConfig', function ($scope, $element, $timeout, $transclude, ngQuillConfig) {
             var config = {},
                 content,
                 editorElem,
@@ -123,12 +126,13 @@
                         modelChanged = true;
                         if (content) {
                             editor.pasteHTML(content);
-                            return;
+                        } else {
+                            editor.setText('');
                         }
-                        editor.setText('');
                     }
                     editorChanged = false;
                 }
+
                 if (editor && changes.readOnly) {
                     editor.enable(!changes.readOnly.currentValue);
                 }
@@ -146,9 +150,28 @@
             };
 
             this.$postLink = function () {
-                editorElem = $element[0].children[0];
-                // init editor
+                // create quill instance after dom is rendered
+                $timeout(function () {
+                    this._initEditor(editorElem);
+                }.bind(this), 0);
+            };
+
+            this._initEditor = function (editorElem) {
+                var $editorElem = angular.element('<div></div>'),
+                    container = $element.children();
+
+                editorElem = $editorElem[0];
+
+                // set toolbar to custom one
+                if ($transclude.isSlotFilled('toolbar')) {
+                    config.modules.toolbar = container.find('ng-quill-toolbar').children()[0];
+                }
+
+                container.append($editorElem);
+
                 editor = new Quill(editorElem, config);
+
+                this.ready = true;
 
                 // mark model as touched if editor lost focus
                 editor.on('selection-change', function (range) {
