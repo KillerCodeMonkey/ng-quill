@@ -34,22 +34,40 @@ describe('ng-quill', function () {
     describe('component: ngQuillEditor', function () {
         var $componentController,
             $compile,
-            $rootScope;
+            $rootScope,
+            $timeout;
 
-        beforeEach(inject(function(_$componentController_, _$compile_, _$rootScope_) {
+        var createTestElement = function (htmlString, scope) {
+            var element = angular.element(htmlString);
+            $compile(element)(scope);
+            scope.$apply();
+
+            // flush timeout(s) for all code under test.
+            $timeout.flush();
+
+            // this will throw an exception if there are any pending timeouts.
+            $timeout.verifyNoPendingTasks();
+
+            return element;
+        };
+
+        beforeEach(inject(function(_$componentController_, _$compile_, _$rootScope_, _$timeout_) {
             $componentController = _$componentController_;
             $rootScope = _$rootScope_;
             $compile = _$compile_;
+            $timeout = _$timeout_;
         }));
 
         it('should set default bindings', function () {
             var scope = $rootScope.$new();
             scope.model = '';
-            var element = angular.element('<ng-quill-editor ng-model="model"></ng-quill-editor>');
-            $compile(element)(scope);
+            var element = createTestElement('<ng-quill-editor ng-model="model"><toolbar></toolbar></ng-quill-editor>', scope);
 
             var ctrl = $componentController('ngQuillEditor', {
-                $element: element
+                $element: element,
+                $transclude: {
+                    isSlotFilled: angular.noop
+                }
             }, {});
 
             expect(ctrl.$onChanges).toEqual(jasmine.any(Function));
@@ -68,10 +86,7 @@ describe('ng-quill', function () {
         it('should render default editor', inject(function (_ngQuillConfig_) {
             var scope = $rootScope.$new();
             scope.model = '';
-            var element = angular.element('<ng-quill-editor ng-model="model"></ng-quill-editor>');
-            $compile(element)(scope);
-
-            scope.$apply();
+            var element = createTestElement('<ng-quill-editor ng-model="model"></ng-quill-editor>', scope);
 
             expect(element[0].querySelectorAll('div.ql-toolbar.ql-snow').length).toBe(1);
             expect(element[0].querySelectorAll('div.ql-editor').length).toBe(1);
@@ -81,10 +96,7 @@ describe('ng-quill', function () {
         it('should render editor with initial model', function () {
             var scope = $rootScope.$new();
             scope.model = '1234';
-            var element = angular.element('<ng-quill-editor ng-model="model"></ng-quill-editor>');
-            $compile(element)(scope);
-
-            scope.$apply();
+            var element = createTestElement('<ng-quill-editor ng-model="model"></ng-quill-editor>', scope);
 
             expect(element[0].querySelector('div.ql-editor').textContent).toEqual('1234');
         });
@@ -92,10 +104,8 @@ describe('ng-quill', function () {
         it('should render editor with changed model', function () {
             var scope = $rootScope.$new();
             scope.model = '1234';
-            var element = angular.element('<ng-quill-editor ng-model="model"></ng-quill-editor>');
-            $compile(element)(scope);
 
-            scope.$apply();
+            var element = createTestElement('<ng-quill-editor ng-model="model"></ng-quill-editor>', scope);
 
             scope.model = '12345';
             scope.$apply();
@@ -106,10 +116,7 @@ describe('ng-quill', function () {
         it('should render editor without changed model', function () {
             var scope = $rootScope.$new();
             scope.model = '1234';
-            var element = angular.element('<ng-quill-editor ng-model="model"></ng-quill-editor>');
-            $compile(element)(scope);
-
-            scope.$apply();
+            var element = createTestElement('<ng-quill-editor ng-model="model"></ng-quill-editor>', scope);
 
             scope.model = '';
             scope.$apply();
@@ -119,21 +126,26 @@ describe('ng-quill', function () {
 
         it('should render editor with custom placeholder', function () {
             var scope = $rootScope.$new();
-            var element = angular.element('<ng-quill-editor placeholder="1234" ng-model="model"></ng-quill-editor>');
-            $compile(element)(scope);
-
-            scope.$apply();
+            var element = createTestElement('<ng-quill-editor ng-model="model" placeholder="1234"></ng-quill-editor>', scope);
 
             expect(element[0].querySelector('div.ql-editor').dataset.placeholder).toEqual('1234');
+        });
+
+        it('should render editor with custom toolbar', function () {
+            var scope = $rootScope.$new();
+            var element = createTestElement(
+                '<ng-quill-editor ng-model="model" placeholder="1234"><ng-quill-toolbar><div><span class="ql-formats"><button class="ql-bold" ng-attr-title="{{\'Bold\'}}"></button></span></div></ng-quill-toolbar></ng-quill-editor>',
+                scope
+            );
+
+            expect(element[0].querySelector('button.ql-bold[title=Bold]')).toBeDefined();
         });
 
         it('should set editor to readOnly', function () {
             var scope = $rootScope.$new();
             scope.readOnly = true;
-            var element = angular.element('<ng-quill-editor ng-model="model" read-only="readOnly"></ng-quill-editor>');
-            $compile(element)(scope);
 
-            scope.$apply();
+            var element = createTestElement('<ng-quill-editor ng-model="model" read-only="readOnly"></ng-quill-editor>', scope);
 
             expect(element[0].querySelector('div.ql-editor').getAttribute('contenteditable')).toEqual('false');
 
@@ -152,10 +164,7 @@ describe('ng-quill', function () {
 
             spyOn(scope, 'editorCreated').and.callThrough();
 
-            var element = angular.element('<ng-quill-editor ng-model="model" on-editor-created="editorCreated(editor)"></ng-quill-editor>');
-            $compile(element)(scope);
-
-            scope.$apply();
+            var element = createTestElement('<ng-quill-editor ng-model="model" on-editor-created="editorCreated(editor)"></ng-quill-editor>', scope);
 
             expect(scope.editorCreated).toHaveBeenCalled();
             expect(quillEditor).toBeDefined();
@@ -174,10 +183,7 @@ describe('ng-quill', function () {
 
             spyOn(scope, 'contentChanged');
 
-            var element = angular.element('<ng-quill-editor ng-model="model" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text)"></ng-quill-editor>');
-            $compile(element)(scope);
-
-            scope.$apply();
+            var element = createTestElement('<ng-quill-editor ng-model="model" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text)"></ng-quill-editor>', scope);
 
             editor.setText('1234');
             scope.$apply();
@@ -197,10 +203,7 @@ describe('ng-quill', function () {
 
             spyOn(scope, 'contentChanged');
 
-            var element = angular.element('<ng-quill-editor ng-model="model" on-editor-created="editorCreated(editor)"></ng-quill-editor>');
-            $compile(element)(scope);
-
-            scope.$apply();
+            var element = createTestElement('<ng-quill-editor ng-model="model" on-editor-created="editorCreated(editor)"></ng-quill-editor>', scope);
 
             editor.setText('1234');
             scope.$apply();
@@ -213,10 +216,8 @@ describe('ng-quill', function () {
             var scope = $rootScope.$new();
             scope.model = '1234';
 
-            var element = angular.element('<ng-quill-editor ng-model="model" max-length="3"></ng-quill-editor>');
-            $compile(element)(scope);
+            var element = createTestElement('<ng-quill-editor ng-model="model" max-length="3"></ng-quill-editor>', scope);
 
-            scope.$apply();
             expect(element[0].className).toMatch('ng-invalid-maxlength');
         });
 
@@ -224,21 +225,16 @@ describe('ng-quill', function () {
             var scope = $rootScope.$new();
             scope.model = '1234';
 
-            var element = angular.element('<ng-quill-editor ng-model="model" max-length="4"></ng-quill-editor>');
-            $compile(element)(scope);
+            var element = createTestElement('<ng-quill-editor ng-model="model" max-length="4"></ng-quill-editor>', scope);
 
-            scope.$apply();
             expect(element[0].className).toMatch('ng-valid-maxlength');
         });
 
         it('should set invalid if init model < minlength', function () {
             var scope = $rootScope.$new();
             scope.model = '12';
+            var element = createTestElement('<ng-quill-editor ng-model="model" min-length="3"></ng-quill-editor>', scope);
 
-            var element = angular.element('<ng-quill-editor ng-model="model" min-length="3"></ng-quill-editor>');
-            $compile(element)(scope);
-
-            scope.$apply();
             expect(element[0].className).toMatch('ng-invalid-minlength');
         });
 
@@ -246,10 +242,8 @@ describe('ng-quill', function () {
             var scope = $rootScope.$new();
             scope.model = '12';
 
-            var element = angular.element('<ng-quill-editor ng-model="model" min-length="1"></ng-quill-editor>');
-            $compile(element)(scope);
+            var element = createTestElement('<ng-quill-editor ng-model="model" min-length="1"></ng-quill-editor>', scope);
 
-            scope.$apply();
             expect(element[0].className).not.toMatch('ng-invalid-minlength');
 
             scope.model = '2';
@@ -261,10 +255,8 @@ describe('ng-quill', function () {
             var scope = $rootScope.$new();
             scope.model = '';
 
-            var element = angular.element('<ng-quill-editor ng-model="model" min-length="8"></ng-quill-editor>');
-            $compile(element)(scope);
+            var element = createTestElement('<ng-quill-editor ng-model="model" min-length="8"></ng-quill-editor>', scope);
 
-            scope.$apply();
             expect(element[0].className).not.toMatch('ng-invalid-minlength');
 
             scope.model = '1234';
@@ -280,10 +272,15 @@ describe('ng-quill', function () {
             var scope = $rootScope.$new();
             scope.model = '1234';
 
-            var element = angular.element('<ng-quill-editor ng-model="model" min-length="4"></ng-quill-editor>');
+            var element = angular.element('<ng-quill-editor ng-model="model" min-length="4"></ng-quill-editor>', scope);
             $compile(element)(scope);
 
             scope.$apply();
+                        // flush timeout(s) for all code under test.
+            $timeout.flush();
+
+            // this will throw an exception if there are any pending timeouts.
+            $timeout.verifyNoPendingTasks();
             expect(element[0].className).toMatch('ng-valid-minlength');
         });
     });

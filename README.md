@@ -11,31 +11,12 @@ or with AMD (RequireJS) [ngQuill requirejs](https://killercodemonkey.github.io/n
 The new version is complete rewritten and is using QuillJS 1.x.
 For the latest old version (0.20.1) checkout the special branch for it.
 
-**Repo name changed** from ngQuill to ng-quill!
-
 Installation
 ============
 - `npm install ng-quill`
 - or download zip from release page: https://github.com/KillerCodeMonkey/ngQuill/releases
 - or grab the latest release from cdn: https://cdnjs.com/libraries/ng-quill
 
-Breaking Changes since 2.0.0
-============================
-
-- usage of AngularJS ^1.5.3
-- usage of QuillJS 1.1.5
-- generic usage and configuration
-- complete refactured
-- basic functionality implemented
-- no events --> outputs/callbacks for avoiding the directly usage of $scope
-
-Breaking Changes since 1.5.0
-============================
-
-- usage of AngularJS >=1.5.6
-- the editor directive is now a component
-- all two way bindings are now one-way bindings
-- read-only is a simple one-way data binding, too (previously an function binding '&')
 
 Contribution
 ============
@@ -52,12 +33,40 @@ Usage
 `<ng-quill-editor ng-model="message"></ng-quill-editor>`
 - add this line to your css `[ng-quill-editor] { display: block; }`
 - if you use it in a form and you are resetting it via $setPristine() -> you have to set editor.setHTML('') -> it will add the error class only, if the model has ng-dirty class
+- add a custom toolbar using `ng-quill-toolbar` - it uses transclusion to add toolbar, avoids flickering and sets the modules toolbar config to the custom toolbar automatically:
+```
+<ng-quill-editor
+    ng-model="title"
+>
+    <ng-quill-toolbar>
+        <div>
+            <span class="ql-formats">
+                <button class="ql-bold" ng-attr-title="{{'Bold'}}"></button>
+            </span>
+            <span class="ql-formats">
+                <select class="ql-align" ng-attr-title="{{'Aligment'}}">
+                    <option selected></option>
+                    <option value="center"></option>
+                    <option value="right"></option>
+                    <option value="justify"></option>
+                </select>
+                <select class="ql-align">
+                    <option selected></option>
+                    <option value="center"></option>
+                    <option value="right"></option>
+                    <option value="justify"></option>
+                </select>
+            </span>
+        </div>
+    </ng-quill-toolbar>
+</ng-quill-editor>
+
+```
 
 Configuration
 =============
 
 - use ngQuillConfigProvider.set(modules, theme, placeholder, formats, boundary, readOnly) to config toolbar module, other modules, default theme, allowed formats, ...
-- show toolbar: `toolbar="isVisible"` (default: false)
 - set theme name: `theme="snow"` (default: 'snow')
 - set readOnly: `read-only=""` (default: false) - requires true or false
 - overwrite global config for each editor: `modules="modulesConfig"`

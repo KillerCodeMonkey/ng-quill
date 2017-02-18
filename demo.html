@@ -32,7 +32,7 @@
                     $scope.readOnly = false;
 
                     $timeout(function () {
-                        $scope.title += ' awsome!!!'
+                        $scope.title += ' awsome!!!';
                     }, 2000);
 
                     $scope.editorCreated = function (editor) {
@@ -61,5 +61,33 @@
             <ng-quill-editor ng-model="title" read-only="readOnly" required="true" max-length="5" min-length="2" modules="{toolbar: false}"></ng-quill-editor>
             form invalid?: {{form.$invalid}}
         </form>
+
+        <h3>ng-quill - custom toolbar</h3>
+        <ng-quill-editor
+            ng-model="title"
+        >
+            <ng-quill-toolbar>
+                <div id="ng-quill-toolbar">
+                    <span class="ql-formats">
+                        <button class="ql-bold" ng-attr-title="{{'Bold'}}"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <select class="ql-align" ng-attr-title="{{'Aligment'}}">
+                            <option selected></option>
+                            <option value="center"></option>
+                            <option value="right"></option>
+                            <option value="justify"></option>
+                        </select>
+                        <select class="ql-align">
+                            <option selected></option>
+                            <option value="center"></option>
+                            <option value="right"></option>
+                            <option value="justify"></option>
+                        </select>
+                    </span>
+                </div>
+            </ng-quill-toolbar>
+        </ng-quill-editor>
+
     </body>
 </html>
