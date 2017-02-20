@@ -1,6 +1,6 @@
 {
   "name": "ng-quill",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "description": "Angular directive for rich text editor Quill",
   "author": "Bengt Weiße <bengtler@gmail.com>",
   "homepage": "https://github.com/KillerCodeMonkey/ngQuill",
@@ -23,7 +23,7 @@
     "angular": "^1.5.3"
   },
   "scripts": {
-    "build": "cat src/ng-quill.js | uglifyjs > src/ng-quill.min.js",
+    "build": "rimraf dist && mkdir dist && cp src/ng-quill.js dist/ && cat dist/ng-quill.js | uglifyjs > dist/ng-quill.min.js",
     "test": "karma start"
   },
   "license": "MIT",

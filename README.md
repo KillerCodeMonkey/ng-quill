@@ -27,6 +27,7 @@ Changes directly in the master branch are not longer allowed and will be rejecte
 Usage
 =====
 - load angular, quill, ngquill scripts in your index.html
+- original sources are in src-folder, build files are in dist-folder
 - add dependency to your app module `var myAppModule = angular.module('quillTest', ['ngQuill']);`
 - use ngQuillConfigProvider to overwrite global settings in your config-Block
 - use ngquill directive in your html
@@ -66,7 +67,7 @@ Usage
 Configuration
 =============
 
-- use ngQuillConfigProvider.set(modules, theme, placeholder, formats, boundary, readOnly) to config toolbar module, other modules, default theme, allowed formats, ...
+- use ngQuillConfigProvider.set({modules: { ... }, theme: 'snow', placeholder: 'placeholder', formats: { ... }, boundary: document.body, readyOnly: false) to config toolbar module, other modules, default theme, allowed formats, ...
 - set theme name: `theme="snow"` (default: 'snow')
 - set readOnly: `read-only=""` (default: false) - requires true or false
 - overwrite global config for each editor: `modules="modulesConfig"`
@@ -79,8 +80,8 @@ Callback/Outputs
 ================
 
 - onEditorCreated: triggered after editor is created and provides editor-object `on-editor-created="myCallback(editor)"`
-- onContentChanged: triggered after changes in the editor. Provides editor-object, html representation and text representation `on-content-changed="myCallback(editor, html, text)"`
-
+- onContentChanged: triggered after changes in the editor. Provides editor-object, html representation and text representation `on-content-changed="myCallback(editor, html, text, delta, oldDelta, source)"`
+- onSelectionCHanged: triggered after text selection changed `on-selection-changed="myCallback(editor, range, oldRange, source)"`
 Advanced Usage and Configuration
 ================================
 

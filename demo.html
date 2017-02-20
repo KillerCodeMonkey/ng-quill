@@ -17,39 +17,41 @@
         <!-- Scripts -->
         <script type="text/javascript" src="//code.angularjs.org/1.5.8/angular.min.js"></script>
         <script type="text/javascript" src="//cdn.quilljs.com/1.1.5/quill.js"></script>
-        <script type="text/javascript" src="src/ng-quill.min.js"></script>
+        <script type="text/javascript" src="src/ng-quill.js"></script>
         <script>
-            // declare a module and load quillModule
-            var myAppModule = angular.module('quillTest', ['ngQuill']);
-            myAppModule.config(['ngQuillConfigProvider', function (ngQuillConfigProvider) {
-                ngQuillConfigProvider.set(null, null, 'custom placeholder');
-            }]);
-            myAppModule.controller('AppCtrl', [
-                '$scope',
-                '$timeout',
-                function($scope, $timeout) {
-                    $scope.title = 'Quill works';
-                    $scope.readOnly = false;
+          // declare a module and load quillModule
+          var myAppModule = angular.module('quillTest', ['ngQuill'])
+          myAppModule.config(['ngQuillConfigProvider', function (ngQuillConfigProvider) {
+            ngQuillConfigProvider.set(null, null, 'custom placeholder')
+          }])
+          myAppModule.controller('AppCtrl', [
+            '$scope',
+            '$timeout',
+            function ($scope, $timeout) {
+              $scope.title = 'Quill works'
+              $scope.readOnly = false
 
-                    $timeout(function () {
-                        $scope.title += ' awsome!!!';
-                    }, 2000);
+              $timeout(function () {
+                $scope.title += ' awsome!!!'
+              }, 2000)
 
-                    $scope.editorCreated = function (editor) {
-                        console.log(editor);
-                    };
-                    $scope.contentChanged = function (editor, html, text) {
-                        console.log('editor: ', editor, 'html: ', html, 'text:', text);
-                    };
-                }
-            ]);
-
+              $scope.editorCreated = function (editor) {
+                console.log(editor)
+              }
+              $scope.contentChanged = function (editor, html, text, delta, oldDelta, source) {
+                console.log('editor: ', editor, 'html: ', html, 'text:', text, 'delta: ', delta, 'oldDelta:', oldDelta, 'source:', source)
+              }
+              $scope.selectionChanged = function (editor, range, oldRange, source) {
+                console.log('editor: ', editor, 'range: ', range, 'oldRange:', oldRange, 'source:', source)
+              }
+            }
+          ])
         </script>
-
+    </head>
     <body ng-app="quillTest" ng-controller="AppCtrl">
         <h3>Default editor + Callbacks/Outputs in JS console</h3>
         <pre><code>{{title}}</code></pre>
-        <ng-quill-editor ng-model="title" placeholder="override default placeholder" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text)"></ng-quill-editor>
+        <ng-quill-editor ng-model="title" placeholder="override default placeholder" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text)" on-selection-changed="selectionChanged(editor, range, oldRange, source)"></ng-quill-editor>
 
         <h3>Bubble editor</h3>
         <ng-quill-editor theme="bubble" ng-model="title"></ng-quill-editor>

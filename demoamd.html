@@ -17,59 +17,62 @@
         <!-- Scripts -->
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.min.js"></script>
         <script>
-            require.config({
-                baseUrl: '.',
-                paths: {
-                    'quill': '//cdn.quilljs.com/1.2.0/quill.min',
-                    'ng-quill': 'src/ng-quill.min',
-                    'angular': '//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min'
-                },
-                shim: {
-                    'ng-quill': {
-                        deps: ['angular', 'quill']
-                    }
-                }
-            });
+          require.config({
+            baseUrl: '.',
+            paths: {
+              'quill': '//cdn.quilljs.com/1.2.0/quill.min',
+              'ng-quill': 'src/ng-quill',
+              'angular': '//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min'
+            },
+            shim: {
+              'ng-quill': {
+                deps: ['angular', 'quill']
+              }
+            }
+          })
         </script>
 
         <script>
-            // require ng-quill it requests its dependencies first
-            require(['ng-quill'], function () {
-                // declare a module and load quillModule
-                var myAppModule = angular.module('quillTest', ['ngQuill']);
+          // require ng-quill it requests its dependencies first
+          require(['ng-quill'], function () {
+            // declare a module and load quillModule
+            var myAppModule = angular.module('quillTest', ['ngQuill'])
 
-                myAppModule.config(['ngQuillConfigProvider', function (ngQuillConfigProvider) {
-                    ngQuillConfigProvider.set(null, null, 'custom placeholder');
-                }]);
+            myAppModule.config(['ngQuillConfigProvider', function (ngQuillConfigProvider) {
+              ngQuillConfigProvider.set({ placeholder: 'custom placeholder' })
+            }])
 
-                myAppModule.controller('AppCtrl', [
-                    '$scope',
-                    '$timeout',
-                    function($scope, $timeout) {
-                        $scope.title = 'Quill works';
-                        $scope.readOnly = false;
-                        $timeout(function () {
-                            $scope.title += ' awsome!!!'
-                        }, 2000);
-                        $scope.editorCreated = function (editor) {
-                            console.log(editor);
-                        };
-                        $scope.contentChanged = function (editor, html, text) {
-                            console.log('editor: ', editor, 'html: ', html, 'text:', text);
-                        };
-                    }
-                ]);
+            myAppModule.controller('AppCtrl', [
+              '$scope',
+              '$timeout',
+              function ($scope, $timeout) {
+                $scope.title = 'Quill works'
+                $scope.readOnly = false
+                $timeout(function () {
+                  $scope.title += ' awsome!!!'
+                }, 2000)
+                $scope.editorCreated = function (editor) {
+                  console.log(editor)
+                }
+                $scope.contentChanged = function (editor, html, text, delta, oldDelta, source) {
+                  console.log('editor: ', editor, 'html: ', html, 'text:', text, 'delta: ', delta, 'oldDelta:', oldDelta, 'source:', source)
+                }
+                $scope.selectionChanged = function (editor, range, oldRange, source) {
+                  console.log('editor: ', editor, 'range: ', range, 'oldRange:', oldRange, 'source:', source)
+                }
+              }
+            ])
 
-                // Do not forget to bootstrap your app manually!!!
-                angular.bootstrap(document, ['quillTest']);
-            });
+            // Do not forget to bootstrap your app manually!!!
+            angular.bootstrap(document, ['quillTest'])
+          })
         </script>
     </head>
 
     <body ng-controller="AppCtrl">
         <h3>Default editor + Callbacks/Outputs in JS console</h3>
         <pre><code>{{title}}</code></pre>
-        <ng-quill-editor ng-model="title" placeholder="override default placeholder" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text)"></ng-quill-editor>
+        <ng-quill-editor ng-model="title" placeholder="override default placeholder" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text)" on-selection-changed="selectionChanged(editor, range, oldRange, source)"></ng-quill-editor>
 
         <h3>Bubble editor</h3>
         <ng-quill-editor theme="bubble" ng-model="title"></ng-quill-editor>
