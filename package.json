@@ -4,7 +4,7 @@
   "description": "Angular directive for rich text editor Quill",
   "author": "Bengt Weiße <bengtler@gmail.com>",
   "homepage": "https://github.com/KillerCodeMonkey/ngQuill",
-  "main": "src/ng-quill.min.js",
+  "main": "dist/ng-quill.js",
   "devDependencies": {
     "angular-mocks": "^1.5.3",
     "jasmine-core": "^2.5.2",
