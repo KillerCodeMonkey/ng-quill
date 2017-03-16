@@ -81,7 +81,8 @@ Callback/Outputs
 
 - onEditorCreated: triggered after editor is created and provides editor-object `on-editor-created="myCallback(editor)"`
 - onContentChanged: triggered after changes in the editor. Provides editor-object, html representation and text representation `on-content-changed="myCallback(editor, html, text, delta, oldDelta, source)"`
-- onSelectionCHanged: triggered after text selection changed `on-selection-changed="myCallback(editor, range, oldRange, source)"`
+- onSelectionChanged: triggered after text selection changed `on-selection-changed="myCallback(editor, range, oldRange, source)"`
+
 Advanced Usage and Configuration
 ================================
 
