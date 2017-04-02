@@ -26,7 +26,7 @@ describe('ng-quill', function () {
     theme: 'snow',
     placeholder: 'Insert text here ...',
     readOnly: false,
-    boundary: document.body
+    bounds: document.body
   }
 
   beforeEach(module('ngQuill'))
@@ -290,31 +290,21 @@ describe('ng-quill', function () {
   })
 
   describe('service: ngQuillConfig', function () {
-    var ngQuillConfig
-
-    beforeEach(inject(function (_ngQuillConfig_) {
-      ngQuillConfig = _ngQuillConfig_
+    it('should return default config', inject(function (_ngQuillConfig_) {
+      expect(_ngQuillConfig_).toEqual(defaultConfig)
     }))
-
-    it('should return default config', function () {
-      expect(ngQuillConfig).toEqual(defaultConfig)
-    })
   })
 
   describe('provider: ngQuillConfigProvider - change everything', function () {
-    var ngQuillConfigProvider
-    var ngQuillConfig
-
     beforeEach(function () {
       module(function (_ngQuillConfigProvider_) {
-        ngQuillConfigProvider = _ngQuillConfigProvider_ // to use the provider in other parts
-        ngQuillConfigProvider.set({
+        _ngQuillConfigProvider_.set({
           modules: {},
           theme: 'test',
           placeholder: ' ',
           formats: [],
           readOnly: true,
-          boundary: true
+          bounds: true
         })
       })
     })
@@ -326,19 +316,15 @@ describe('ng-quill', function () {
         placeholder: ' ',
         formats: [],
         readOnly: true,
-        boundary: true
+        bounds: true
       })
     }))
   })
 
   describe('provider: ngQuillConfigProvider - change nothing', function () {
-    var ngQuillConfigProvider
-    var ngQuillConfig
-
     beforeEach(function () {
       module(function (_ngQuillConfigProvider_) {
-        ngQuillConfigProvider = _ngQuillConfigProvider_
-        ngQuillConfigProvider.set()
+        _ngQuillConfigProvider_.set()
       })
     })
 

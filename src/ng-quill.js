@@ -41,11 +41,11 @@
       theme: 'snow',
       placeholder: 'Insert text here ...',
       readOnly: false,
-      boundary: document.body
+      bounds: document.body
     }
 
     this.set = function (customConf) {
-      customConf = customConf || {}
+      customConf = customConf || {}
 
       if (customConf.modules) {
         config.modules = customConf.modules
@@ -56,8 +56,8 @@
       if (customConf.placeholder) {
         config.placeholder = customConf.placeholder
       }
-      if (customConf.boundary) {
-        config.boundary = customConf.boundary
+      if (customConf.bounds) {
+        config.bounds = customConf.bounds
       }
       if (customConf.readOnly) {
         config.readOnly = customConf.readOnly
@@ -94,12 +94,12 @@
     },
     template: '<div class="ng-hide" ng-show="$ctrl.ready"><ng-transclude ng-transclude-slot="toolbar"></ng-transclude></div>',
     controller: ['$scope', '$element', '$timeout', '$transclude', 'ngQuillConfig', function ($scope, $element, $timeout, $transclude, ngQuillConfig) {
-      var config = {},
-        content,
-        editorElem,
-        modelChanged = false,
-        editorChanged = false,
-        editor
+      var config = {}
+      var content
+      var editorElem
+      var modelChanged = false
+      var editorChanged = false
+      var editor
 
       this.validate = function (text) {
         if (this.maxLength) {
@@ -147,7 +147,7 @@
           modules: this.modules || ngQuillConfig.modules,
           formats: this.formats || ngQuillConfig.formats,
           placeholder: this.placeholder || ngQuillConfig.placeholder,
-          boundary: ngQuillConfig.boundary
+          boundy: ngQuillConfig.bounds
         }
       }
 
@@ -159,8 +159,8 @@
       }
 
       this._initEditor = function (editorElem) {
-        var $editorElem = angular.element('<div></div>'),
-          container = $element.children()
+        var $editorElem = angular.element('<div></div>')
+        var container = $element.children()
 
         editorElem = $editorElem[0]
 

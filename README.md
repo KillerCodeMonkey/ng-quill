@@ -67,7 +67,7 @@ Usage
 Configuration
 =============
 
-- use ngQuillConfigProvider.set({modules: { ... }, theme: 'snow', placeholder: 'placeholder', formats: { ... }, boundary: document.body, readyOnly: false) to config toolbar module, other modules, default theme, allowed formats, ...
+- use ngQuillConfigProvider.set({modules: { ... }, theme: 'snow', placeholder: 'placeholder', formats: { ... }, bounds: document.body, readyOnly: false) to config toolbar module, other modules, default theme, allowed formats, ...
 - set theme name: `theme="snow"` (default: 'snow')
 - set readOnly: `read-only=""` (default: false) - requires true or false
 - overwrite global config for each editor: `modules="modulesConfig"`
