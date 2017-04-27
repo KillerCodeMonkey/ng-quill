@@ -79,7 +79,7 @@
       'readOnly': '<?',
       'formats': '<?',
       'placeholder': '@?',
-      'bounds': '<',
+      'bounds': '<?',
       'onEditorCreated': '&?',
       'onContentChanged': '&?',
       'onSelectionChanged': '&?',
