@@ -79,6 +79,7 @@
       'readOnly': '<?',
       'formats': '<?',
       'placeholder': '@?',
+      'bounds': '<',
       'onEditorCreated': '&?',
       'onContentChanged': '&?',
       'onSelectionChanged': '&?',
@@ -147,7 +148,7 @@
           modules: this.modules || ngQuillConfig.modules,
           formats: this.formats || ngQuillConfig.formats,
           placeholder: this.placeholder || ngQuillConfig.placeholder,
-          bounds: ngQuillConfig.bounds
+          bounds: this.bounds || ngQuillConfig.bounds
         }
       }
 
