@@ -25,6 +25,7 @@
   },
   "scripts": {
     "build": "rimraf dist && mkdir dist && cp src/ng-quill.js dist/ && cat dist/ng-quill.js | uglifyjs > dist/ng-quill.min.js && echo \";\" >> dist/ng-quill.js",
+    "prepare": "npm run test && npm run build",
     "test": "karma start"
   },
   "license": "MIT",
