@@ -72,6 +72,7 @@ Configuration
 - set readOnly: `read-only=""` (default: false) - requires true or false
 - overwrite global config for each editor: `modules="modulesConfig"`
 - set placeholder: `placeholder="Inser your text here"`
+- set bounds: `bounds="..."`, change the default boundary element of the editor (`document.body`)
 - override formats: `formats="formatsArray"`, per default all quill formats are allowed
 - set max-length: `max-length="5"`, adds validation for maxlength (sets model state to `invalid` and adds `ng-invalid-maxlength` class)
 - set min-length: `min-length="5"`, adds validation for minlength (sets model state to `invalid` and adds `ng-invalid-minlength` class), only works for values > 1, if you only want to check if there is a value --> use required/ng-required

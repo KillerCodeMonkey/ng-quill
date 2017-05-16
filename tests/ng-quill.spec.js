@@ -78,6 +78,7 @@ describe('ng-quill', function () {
       expect(ctrl.module).toBeUndefined()
       expect(ctrl.readOnly).toBeUndefined()
       expect(ctrl.formats).toBeUndefined()
+      expect(ctrl.bounds).toBeUndefined()
       expect(ctrl.placeholder).toBeUndefined()
       expect(ctrl.onEditorCreated).toBeUndefined()
       expect(ctrl.onContentChanged).toBeUndefined()
