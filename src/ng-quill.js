@@ -230,7 +230,9 @@
         if (content) {
           modelChanged = true
 
-          editor.pasteHTML(content)
+          var contents = editor.clipboard.convert(content)
+          editor.setContents(contents)
+          editor.history.clear()
         }
 
         // provide event to get informed when editor is created -> pass editor object.
