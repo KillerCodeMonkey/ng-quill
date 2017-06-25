@@ -53,8 +53,8 @@
       if (customConf.theme) {
         config.theme = customConf.theme
       }
-      if (customConf.placeholder) {
-        config.placeholder = customConf.placeholder
+      if (customConf.placeholder !== null && customConf.placeholder !== undefined) {
+        config.placeholder = customConf.placeholder.trim()
       }
       if (customConf.bounds) {
         config.bounds = customConf.bounds
@@ -101,6 +101,7 @@
       var modelChanged = false
       var editorChanged = false
       var editor
+      var placeholder = ngQuillConfig.placeholder
 
       this.validate = function (text) {
         if (this.maxLength) {
@@ -142,12 +143,16 @@
       }
 
       this.$onInit = function () {
+        if (this.placeholder !== null && this.placeholder !== undefined) {
+          placeholder = this.placeholder.trim()
+        }
+
         config = {
           theme: this.theme || ngQuillConfig.theme,
           readOnly: this.readOnly || ngQuillConfig.readOnly,
           modules: this.modules || ngQuillConfig.modules,
           formats: this.formats || ngQuillConfig.formats,
-          placeholder: this.placeholder || ngQuillConfig.placeholder,
+          placeholder: placeholder,
           bounds: this.bounds || ngQuillConfig.bounds
         }
       }
