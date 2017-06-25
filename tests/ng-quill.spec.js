@@ -133,6 +133,13 @@ describe('ng-quill', function () {
       expect(element[0].querySelector('div.ql-editor').dataset.placeholder).toEqual('1234')
     })
 
+    it('should render editor with empty placeholder', function () {
+      var scope = $rootScope.$new()
+      var element = createTestElement('<ng-quill-editor ng-model="model" placeholder=" "></ng-quill-editor>', scope)
+
+      expect(element[0].querySelector('div.ql-editor').dataset.placeholder).not.toBeDefined()
+    })
+
     it('should render editor with custom toolbar', function () {
       var scope = $rootScope.$new()
       var element = createTestElement(
@@ -314,7 +321,7 @@ describe('ng-quill', function () {
       expect(_ngQuillConfig_).toEqual({
         modules: {},
         theme: 'test',
-        placeholder: ' ',
+        placeholder: '',
         formats: [],
         readOnly: true,
         bounds: true

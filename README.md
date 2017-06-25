@@ -71,7 +71,7 @@ Configuration
 - set theme name: `theme="snow"` (default: 'snow')
 - set readOnly: `read-only=""` (default: false) - requires true or false
 - overwrite global config for each editor: `modules="modulesConfig"`
-- set placeholder: `placeholder="Inser your text here"`
+- set placeholder: `placeholder="Inser your text here"` or `placeholder=" "` for empty string
 - set bounds: `bounds="..."`, change the default boundary element of the editor (`document.body`)
 - override formats: `formats="formatsArray"`, per default all quill formats are allowed
 - set max-length: `max-length="5"`, adds validation for maxlength (sets model state to `invalid` and adds `ng-invalid-maxlength` class)
