@@ -1,7 +1,7 @@
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     define(['quill'], factory)
-  } else if (typeof exports === 'object') {
+  } else if (typeof module !== 'undefined' && typeof exports === 'object') {
     module.exports = factory(require('quill'))
   } else {
     root.Requester = factory(root.Quill)
@@ -247,4 +247,6 @@
       }
     }]
   })
+
+  return app.name;
 }))
