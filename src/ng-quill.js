@@ -248,5 +248,5 @@
     }]
   })
 
-  return app.name;
+  return app.name
 }))
