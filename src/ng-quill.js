@@ -129,7 +129,7 @@
           if (editor && !editorChanged) {
             modelChanged = true
             if (content) {
-              editor.pasteHTML(content)
+              editor.setContents(editor.clipboard.convert(content))
             } else {
               editor.setText('')
             }
