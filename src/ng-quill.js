@@ -80,6 +80,8 @@
       'formats': '<?',
       'placeholder': '@?',
       'bounds': '<?',
+      'scrollingContainer': '<?',
+      'scrict': '<?',
       'onEditorCreated': '&?',
       'onContentChanged': '&?',
       'onSelectionChanged': '&?',
@@ -153,7 +155,9 @@
           modules: this.modules || ngQuillConfig.modules,
           formats: this.formats || ngQuillConfig.formats,
           placeholder: placeholder,
-          bounds: this.bounds || ngQuillConfig.bounds
+          bounds: this.bounds || ngQuillConfig.bounds,
+          strict: this.strict,
+          scrollingContainer: this.scrollingContainer
         }
       }
 
