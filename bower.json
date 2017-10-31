@@ -1,6 +1,6 @@
 {
   "name": "ngQuill",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "main": ["dist/ng-quill.min.js"],
   "description": "AngularJS directive for the QuillJS rich text editor",
   "authors": [
