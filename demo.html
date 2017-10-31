@@ -12,6 +12,18 @@
             ng-quill-editor.ng-invalid .ql-container {
                 border: 1px dashed red;
             }
+
+            .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14"]::before {
+                content: '14';
+            }
+
+            .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16"]::before {
+                content: '16';
+            }
+
+            .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18"]::before {
+                content: '18';
+            }
         </style>
 
         <!-- Scripts -->
@@ -32,6 +44,15 @@
               $scope.title = 'Quill works'
               $scope.readOnly = false
               $scope.test = ''
+              $scope.customOptions = [{
+                import: 'attributors/style/size',
+                whitelist: ['14', '16', '18']
+              }]
+              $scope.customModules = {
+                toolbar: [
+                  [{'size': [false, '14', '16', '18']}]
+                ]
+              }
 
               $timeout(function () {
                 $scope.title += ' awsome!!!'
@@ -93,6 +114,9 @@
                 </div>
             </ng-quill-toolbar>
         </ng-quill-editor>
+
+        <h3>Custom font sizes</h3>
+        <ng-quill-editor ng-model="title" custom-options="customOptions" modules="customModules"></ng-quill-editor>
 
     </body>
 </html>
