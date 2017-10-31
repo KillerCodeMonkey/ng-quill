@@ -87,7 +87,8 @@
       'onSelectionChanged': '&?',
       'ngModel': '<',
       'maxLength': '<',
-      'minLength': '<'
+      'minLength': '<',
+      'customOptions': '<?'
     },
     require: {
       ngModelCtrl: 'ngModel'
@@ -180,6 +181,14 @@
         }
 
         container.append($editorElem)
+
+        if (this.customOptions) {
+            this.customOptions.forEach(function (customOption) {
+            var newCustomOption = Quill.import(customOption.import);
+            newCustomOption.whitelist = customOption.whitelist;
+            Quill.register(newCustomOption, true);
+          });
+        }
 
         editor = new Quill(editorElem, config)
 
