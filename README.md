@@ -78,6 +78,7 @@ Configuration
 - set min-length: `min-length="5"`, adds validation for minlength (sets model state to `invalid` and adds `ng-invalid-minlength` class), only works for values > 1, if you only want to check if there is a value --> use required/ng-required
 - set strict: activate/deactivate strict editor mode (default: true)
 - set scrollingContainer: set html element or css selector that gets the scrollbars
+- use custom-options for adding for example custom font sizes (see example in demo.html)
 
 Callback/Outputs
 ================
