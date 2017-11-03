@@ -1,3 +1,4 @@
+/* globals define, angular */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     define(['quill'], factory)
@@ -183,11 +184,11 @@
         container.append($editorElem)
 
         if (this.customOptions) {
-            this.customOptions.forEach(function (customOption) {
-            var newCustomOption = Quill.import(customOption.import);
-            newCustomOption.whitelist = customOption.whitelist;
-            Quill.register(newCustomOption, true);
-          });
+          this.customOptions.forEach(function (customOption) {
+            var newCustomOption = Quill.import(customOption.import)
+            newCustomOption.whitelist = customOption.whitelist
+            Quill.register(newCustomOption, true)
+          })
         }
 
         editor = new Quill(editorElem, config)
