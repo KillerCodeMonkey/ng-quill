@@ -89,7 +89,9 @@
       'ngModel': '<',
       'maxLength': '<',
       'minLength': '<',
-      'customOptions': '<?'
+      'customOptions': '<?',
+      'fontWhitelist': '<',
+      'sizeWhitelist': '<'
     },
     require: {
       ngModelCtrl: 'ngModel'
@@ -189,6 +191,20 @@
             newCustomOption.whitelist = customOption.whitelist
             Quill.register(newCustomOption, true)
           })
+        }
+
+        if (this.fontWhitelist && this.fontWhitelist.length > 0) {
+          var Font = Quill.import('formats/font');
+          Font.whitelist = this.fontWhitelist;
+
+          Quill.register(Font, true);
+        }
+
+        if (this.sizeWhitelist && this.sizeWhitelist.length > 0) {
+          var Size = Quill.import('formats/size');
+          Size.whitelist = this.sizeWhitelist;
+
+          Quill.register(Size, true);
         }
 
         editor = new Quill(editorElem, config)
