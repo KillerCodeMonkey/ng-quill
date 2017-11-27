@@ -194,14 +194,14 @@
         }
 
         if (this.fontWhitelist && this.fontWhitelist.length > 0) {
-          const Font = Quill.import('formats/font');
+          var Font = Quill.import('formats/font');
           Font.whitelist = this.fontWhitelist;
 
           Quill.register(Font, true);
         }
 
         if (this.sizeWhitelist && this.sizeWhitelist.length > 0) {
-          const Size = Quill.import('formats/size');
+          var Size = Quill.import('formats/size');
           Size.whitelist = this.sizeWhitelist;
 
           Quill.register(Size, true);
