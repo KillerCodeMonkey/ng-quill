@@ -82,7 +82,7 @@
       'placeholder': '@?',
       'bounds': '<?',
       'scrollingContainer': '<?',
-      'scrict': '<?',
+      'strict': '<?',
       'onEditorCreated': '&?',
       'onContentChanged': '&?',
       'onSelectionChanged': '&?',
