@@ -176,6 +176,10 @@
 
         editorElem = $editorElem[0]
 
+        if (config.bounds === 'self') {
+          config.bounds = editorElem
+        }
+
         // set toolbar to custom one
         if ($transclude.isSlotFilled('toolbar')) {
           config.modules.toolbar = container.find('ng-quill-toolbar').children()[0]

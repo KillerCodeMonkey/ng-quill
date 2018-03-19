@@ -1,3 +1,5 @@
+/* global describe, beforeEach, angular, expect, it, jasmine, inject, spyOn, Quill */
+
 describe('ng-quill', function () {
   var defaultConfig = {
     modules: {
@@ -173,7 +175,7 @@ describe('ng-quill', function () {
 
       spyOn(scope, 'editorCreated').and.callThrough()
 
-      var element = createTestElement('<ng-quill-editor ng-model="model" on-editor-created="editorCreated(editor)"></ng-quill-editor>', scope)
+      createTestElement('<ng-quill-editor ng-model="model" on-editor-created="editorCreated(editor)"></ng-quill-editor>', scope)
 
       expect(scope.editorCreated).toHaveBeenCalled()
       expect(quillEditor).toBeDefined()
@@ -182,7 +184,7 @@ describe('ng-quill', function () {
 
     it('should call onContentChanged after editor content changed', function () {
       var scope = $rootScope.$new()
-      var editor, text, html, oldDelta, delta
+      var editor, oldDelta, delta
 
       scope.editorCreated = function (editor_) {
         editor = editor_
@@ -195,7 +197,7 @@ describe('ng-quill', function () {
 
       spyOn(scope, 'contentChanged').and.callThrough()
 
-      var element = createTestElement('<ng-quill-editor ng-model="model" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text, delta, oldDelta, source)"></ng-quill-editor>', scope)
+      createTestElement('<ng-quill-editor ng-model="model" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text, delta, oldDelta, source)"></ng-quill-editor>', scope)
 
       editor.setText('1234')
       scope.$apply()
@@ -215,7 +217,7 @@ describe('ng-quill', function () {
 
       spyOn(scope, 'contentChanged')
 
-      var element = createTestElement('<ng-quill-editor ng-model="model" on-editor-created="editorCreated(editor)"></ng-quill-editor>', scope)
+      createTestElement('<ng-quill-editor ng-model="model" on-editor-created="editorCreated(editor)"></ng-quill-editor>', scope)
 
       editor.setText('1234')
       scope.$apply()
