@@ -75,7 +75,7 @@
     <body ng-app="quillTest" ng-controller="AppCtrl">
         <h3>Default editor + Callbacks/Outputs in JS console</h3>
         <pre><code>{{title}}</code></pre>
-        <ng-quill-editor ng-model="title" placeholder="override default placeholder" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text)" on-selection-changed="selectionChanged(editor, range, oldRange, source)"></ng-quill-editor>
+        <ng-quill-editor bounds="self" ng-model="title" placeholder="override default placeholder" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text)" on-selection-changed="selectionChanged(editor, range, oldRange, source)"></ng-quill-editor>
 
         <h3>Default editor + Callbacks/Outputs in JS console and empty init model</h3>
         <pre><code>{{model}}</code></pre>
