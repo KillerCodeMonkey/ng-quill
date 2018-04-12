@@ -191,6 +191,9 @@
           this.customOptions.forEach(function (customOption) {
             var newCustomOption = Quill.import(customOption.import)
             newCustomOption.whitelist = customOption.whitelist
+            if (customOption.toRegister) {
+              newCustomOption[customOption.toRegister.key] = customOption.toRegister.value;
+            }
             Quill.register(newCustomOption, true)
           })
         }
@@ -222,9 +225,10 @@
         editor.on('text-change', function (delta, oldDelta, source) {
           var html = editorElem.children[0].innerHTML
           var text = editor.getText()
+          var emptyModelTag = ['<' + editor.root.firstChild.localName + '>', '</' + editor.root.firstChild.localName + '>']
 
-          if (html === '<p><br></p>') {
-            html = null
+          if (html === emptyModelTag[0] + '<br>' + emptyModelTag[1]) {
+              html = null
           }
           this.validate(text)
 

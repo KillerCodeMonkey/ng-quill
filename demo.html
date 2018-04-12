@@ -49,6 +49,10 @@
                 import: 'attributors/style/size',
                 whitelist: ['14', '16', '18', 'small', 'large', 'huge']
               }]
+              $scope.customTag = [{
+                  import: 'blots/block',
+                  toRegister: {key: 'tagName', value: 'DIV'}
+              }]
               $scope.customModules = {
                 toolbar: [
                   [{'size': [false, '14', '16', '18']}]
@@ -79,7 +83,7 @@
 
         <h3>Default editor + Callbacks/Outputs in JS console and empty init model</h3>
         <pre><code>{{model}}</code></pre>
-        <ng-quill-editor ng-model="model" placeholder="override default placeholder" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text)" on-selection-changed="selectionChanged(editor, range, oldRange, source)"></ng-quill-editor>
+        <ng-quill-editor custom-options="customTag" ng-model="model" placeholder="override default placeholder" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text)" on-selection-changed="selectionChanged(editor, range, oldRange, source)"></ng-quill-editor>
 
         <h3>Bubble editor</h3>
         <ng-quill-editor theme="bubble" ng-model="title"></ng-quill-editor>
