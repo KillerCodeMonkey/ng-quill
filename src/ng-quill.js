@@ -170,6 +170,10 @@
         }.bind(this), 0)
       }
 
+      this.$onDestroy = function () {
+        editor = null
+      }
+
       this._initEditor = function (editorElem) {
         var $editorElem = angular.element('<div></div>')
         var container = $element.children()
@@ -192,7 +196,7 @@
             var newCustomOption = Quill.import(customOption.import)
             newCustomOption.whitelist = customOption.whitelist
             if (customOption.toRegister) {
-              newCustomOption[customOption.toRegister.key] = customOption.toRegister.value;
+              newCustomOption[customOption.toRegister.key] = customOption.toRegister.value
             }
             Quill.register(newCustomOption, true)
           })
@@ -228,7 +232,7 @@
           var emptyModelTag = ['<' + editor.root.firstChild.localName + '>', '</' + editor.root.firstChild.localName + '>']
 
           if (html === emptyModelTag[0] + '<br>' + emptyModelTag[1]) {
-              html = null
+            html = null
           }
           this.validate(text)
 
