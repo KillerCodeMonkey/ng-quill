@@ -33,7 +33,7 @@ Usage
 - use ngquill directive in your html
 `<ng-quill-editor ng-model="message"></ng-quill-editor>`
 - add this line to your css `[ng-quill-editor] { display: block; }`
-- if you use it in a form and you are resetting it via $setPristine() -> you have to set editor.setHTML('') -> it will add the error class only, if the model has ng-dirty class
+- if you use it in a form and you are resetting it via $setPristine() -> you have to set editor.setText('') -> it will add the error class only, if the model has ng-dirty class
 - add a custom toolbar using `ng-quill-toolbar` - it uses transclusion to add toolbar, avoids flickering and sets the modules toolbar config to the custom toolbar automatically:
 
 Recommended Usage
