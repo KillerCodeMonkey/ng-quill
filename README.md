@@ -35,10 +35,11 @@ Usage
 - add this line to your css `[ng-quill-editor] { display: block; }`
 - if you use it in a form and you are resetting it via $setPristine() -> you have to set editor.setHTML('') -> it will add the error class only, if the model has ng-dirty class
 - add a custom toolbar using `ng-quill-toolbar` - it uses transclusion to add toolbar, avoids flickering and sets the modules toolbar config to the custom toolbar automatically:
+
+Recommended Usage
+--
 ```
-<ng-quill-editor
-    ng-model="title"
->
+<ng-quill-editor ng-model="title">
     <ng-quill-toolbar>
         <div>
             <span class="ql-formats">
@@ -61,13 +62,63 @@ Usage
         </div>
     </ng-quill-toolbar>
 </ng-quill-editor>
-
 ```
+
+**[Full Quill Toolbar HTML](https://github.com/quilljs/quill/blob/f75ff2973f068c3db44f949915eb8a74faf162a8/docs/_includes/full-toolbar.html)**
+
+Alternative Usage
+--
+```
+let app = angular.module('app', [ 'ngQuill' ])
+
+app.constant('NG_QUILL_CONFIG', {
+  /*
+   * @NOTE: this config/output is not localizable.
+   */
+  modules: {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+      ['blockquote', 'code-block'],
+
+      [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'script': 'sub' }, { 'script': 'super' }],     // superscript/subscript
+      [{ 'indent': '-1' }, { 'indent': '+1' }],         // outdent/indent
+      [{ 'direction': 'rtl' }],                         // text direction
+
+      [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+      [{ 'font': [] }],
+      [{ 'align': [] }],
+
+      ['clean'],                                         // remove formatting button
+
+      ['link', 'image', 'video']                         // link and image, video
+    ]
+  },
+  theme: 'snow',
+  placeholder: '',
+  readOnly: false,
+  bounds: document.body
+})
+
+app.config([
+  'ngQuillConfigProvider',
+  'NG_QUILL_CONFIG',
+
+  function (ngQuillConfigProvider, NG_QUILL_CONFIG) {
+    ngQuillConfigProvider.set(NG_QUILL_CONFIG)
+  }
+])
+```
+\**see:* ./src/ng-quill/app.provider('ngQuillConfig').config
 
 Configuration
 =============
 
-- use ngQuillConfigProvider.set({modules: { ... }, theme: 'snow', placeholder: 'placeholder', formats: { ... }, bounds: document.body, readyOnly: false) to config toolbar module, other modules, default theme, allowed formats, ...
+- use `ngQuillConfigProvider.set({modules: { ... }, theme: 'snow', placeholder: 'placeholder', formats: { ... }, bounds: document.body, readyOnly: false) to config toolbar module, other modules, default theme, allowed formats, ...``
 - set theme name: `theme="snow"` (default: 'snow')
 - set readOnly: `read-only=""` (default: false) - requires true or false
 - overwrite global config for each editor: `modules="modulesConfig"`
@@ -76,7 +127,7 @@ Configuration
 - override formats: `formats="formatsArray"`, per default all quill formats are allowed
 - set max-length: `max-length="5"`, adds validation for maxlength (sets model state to `invalid` and adds `ng-invalid-maxlength` class)
 - set min-length: `min-length="5"`, adds validation for minlength (sets model state to `invalid` and adds `ng-invalid-minlength` class), only works for values > 1, if you only want to check if there is a value --> use required/ng-required
-- set strict: activate/deactivate strict editor mode (default: true)
+- set strict: activate/deactivate strict editor mode (default: `true`)
 - set scrollingContainer: set html element or css selector that gets the scrollbars
 - use custom-options for adding for example custom font sizes (see example in demo.html) --> this overwrites this options **globally** !!!
 
@@ -93,4 +144,3 @@ Advanced Usage and Configuration
 After editor creation you can use everything from the ordinary quill editor -> listen to editorCreated and work with the editor instance in your controller like you want ;).
 Add modules, use the quill API or listen to Events. Keep in mind to use $timeout if you are listening / working with quill-Events and updating some $scope stuff to notify angular about it ;).
 [Quill Documentation](http://quilljs.com/docs/quickstart/)
-
