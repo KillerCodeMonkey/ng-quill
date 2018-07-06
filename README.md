@@ -130,13 +130,14 @@ Configuration
 - set strict: activate/deactivate strict editor mode (default: `true`)
 - set scrollingContainer: set html element or css selector that gets the scrollbars
 - use custom-options for adding for example custom font sizes (see example in demo.html) --> this overwrites this options **globally** !!!
+- format - default 'html', possible values 'json' | 'object' | 'html', so you are able to set quill operation object, html or plain text to your model
 
 Callback/Outputs
 ================
 
 - onEditorCreated: triggered after editor is created and provides editor-object `on-editor-created="myCallback(editor)"`
-- onContentChanged: triggered after changes in the editor. Provides editor-object, html representation and text representation `on-content-changed="myCallback(editor, html, text, delta, oldDelta, source)"`
-- onSelectionChanged: triggered after text selection changed `on-selection-changed="myCallback(editor, range, oldRange, source)"`
+- onContentChanged: triggered after changes in the editor. Provides editor-object, html representation and text representation `on-content-changed="myCallback(editor, html, text, content, delta, oldDelta, source)"`
+- onSelectionChanged: triggered after text selection changed `on-selection-changed="myCallback(editor, range, oldRange, source)"` - content = quill editor content object, text = content as plain text, html = content as html string
 
 Advanced Usage and Configuration
 ================================
