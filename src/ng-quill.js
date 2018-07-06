@@ -89,7 +89,8 @@
       'ngModel': '<',
       'maxLength': '<',
       'minLength': '<',
-      'customOptions': '<?'
+      'customOptions': '<?',
+      'format': '@?'
     },
     require: {
       ngModelCtrl: 'ngModel'
@@ -102,10 +103,13 @@
       var config = {}
       var content
       var editorElem
+      var format = 'html'
       var modelChanged = false
       var editorChanged = false
       var editor
       var placeholder = ngQuillConfig.placeholder
+      var textChangeEvent
+      var selectionChangeEvent
 
       this.validate = function (text) {
         if (this.maxLength) {
@@ -151,6 +155,10 @@
           placeholder = this.placeholder.trim()
         }
 
+        if (this.format && ['object', 'html', 'text'].indexOf(this.format) > -1) {
+          format = this.format
+        }
+
         config = {
           theme: this.theme || ngQuillConfig.theme,
           readOnly: this.readOnly || ngQuillConfig.readOnly,
@@ -172,6 +180,13 @@
 
       this.$onDestroy = function () {
         editor = null
+
+        if (textChangeEvent) {
+          textChangeEvent.removeListener('text-change')
+        }
+        if (selectionChangeEvent) {
+          selectionChangeEvent.removeListener('selection-change')
+        }
       }
 
       this._initEditor = function (editorElem) {
@@ -207,7 +222,7 @@
         this.ready = true
 
         // mark model as touched if editor lost focus
-        editor.on('selection-change', function (range, oldRange, source) {
+        selectionChangeEvent = editor.on('selection-change', function (range, oldRange, source) {
           if (this.onSelectionChanged) {
             this.onSelectionChanged({
               editor: editor,
@@ -226,9 +241,11 @@
         }.bind(this))
 
         // update model if text changes
-        editor.on('text-change', function (delta, oldDelta, source) {
+        textChangeEvent = editor.on('text-change', function (delta, oldDelta, source) {
           var html = editorElem.children[0].innerHTML
           var text = editor.getText()
+          var content = editor.getContents()
+
           var emptyModelTag = ['<' + editor.root.firstChild.localName + '>', '</' + editor.root.firstChild.localName + '>']
 
           if (html === emptyModelTag[0] + '<br>' + emptyModelTag[1]) {
@@ -240,13 +257,20 @@
             $scope.$applyAsync(function () {
               editorChanged = true
 
-              this.ngModelCtrl.$setViewValue(html)
+              if (format === 'text') {
+                this.ngModelCtrl.$setViewValue(text)
+              } else if (format === 'object') {
+                this.ngModelCtrl.$setViewValue(content)
+              } else {
+                this.ngModelCtrl.$setViewValue(html)
+              }
 
               if (this.onContentChanged) {
                 this.onContentChanged({
                   editor: editor,
                   html: html,
                   text: text,
+                  content: content,
                   delta: delta,
                   oldDelta: oldDelta,
                   source: source
@@ -261,8 +285,14 @@
         if (content) {
           modelChanged = true
 
-          var contents = editor.clipboard.convert(content)
-          editor.setContents(contents)
+          if (format === 'text') {
+            editor.setText(content, 'silent')
+          } else if (format === 'object') {
+            editor.setContents(content, 'silent')
+          } else {
+            editor.setContents(editor.clipboard.convert(content, 'silent'))
+          }
+
           editor.history.clear()
         }
 
