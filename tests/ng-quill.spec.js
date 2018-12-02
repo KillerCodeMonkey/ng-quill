@@ -130,14 +130,14 @@ describe('ng-quill', function () {
 
     it('should render editor with custom placeholder', function () {
       var scope = $rootScope.$new()
-      var element = createTestElement('<ng-quill-editor ng-model="model" placeholder="1234"></ng-quill-editor>', scope)
+      var element = createTestElement('<ng-quill-editor ng-model="model" placeholder="\'1234\'"></ng-quill-editor>', scope)
 
       expect(element[0].querySelector('div.ql-editor').dataset.placeholder).toEqual('1234')
     })
 
     it('should render editor with empty placeholder', function () {
       var scope = $rootScope.$new()
-      var element = createTestElement('<ng-quill-editor ng-model="model" placeholder=" "></ng-quill-editor>', scope)
+      var element = createTestElement('<ng-quill-editor ng-model="model" placeholder="\'\'"></ng-quill-editor>', scope)
 
       expect(element[0].querySelector('div.ql-editor').dataset.placeholder).not.toBeDefined()
     })
@@ -145,11 +145,169 @@ describe('ng-quill', function () {
     it('should render editor with custom toolbar', function () {
       var scope = $rootScope.$new()
       var element = createTestElement(
-                '<ng-quill-editor ng-model="model" placeholder="1234"><ng-quill-toolbar><div><span class="ql-formats"><button class="ql-bold" ng-attr-title="{{\'Bold\'}}"></button></span></div></ng-quill-toolbar></ng-quill-editor>',
+                '<ng-quill-editor ng-model="model" placeholder="\'1234\'"><ng-quill-toolbar><div><span class="ql-formats"><button class="ql-bold" ng-attr-title="{{\'Bold\'}}"></button></span></div></ng-quill-toolbar></ng-quill-editor>',
                 scope
             )
 
       expect(element[0].querySelector('button.ql-bold[title=Bold]')).toBeDefined()
+    })
+
+    it('should update placeholder', function () {
+      var scope = $rootScope.$new()
+      scope.placeholder = 'asdf'
+      var element = createTestElement(
+                '<ng-quill-editor ng-model="model" placeholder="placeholder"></ng-quill-editor>',
+                scope
+            )
+
+      scope.placeholder = 'test'
+      scope.$apply()
+
+      expect(element[0].querySelector('div.ql-editor').dataset.placeholder).toEqual('test')
+    })
+
+    it('should set styles', function () {
+      var scope = $rootScope.$new()
+      scope.styles = {
+        backgroundColor: 'red'
+      }
+      var element = createTestElement(
+                '<ng-quill-editor ng-model="model" styles="styles"></ng-quill-editor>',
+                scope
+            )
+      scope.$apply()
+
+      expect(element[0].querySelector('div.ql-container').style.backgroundColor).toEqual('red')
+    })
+
+    it('should dynamic set styles', function () {
+      var scope = $rootScope.$new()
+      scope.styles = {
+        backgroundColor: 'red'
+      }
+      var element = createTestElement(
+                '<ng-quill-editor ng-model="model" styles="styles"></ng-quill-editor>',
+                scope
+            )
+      scope.$apply()
+
+      scope.styles = {
+        backgroundColor: 'gray'
+      }
+      scope.$apply()
+
+      expect(element[0].querySelector('div.ql-container').style.backgroundColor).toEqual('gray')
+    })
+
+    it('should format text', function () {
+      var scope = $rootScope.$new()
+      scope.model = 'test'
+      var editor
+
+      scope.editorCreated = function (editor_) {
+        editor = editor_
+      }
+      createTestElement(
+          '<ng-quill-editor ng-model="model" bounds="\'self\'" on-editor-created="editorCreated(editor)" format="text"></ng-quill-editor>',
+          scope
+      )
+      scope.$apply()
+
+      scope.model = 'hallo'
+      scope.$apply()
+      expect(editor.getText()).toEqual('hallo\n')
+
+      editor.setText('1234')
+      scope.$apply()
+
+      expect(scope.model).toEqual('1234\n')
+    })
+
+    it('should format object', function () {
+      var scope = $rootScope.$new()
+      scope.model = [
+        { insert: 'Hello ' },
+        { insert: 'World!', attributes: { bold: true } },
+        { insert: '\n' }
+      ]
+      var editor
+
+      scope.editorCreated = function (editor_) {
+        editor = editor_
+      }
+      createTestElement(
+          '<ng-quill-editor ng-model="model" on-editor-created="editorCreated(editor)" format="object"></ng-quill-editor>',
+          scope
+      )
+      scope.$apply()
+
+      scope.model = [
+        { insert: 'Hello ' },
+        { insert: '\n' }
+      ]
+      scope.$apply()
+      expect(JSON.stringify(editor.getContents())).toEqual(JSON.stringify({'ops': [{ insert: 'Hello \n' }]}))
+
+      editor.setContents([{ insert: 'test' }])
+      scope.$apply()
+
+      expect(JSON.stringify(scope.model)).toEqual(JSON.stringify({ ops: [{'insert': 'test\n'}] }))
+    })
+
+    it('should format json string', function () {
+      var scope = $rootScope.$new()
+      scope.model = JSON.stringify([
+        { insert: 'Hello ' },
+        { insert: 'World!', attributes: { bold: true } },
+        { insert: '\n' }
+      ])
+      var editor
+
+      scope.editorCreated = function (editor_) {
+        editor = editor_
+      }
+      createTestElement(
+          '<ng-quill-editor ng-model="model" on-editor-created="editorCreated(editor)" format="json"></ng-quill-editor>',
+          scope
+      )
+      scope.$apply()
+
+      scope.model = JSON.stringify([
+        { insert: 'Hello ' },
+        { insert: '\n' }
+      ])
+      scope.$apply()
+      expect(JSON.stringify(editor.getContents())).toEqual(JSON.stringify({'ops': [{ insert: 'Hello \n' }]}))
+
+      editor.setContents([{ insert: '\n' }])
+      scope.$apply()
+
+      expect(scope.model).toEqual(JSON.stringify({'ops': [{ 'insert': '\n' }]}))
+    })
+
+    it('should format html and sanitize string', function () {
+      var scope = $rootScope.$new()
+      scope.model = '<p>Hello <img src="asdf.jpg" onerror="alert(\'sanitize init\')"></p>'
+      var editor
+
+      scope.editorCreated = function (editor_) {
+        editor = editor_
+      }
+      createTestElement(
+          '<ng-quill-editor ng-model="model" sanitize="true" on-editor-created="editorCreated(editor)" format="html"></ng-quill-editor>',
+          scope
+      )
+      scope.$apply()
+      expect(JSON.stringify(editor.getContents())).toEqual(JSON.stringify({ 'ops': [{ 'insert': 'Hello ' }, { 'insert': {'image': 'asdf.jpg'} }, { 'insert': '\n' }] }))
+
+      scope.model = '<p>Hello World <img src="asdf.jpg" onerror="alert(\'sanitize\')"></p>'
+      scope.$apply()
+      expect(JSON.stringify(editor.getContents())).toEqual(JSON.stringify({ ops: [{ insert: 'Hello World ' }, {insert: { image: 'asdf.jpg' }}, {insert: '\n'}] }))
+
+      editor.setContents([{ insert: 'Hello you!' }, { insert: '\n' }])
+      scope.$apply()
+
+      expect(scope.model).toEqual('<p>Hello you!</p>')
     })
 
     it('should set editor to readOnly', function () {
@@ -164,6 +322,40 @@ describe('ng-quill', function () {
       scope.$apply()
 
       expect(element[0].querySelector('div.ql-editor').getAttribute('contenteditable')).toEqual('true')
+    })
+
+    it('should format json string as text if invalid', function () {
+      var scope = $rootScope.$new()
+      scope.model = JSON.stringify([
+        { insert: 'Hello ' },
+        { insert: 'World!', attributes: { bold: true } },
+        { insert: '\n' }
+      ]) + '{'
+      var editor
+
+      scope.editorCreated = function (editor_) {
+        editor = editor_
+      }
+      createTestElement(
+          '<ng-quill-editor ng-model="model" on-editor-created="editorCreated(editor)" format="json"></ng-quill-editor>',
+          scope
+      )
+      scope.$apply()
+
+      expect(editor.getText()).toMatch(JSON.stringify([
+        { insert: 'Hello ' },
+        { insert: 'World!', attributes: { bold: true } },
+        { insert: '\n' }
+      ]) + '{')
+
+      scope.model = JSON.stringify([
+        { insert: 'Hello' }
+      ]) + '{'
+      scope.$apply()
+
+      expect(editor.getText().trim()).toEqual(JSON.stringify([
+        { insert: 'Hello' }
+      ]) + '{')
     })
 
     it('should call onEditorCreated after editor created', function () {
