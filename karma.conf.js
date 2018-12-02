@@ -1,4 +1,4 @@
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
 
     basePath: '',
@@ -6,11 +6,12 @@ module.exports = function(config) {
     files: [
       'node_modules/angular/angular.js',
       'node_modules/angular-mocks/angular-mocks.js',
+      'node_modules/angular-sanitize/angular-sanitize.js',
       'node_modules/quill/dist/quill.js',
 
       './src/ng-quill.js',
 
-      './tests/ng-quill.spec.js',
+      './tests/ng-quill.spec.js'
     ],
 
     preprocessors: { './src/ng-quill.js': 'coverage' },
@@ -25,11 +26,11 @@ module.exports = function(config) {
     singleRun: true,
     coverageReporter: {
       reporters: [{
-        type : 'html',
-        dir : 'coverage/'
+        dir: 'coverage/',
+        type: 'html'
       }, {
         type: 'text-summary'
       }]
     }
-  });
-};
+  })
+}

@@ -12,7 +12,7 @@
 
   var app
   // declare ngQuill module
-  app = angular.module('ngQuill', [])
+  app = angular.module('ngQuill', ['ngSanitize'])
 
   app.provider('ngQuillConfig', function () {
     var config = {
@@ -78,8 +78,9 @@
       'modules': '<modules',
       'theme': '@?',
       'readOnly': '<?',
+      'format': '@?',
       'formats': '<?',
-      'placeholder': '@?',
+      'placeholder': '<?',
       'bounds': '<?',
       'scrollingContainer': '<?',
       'strict': '<?',
@@ -90,7 +91,8 @@
       'maxLength': '<',
       'minLength': '<',
       'customOptions': '<?',
-      'format': '@?'
+      'styles': '<?',
+      'sanitize': '<?'
     },
     require: {
       ngModelCtrl: 'ngModel'
@@ -99,7 +101,7 @@
       'toolbar': '?ngQuillToolbar'
     },
     template: '<div class="ng-hide" ng-show="$ctrl.ready"><ng-transclude ng-transclude-slot="toolbar"></ng-transclude></div>',
-    controller: ['$scope', '$element', '$timeout', '$transclude', 'ngQuillConfig', function ($scope, $element, $timeout, $transclude, ngQuillConfig) {
+    controller: ['$scope', '$element', '$sanitize', '$timeout', '$transclude', 'ngQuillConfig', function ($scope, $element, $sanitize, $timeout, $transclude, ngQuillConfig) {
       var config = {}
       var content
       var editorElem
@@ -111,18 +113,32 @@
       var textChangeEvent
       var selectionChangeEvent
 
+      this.setter = function (value) {
+        if (format === 'html') {
+          return editor.clipboard.convert(this.sanitize ? $sanitize(value) : value)
+        } else if (this.format === 'json') {
+          try {
+            return JSON.parse(value)
+          } catch (e) {
+            return [{ insert: value }]
+          }
+        }
+
+        return value
+      }
+
       this.validate = function (text) {
+        var textLength = text.trim().length
         if (this.maxLength) {
-          if (text.length > this.maxLength + 1) {
+          if (textLength > this.maxLength) {
             this.ngModelCtrl.$setValidity('maxlength', false)
           } else {
             this.ngModelCtrl.$setValidity('maxlength', true)
           }
         }
 
-        if (this.minLength > 1) {
-          // validate only if text.length > 1
-          if (text.length <= this.minLength && text.length > 1) {
+        if (this.minLength > 0) {
+          if (textLength < this.minLength && textLength) {
             this.ngModelCtrl.$setValidity('minlength', false)
           } else {
             this.ngModelCtrl.$setValidity('minlength', true)
@@ -137,7 +153,13 @@
           if (editor && !editorChanged) {
             modelChanged = true
             if (content) {
-              editor.setContents(editor.clipboard.convert(content))
+              if (this.format === 'text') {
+                editor.setText(content)
+              } else {
+                editor.setContents(
+                  this.setter(content)
+                )
+              }
             } else {
               editor.setText('')
             }
@@ -148,6 +170,28 @@
         if (editor && changes.readOnly) {
           editor.enable(!changes.readOnly.currentValue)
         }
+
+        if (editor && changes.placeholder) {
+          editor.root.dataset.placeholder = changes.placeholder.currentValue
+        }
+
+        if (editor && editorElem && changes.styles) {
+          var currentStyling = changes.styles.currentValue
+          var previousStyling = changes.styles.previousValue
+
+          if (previousStyling) {
+            for (var key in previousStyling) {
+              editorElem.style[key] = ''
+            }
+          }
+          if (currentStyling) {
+            for (var activeStyle in currentStyling) {
+              if (currentStyling.hasOwnProperty(activeStyle)) {
+                editorElem.style[activeStyle] = currentStyling[activeStyle]
+              }
+            }
+          }
+        }
       }
 
       this.$onInit = function () {
@@ -155,7 +199,7 @@
           placeholder = this.placeholder.trim()
         }
 
-        if (this.format && ['object', 'html', 'text'].indexOf(this.format) > -1) {
+        if (this.format && ['object', 'html', 'text', 'json'].indexOf(this.format) > -1) {
           format = this.format
         }
 
@@ -174,7 +218,7 @@
       this.$postLink = function () {
         // create quill instance after dom is rendered
         $timeout(function () {
-          this._initEditor(editorElem)
+          this._initEditor()
         }.bind(this), 0)
       }
 
@@ -189,7 +233,7 @@
         }
       }
 
-      this._initEditor = function (editorElem) {
+      this._initEditor = function () {
         var $editorElem = angular.element('<div></div>')
         var container = $element.children()
 
@@ -202,6 +246,14 @@
         // set toolbar to custom one
         if ($transclude.isSlotFilled('toolbar')) {
           config.modules.toolbar = container.find('ng-quill-toolbar').children()[0]
+        }
+
+        if (this.styles) {
+          for (var activeStyle in this.styles) {
+            if (this.styles.hasOwnProperty(activeStyle)) {
+              editorElem.style[activeStyle] = this.styles[activeStyle]
+            }
+          }
         }
 
         container.append($editorElem)
@@ -261,6 +313,12 @@
                 this.ngModelCtrl.$setViewValue(text)
               } else if (format === 'object') {
                 this.ngModelCtrl.$setViewValue(content)
+              } else if (this.format === 'json') {
+                try {
+                  this.ngModelCtrl.$setViewValue(JSON.stringify(content))
+                } catch (e) {
+                  this.ngModelCtrl.$setViewValue(text)
+                }
               } else {
                 this.ngModelCtrl.$setViewValue(html)
               }
@@ -289,8 +347,14 @@
             editor.setText(content, 'silent')
           } else if (format === 'object') {
             editor.setContents(content, 'silent')
+          } else if (format === 'json') {
+            try {
+              editor.setContents(JSON.parse(content), 'silent')
+            } catch (e) {
+              editor.setText(content, 'silent')
+            }
           } else {
-            editor.setContents(editor.clipboard.convert(content, 'silent'))
+            editor.setContents(editor.clipboard.convert(this.sanitize ? $sanitize(content) : content, 'silent'))
           }
 
           editor.history.clear()
