@@ -1,4 +1,4 @@
-# ng-quill [![Build Status](https://travis-ci.org/KillerCodeMonkey/ng-quill.svg?branch=develop)](https://travis-ci.org/KillerCodeMonkey/ng-quill)
+# ng-quill [![Build Status](https://travis-ci.org/KillerCodeMonkey/ng-quill.svg?branch=master)](https://travis-ci.org/KillerCodeMonkey/ng-quill)
 
 <img src="https://cloud.githubusercontent.com/assets/2264672/12809927/fd4c3416-cb22-11e5-9b02-80ebd9138255.png" width="120">
 
@@ -38,11 +38,6 @@ XRP Wallet Address:
 
 The new version is complete rewritten and is using QuillJS 1.x.
 For the latest old version (0.20.1) checkout the special branch for it.
-
-## Contribution
-
-This project is using GitFlow --> All Changes and Pull-Requests have to be on develop-branch!
-Changes directly in the master branch are not longer allowed and will be rejected.
 
 ## Usage
 
