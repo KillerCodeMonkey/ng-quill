@@ -309,18 +309,20 @@
             $scope.$applyAsync(function () {
               editorChanged = true
 
-              if (format === 'text') {
-                this.ngModelCtrl.$setViewValue(text)
-              } else if (format === 'object') {
-                this.ngModelCtrl.$setViewValue(content)
-              } else if (this.format === 'json') {
-                try {
-                  this.ngModelCtrl.$setViewValue(JSON.stringify(content))
-                } catch (e) {
+              if (source === 'user') {
+                if (format === 'text') {
                   this.ngModelCtrl.$setViewValue(text)
+                } else if (format === 'object') {
+                  this.ngModelCtrl.$setViewValue(content)
+                } else if (this.format === 'json') {
+                  try {
+                    this.ngModelCtrl.$setViewValue(JSON.stringify(content))
+                  } catch (e) {
+                    this.ngModelCtrl.$setViewValue(text)
+                  }
+                } else {
+                  this.ngModelCtrl.$setViewValue(html)
                 }
-              } else {
-                this.ngModelCtrl.$setViewValue(html)
               }
 
               if (this.onContentChanged) {

@@ -217,7 +217,7 @@ describe('ng-quill', function () {
       scope.$apply()
       expect(editor.getText()).toEqual('hallo\n')
 
-      editor.setText('1234')
+      editor.setText('1234', 'user')
       scope.$apply()
 
       expect(scope.model).toEqual('1234\n')
@@ -248,7 +248,7 @@ describe('ng-quill', function () {
       scope.$apply()
       expect(JSON.stringify(editor.getContents())).toEqual(JSON.stringify({'ops': [{ insert: 'Hello \n' }]}))
 
-      editor.setContents([{ insert: 'test' }])
+      editor.setContents([{ insert: 'test' }], 'user')
       scope.$apply()
 
       expect(JSON.stringify(scope.model)).toEqual(JSON.stringify({ ops: [{'insert': 'test\n'}] }))
@@ -279,7 +279,7 @@ describe('ng-quill', function () {
       scope.$apply()
       expect(JSON.stringify(editor.getContents())).toEqual(JSON.stringify({'ops': [{ insert: 'Hello \n' }]}))
 
-      editor.setContents([{ insert: '\n' }])
+      editor.setContents([{ insert: '\n' }], 'user')
       scope.$apply()
 
       expect(scope.model).toEqual(JSON.stringify({'ops': [{ 'insert': '\n' }]}))
@@ -304,7 +304,7 @@ describe('ng-quill', function () {
       scope.$apply()
       expect(JSON.stringify(editor.getContents())).toEqual(JSON.stringify({ ops: [{ insert: 'Hello World ' }, {insert: { image: 'asdf.jpg' }}, {insert: '\n'}] }))
 
-      editor.setContents([{ insert: 'Hello you!' }, { insert: '\n' }])
+      editor.setContents([{ insert: 'Hello you!' }, { insert: '\n' }], 'user')
       scope.$apply()
 
       expect(scope.model).toEqual('<p>Hello you!</p>')
@@ -391,10 +391,34 @@ describe('ng-quill', function () {
 
       createTestElement('<ng-quill-editor ng-model="model" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text, delta, oldDelta, source)"></ng-quill-editor>', scope)
 
+      editor.setText('1234', 'user')
+      scope.$apply()
+
+      expect(scope.contentChanged).toHaveBeenCalledWith(editor, '<p>1234</p>', '1234\n', delta, oldDelta, 'user')
+    })
+
+    it('should not $setViewValue on api changes', function () {
+      var scope = $rootScope.$new()
+      var editor, oldDelta, delta
+
+      scope.editorCreated = function (editor_) {
+        editor = editor_
+      }
+      scope.contentChanged = function (editor_, html_, text_, delta_, oldDelta_, source_) {
+        oldDelta = oldDelta_
+        delta = delta_
+      }
+      scope.model = ''
+
+      spyOn(scope, 'contentChanged').and.callThrough()
+
+      createTestElement('<ng-quill-editor ng-model="model" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text, delta, oldDelta, source)"></ng-quill-editor>', scope)
+
       editor.setText('1234')
       scope.$apply()
 
       expect(scope.contentChanged).toHaveBeenCalledWith(editor, '<p>1234</p>', '1234\n', delta, oldDelta, 'api')
+      expect(scope.model).toEqual('')
     })
 
     it('should not call onContentChanged after editor content changed', function () {
@@ -411,7 +435,7 @@ describe('ng-quill', function () {
 
       createTestElement('<ng-quill-editor ng-model="model" on-editor-created="editorCreated(editor)"></ng-quill-editor>', scope)
 
-      editor.setText('1234')
+      editor.setText('1234', 'user')
       scope.$apply()
 
       expect(scope.contentChanged).not.toHaveBeenCalled()
