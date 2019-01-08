@@ -78,6 +78,7 @@ Recommended Usage
     </ng-quill-toolbar>
 </ng-quill-editor>
 ```
+- customToolbarPosition - if you are working with a custom toolbar you can switch the position :). - default: `top`, possible values `top`, `bottom`
 
 **[Full Quill Toolbar HTML](https://github.com/quilljs/quill/blob/f75ff2973f068c3db44f949915eb8a74faf162a8/docs/_includes/full-toolbar.html)**
 

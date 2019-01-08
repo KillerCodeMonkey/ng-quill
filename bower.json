@@ -1,6 +1,6 @@
 {
   "name": "ngQuill",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "main": ["src/ng-quill.js"],
   "description": "AngularJS directive for the QuillJS rich text editor",
   "authors": [
@@ -15,7 +15,7 @@
     "Gruntfile.js"
   ],
   "dependencies": {
-    "quill": "^1.1.5",
+    "quill": "^1.3.6",
     "angular": "^1.5.8"
   },
   "keywords": [

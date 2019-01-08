@@ -138,10 +138,11 @@
         <button ng-click="backgroundColor = backgroundColor ? '' : 'gray'">toggle Backgroundcolor</button>
         <ng-quill-editor ng-model="title" styles="{backgroundColor: backgroundColor}"></ng-quill-editor>
 
-        <h3>ng-quill - custom toolbar</h3>
+        <h3>ng-quill - custom toolbar (position: bottom)</h3>
         <ng-quill-editor
             ng-model="title"
             placeholder="''"
+            custom-toolbar-position="bottom"
         >
             <ng-quill-toolbar>
                 <div id="ng-quill-toolbar">

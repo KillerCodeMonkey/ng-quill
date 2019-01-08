@@ -1,6 +1,6 @@
 {
   "name": "ng-quill",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "description": "Angular component for the Quill Rich Text Editor",
   "author": "Bengt Weiße <bengtler@gmail.com>",
   "homepage": "https://github.com/KillerCodeMonkey/ngQuill",
@@ -10,13 +10,13 @@
     "angular-mocks": "^1.7.5",
     "angular-sanitize": "^1.7.5",
     "jasmine-core": "^3.3.0",
-    "karma": "^3.1.3",
+    "karma": "^3.1.4",
     "karma-coverage": "^1.1.2",
     "karma-jasmine": "^2.0.1",
     "karma-mocha-reporter": "2.2.5",
     "karma-phantomjs-launcher": "^1.0.4",
     "quill": "^1.3.6",
-    "rimraf": "^2.6.2",
+    "rimraf": "^2.6.3",
     "uglify-js": "^3.4.9"
   },
   "engines": {

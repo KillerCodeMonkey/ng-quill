@@ -92,7 +92,8 @@
       'minLength': '<',
       'customOptions': '<?',
       'styles': '<?',
-      'sanitize': '<?'
+      'sanitize': '<?',
+      'customToolbarPosition': '@?'
     },
     require: {
       ngModelCtrl: 'ngModel'
@@ -256,7 +257,11 @@
           }
         }
 
-        container.append($editorElem)
+        if (!this.customToolbarPosition || this.customToolbarPosition === 'top') {
+          container.append($editorElem)
+        } else {
+          container.prepend($editorElem)
+        }
 
         if (this.customOptions) {
           this.customOptions.forEach(function (customOption) {
