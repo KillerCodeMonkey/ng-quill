@@ -147,7 +147,7 @@
       }
 
       this.$onChanges = function (changes) {
-        if (changes.ngModel && changes.ngModel.currentValue !== changes.ngModel.previousValue) {
+        if (changes.ngModel && changes.ngModel.currentValue && changes.ngModel.currentValue !== changes.ngModel.previousValue) {
           content = changes.ngModel.currentValue
 
           if (editor && !editorChanged) {
@@ -165,6 +165,9 @@
             }
           }
           editorChanged = false
+        }
+        else if (editor && changes.ngModel && !changes.ngModel.currentValue) {
+          editor.setText('')
         }
 
         if (editor && changes.readOnly) {
