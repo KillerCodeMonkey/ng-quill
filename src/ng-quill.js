@@ -107,7 +107,6 @@
       var content
       var editorElem
       var format = 'html'
-      var modelChanged = false
       var editorChanged = false
       var editor
       var placeholder = ngQuillConfig.placeholder
@@ -148,24 +147,28 @@
       }
 
       this.$onChanges = function (changes) {
-        if (changes.ngModel && changes.ngModel.currentValue !== changes.ngModel.previousValue) {
+        if (changes.ngModel) {
           content = changes.ngModel.currentValue
 
-          if (editor && !editorChanged) {
-            modelChanged = true
-            if (content) {
-              if (this.format === 'text') {
-                editor.setText(content)
+          if (editor) {
+            if (!editorChanged) {
+              if (content) {
+                if (changes.ngModel.currentValue !== changes.ngModel.previousValue) {
+                  if (this.format === 'text') {
+                    editor.setText(content, 'api')
+                  } else {
+                    editor.setContents(
+                      this.setter(content),
+                      'api'
+                    )
+                  }
+                }
               } else {
-                editor.setContents(
-                  this.setter(content)
-                )
+                editor.setText('', 'api')
               }
-            } else {
-              editor.setText('')
             }
+            editorChanged = false
           }
-          editorChanged = false
         }
 
         if (editor && changes.readOnly) {
@@ -310,55 +313,49 @@
           }
           this.validate(text)
 
-          if (!modelChanged) {
-            $scope.$applyAsync(function () {
+          $scope.$applyAsync(function () {
+            if (source === 'user') {
               editorChanged = true
-
-              if (source === 'user') {
-                if (format === 'text') {
+              if (format === 'text') {
+                this.ngModelCtrl.$setViewValue(text)
+              } else if (format === 'object') {
+                this.ngModelCtrl.$setViewValue(content)
+              } else if (this.format === 'json') {
+                try {
+                  this.ngModelCtrl.$setViewValue(JSON.stringify(content))
+                } catch (e) {
                   this.ngModelCtrl.$setViewValue(text)
-                } else if (format === 'object') {
-                  this.ngModelCtrl.$setViewValue(content)
-                } else if (this.format === 'json') {
-                  try {
-                    this.ngModelCtrl.$setViewValue(JSON.stringify(content))
-                  } catch (e) {
-                    this.ngModelCtrl.$setViewValue(text)
-                  }
-                } else {
-                  this.ngModelCtrl.$setViewValue(html)
                 }
+              } else {
+                this.ngModelCtrl.$setViewValue(html)
               }
+            }
 
-              if (this.onContentChanged) {
-                this.onContentChanged({
-                  editor: editor,
-                  html: html,
-                  text: text,
-                  content: content,
-                  delta: delta,
-                  oldDelta: oldDelta,
-                  source: source
-                })
-              }
-            }.bind(this))
-          }
-          modelChanged = false
+            if (this.onContentChanged) {
+              this.onContentChanged({
+                editor: editor,
+                html: html,
+                text: text,
+                content: content,
+                delta: delta,
+                oldDelta: oldDelta,
+                source: source
+              })
+            }
+          }.bind(this))
         }.bind(this))
 
         // set initial content
         if (content) {
-          modelChanged = true
-
           if (format === 'text') {
-            editor.setText(content, 'silent')
+            editor.setText(content, 'api')
           } else if (format === 'object') {
-            editor.setContents(content, 'silent')
+            editor.setContents(content, 'api')
           } else if (format === 'json') {
             try {
-              editor.setContents(JSON.parse(content), 'silent')
+              editor.setContents(JSON.parse(content), 'api')
             } catch (e) {
-              editor.setText(content, 'silent')
+              editor.setText(content, 'api')
             }
           } else {
             editor.setContents(editor.clipboard.convert(this.sanitize ? $sanitize(content) : content, 'silent'))

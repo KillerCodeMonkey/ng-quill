@@ -31,8 +31,8 @@
         </style>
 
         <!-- Scripts -->
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.5/angular.min.js"></script>
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.5/angular-sanitize.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.7/angular.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.7/angular-sanitize.min.js"></script>
         <script type="text/javascript" src="//cdn.quilljs.com/1.3.6/quill.js"></script>
         <script type="text/javascript" src="src/ng-quill.js"></script>
         <script>
@@ -61,11 +61,17 @@
               }, 2000)
               $scope.model = ''
               $scope.required = 'required'
-              $scope.modelJSON = [
+              $scope.modelJSON = { ops: [
                 { insert: 'Hello ' },
                 { insert: 'World!', attributes: { bold: true } },
                 { insert: '\n' }
-              ]
+              ]}
+              $scope.changeJSON = function () {
+                $scope.modelJSON = $scope.modelJSON ? $scope.modelJSON : { ops: [] }
+                const modelJSON = JSON.parse(JSON.stringify($scope.modelJSON))
+                modelJSON.ops.unshift({ insert: 'Changed! ' })
+                $scope.modelJSON = modelJSON
+              }
               $scope.modelText = 'Hello World'
               $scope.readOnly = false
               $scope.test = ''
@@ -91,11 +97,11 @@
               $scope.editorCreated = function (editor) {
                 console.log(editor)
               }
-              $scope.contentChanged = function (editor, html, text, content, delta, oldDelta, source) {
-                console.log('editor: ', editor, 'html: ', html, 'text:', text, 'content:', content, 'delta: ', delta, 'oldDelta:', oldDelta, 'source:', source)
+              $scope.contentChanged = function (data) {
+                console.log('editor: ', data.editor, 'html: ', data.html, 'text:', data.text, 'content:', data.content, 'delta: ', data.delta, 'oldDelta:', data.oldDelta, 'source:', data.source)
               }
-              $scope.selectionChanged = function (editor, range, oldRange, source) {
-                console.log('editor: ', editor, 'range: ', range, 'oldRange:', oldRange, 'source:', source)
+              $scope.selectionChanged = function (data) {
+                console.log('editor: ', data.editor, 'range: ', data.range, 'oldRange:', data.oldRange, 'source:', data.source)
               }
             }
           ])
@@ -107,6 +113,7 @@
         <ng-quill-editor bounds="self" ng-model="title" placeholder="'override default placeholder'" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text, content)" on-selection-changed="selectionChanged(editor, range, oldRange, source)"></ng-quill-editor>
 
         <h3>Default editor + Callbacks/Outputs in JS console and empty init model + Object-Format</h3>
+        <button ng-click="changeJSON()">Change the model!</button>
         <pre><code>{{modelJSON}}</code></pre>
         <ng-quill-editor format="object" custom-options="customTag" ng-model="modelJSON" placeholder="'override default placeholder'" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text, content)" on-selection-changed="selectionChanged(editor, range, oldRange, source)"></ng-quill-editor>
 
@@ -144,31 +151,30 @@
             placeholder="''"
             custom-toolbar-position="bottom"
         >
-            <ng-quill-toolbar>
-                <div id="ng-quill-toolbar">
-                    <span class="ql-formats">
-                        <button class="ql-bold" ng-attr-title="{{'Bold'}}"></button>
-                    </span>
-                    <span class="ql-formats">
-                        <select class="ql-align" ng-attr-title="{{'Aligment'}}">
-                            <option selected></option>
-                            <option value="center"></option>
-                            <option value="right"></option>
-                            <option value="justify"></option>
-                        </select>
-                        <select class="ql-align">
-                            <option selected></option>
-                            <option value="center"></option>
-                            <option value="right"></option>
-                            <option value="justify"></option>
-                        </select>
-                    </span>
-                </div>
-            </ng-quill-toolbar>
-        </ng-quill-editor>
+          <ng-quill-toolbar>
+              <div id="ng-quill-toolbar">
+                  <span class="ql-formats">
+                      <button class="ql-bold" ng-attr-title="{{'Bold'}}"></button>
+                  </span>
+                  <span class="ql-formats">
+                      <select class="ql-align" ng-attr-title="{{'Aligment'}}">
+                          <option selected></option>
+                          <option value="center"></option>
+                          <option value="right"></option>
+                          <option value="justify"></option>
+                      </select>
+                      <select class="ql-align">
+                          <option selected></option>
+                          <option value="center"></option>
+                          <option value="right"></option>
+                          <option value="justify"></option>
+                      </select>
+                  </span>
+              </div>
+          </ng-quill-toolbar>
+      </ng-quill-editor>
 
-        <h3>Custom font sizes</h3>
-        <ng-quill-editor ng-model="title" custom-options="customOptions" modules="customModules"></ng-quill-editor>
-
+      <h3>Custom font sizes</h3>
+      <ng-quill-editor ng-model="title" custom-options="customOptions" modules="customModules"></ng-quill-editor>
     </body>
 </html>
