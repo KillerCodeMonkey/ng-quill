@@ -39,10 +39,12 @@
           ['link', 'image', 'video']                         // link and image, video
         ]
       },
+      bounds: document.body,
+      debug: 'warn',
       theme: 'snow',
+      scrollingContainer: null,
       placeholder: 'Insert text here ...',
-      readOnly: false,
-      bounds: document.body
+      readOnly: false
     }
 
     this.set = function (customConf) {
@@ -57,14 +59,20 @@
       if (customConf.placeholder !== null && customConf.placeholder !== undefined) {
         config.placeholder = customConf.placeholder.trim()
       }
-      if (customConf.bounds) {
-        config.bounds = customConf.bounds
-      }
       if (customConf.readOnly) {
         config.readOnly = customConf.readOnly
       }
       if (customConf.formats) {
         config.formats = customConf.formats
+      }
+      if (customConf.bounds) {
+        config.bounds = customConf.bounds
+      }
+      if (customConf.scrollingContainer) {
+        config.scrollingContainer = customConf.scrollingContainer
+      }
+      if (customConf.debug || customConf.debug === false) {
+        config.debug = customConf.debug
       }
     }
 
@@ -79,6 +87,7 @@
       'theme': '@?',
       'readOnly': '<?',
       'format': '@?',
+      'debug': '@?',
       'formats': '<?',
       'placeholder': '<?',
       'bounds': '<?',
@@ -215,7 +224,8 @@
           placeholder: placeholder,
           bounds: this.bounds || ngQuillConfig.bounds,
           strict: this.strict,
-          scrollingContainer: this.scrollingContainer
+          scrollingContainer: this.scrollingContainer || ngQuillConfig.scrollingContainer,
+          debug: this.debug || this.debug === false ? this.debug : ngQuillConfig.debug
         }
       }
 

@@ -28,7 +28,9 @@ describe('ng-quill', function () {
     theme: 'snow',
     placeholder: 'Insert text here ...',
     readOnly: false,
-    bounds: document.body
+    bounds: document.body,
+    debug: 'warn',
+    scrollingContainer: null
   }
 
   beforeEach(module('ngQuill'))
@@ -528,6 +530,8 @@ describe('ng-quill', function () {
           modules: {},
           theme: 'test',
           placeholder: ' ',
+          debug: 'log',
+          scrollingContainer: 'test',
           formats: [],
           readOnly: true,
           bounds: true
@@ -539,6 +543,8 @@ describe('ng-quill', function () {
       expect(_ngQuillConfig_).toEqual({
         modules: {},
         theme: 'test',
+        debug: 'log',
+        scrollingContainer: 'test',
         placeholder: '',
         formats: [],
         readOnly: true,

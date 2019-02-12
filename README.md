@@ -115,9 +115,11 @@ app.constant('NG_QUILL_CONFIG', {
     ]
   },
   theme: 'snow',
+  debug: 'warn',
   placeholder: '',
   readOnly: false,
-  bounds: document.body
+  bounds: document.body,
+  scrollContainer: null
 })
 
 app.config([
@@ -149,6 +151,7 @@ app.config([
 - format - default 'html', possible values 'json' | 'object' | 'html' | 'text', so you are able to set quill operation object, html or plain text to your model
 - styles - set dynamic inline editor styles - `styles="{ backgroundColor: 'red' }"`
 - sanitize - santize the model content if format is `html` (default: `false`)
+- debug - set debug level, allowed `'error', 'warn', 'log', true, false` (default: `'warn'`)
 
 ## Callback/Outputs
 
