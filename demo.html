@@ -97,11 +97,11 @@
               $scope.editorCreated = function (editor) {
                 console.log(editor)
               }
-              $scope.contentChanged = function (data) {
-                console.log('editor: ', data.editor, 'html: ', data.html, 'text:', data.text, 'content:', data.content, 'delta: ', data.delta, 'oldDelta:', data.oldDelta, 'source:', data.source)
+              $scope.contentChanged = function (editor, html, text, content, delta, oldDelta, source) {
+                console.log('editor: ', editor, 'html: ', html, 'text:', text, 'content:', content, 'delta: ', delta, 'oldDelta:', oldDelta, 'source:', source)
               }
-              $scope.selectionChanged = function (data) {
-                console.log('editor: ', data.editor, 'range: ', data.range, 'oldRange:', data.oldRange, 'source:', data.source)
+              $scope.selectionChanged = function (editor, range, oldRange, source) {
+                console.log('editor: ', editor, 'range: ', range, 'oldRange:', oldRange, 'source:', source)
               }
             }
           ])
@@ -110,12 +110,28 @@
     <body ng-app="quillTest" ng-controller="AppCtrl">
         <h3>Default editor + Callbacks/Outputs in JS console</h3>
         <pre><code>{{title}}</code></pre>
-        <ng-quill-editor bounds="self" ng-model="title" placeholder="'override default placeholder'" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text, content)" on-selection-changed="selectionChanged(editor, range, oldRange, source)"></ng-quill-editor>
+        <ng-quill-editor bounds="self" ng-model="title" placeholder="'override default placeholder'" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(
+          editor,
+          html,
+          text,
+          content,
+          delta,
+          oldDelta,
+          source
+        )" on-selection-changed="selectionChanged(editor, range, oldRange, source)"></ng-quill-editor>
 
         <h3>Default editor + Callbacks/Outputs in JS console and empty init model + Object-Format</h3>
         <button ng-click="changeJSON()">Change the model!</button>
         <pre><code>{{modelJSON}}</code></pre>
-        <ng-quill-editor format="object" custom-options="customTag" ng-model="modelJSON" placeholder="'override default placeholder'" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text, content)" on-selection-changed="selectionChanged(editor, range, oldRange, source)"></ng-quill-editor>
+        <ng-quill-editor format="object" custom-options="customTag" ng-model="modelJSON" placeholder="'override default placeholder'" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(
+          editor,
+          html,
+          text,
+          content,
+          delta,
+          oldDelta,
+          source
+        )" on-selection-changed="selectionChanged(editor, range, oldRange, source)"></ng-quill-editor>
 
         <h3>Bubble editor + Text-format</h3>
         <pre><code>{{modelText}}</code></pre>
