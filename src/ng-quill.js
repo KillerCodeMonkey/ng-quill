@@ -312,7 +312,7 @@
 
         // update model if text changes
         textChangeEvent = editor.on('text-change', function (delta, oldDelta, source) {
-          var html = editorElem.children[0].innerHTML
+          var html = editorElem.querySelector('.ql-editor').innerHTML
           var text = editor.getText()
           var content = editor.getContents()
 
