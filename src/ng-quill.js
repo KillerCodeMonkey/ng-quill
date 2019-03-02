@@ -44,7 +44,8 @@
       theme: 'snow',
       scrollingContainer: null,
       placeholder: 'Insert text here ...',
-      readOnly: false
+      readOnly: false,
+      trackChanges: 'user'
     }
 
     this.set = function (customConf) {
@@ -74,6 +75,9 @@
       if (customConf.debug || customConf.debug === false) {
         config.debug = customConf.debug
       }
+      if (customConf.trackChanges && ['all', 'user'].indexOf(customConf.trackChanges) > -1) {
+        config.trackChanges = customConf.trackChanges
+      }
     }
 
     this.$get = function () {
@@ -102,7 +106,8 @@
       'customOptions': '<?',
       'styles': '<?',
       'sanitize': '<?',
-      'customToolbarPosition': '@?'
+      'customToolbarPosition': '@?',
+      'trackChanges': '@?'
     },
     require: {
       ngModelCtrl: 'ngModel'
@@ -164,16 +169,15 @@
               if (content) {
                 if (changes.ngModel.currentValue !== changes.ngModel.previousValue) {
                   if (this.format === 'text') {
-                    editor.setText(content, 'api')
+                    editor.setText(content)
                   } else {
                     editor.setContents(
-                      this.setter(content),
-                      'api'
+                      this.setter(content)
                     )
                   }
                 }
               } else {
-                editor.setText('', 'api')
+                editor.setText('')
               }
             }
             editorChanged = false
@@ -324,7 +328,8 @@
           this.validate(text)
 
           $scope.$applyAsync(function () {
-            if (source === 'user') {
+            var trackChanges = this.trackChanges || ngQuillConfig.trackChanges
+            if (source === 'user' || trackChanges && trackChanges === 'all') {
               editorChanged = true
               if (format === 'text') {
                 this.ngModelCtrl.$setViewValue(text)
@@ -358,14 +363,14 @@
         // set initial content
         if (content) {
           if (format === 'text') {
-            editor.setText(content, 'api')
+            editor.setText(content, 'silent')
           } else if (format === 'object') {
-            editor.setContents(content, 'api')
+            editor.setContents(content, 'silent')
           } else if (format === 'json') {
             try {
-              editor.setContents(JSON.parse(content), 'api')
+              editor.setContents(JSON.parse(content), 'silent')
             } catch (e) {
-              editor.setText(content, 'api')
+              editor.setText(content, 'silent')
             }
           } else {
             editor.setContents(editor.clipboard.convert(this.sanitize ? $sanitize(content) : content, 'silent'))

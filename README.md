@@ -158,6 +158,7 @@ app.config([
 - onEditorCreated: triggered after editor is created and provides editor-object `on-editor-created="myCallback(editor)"`
 - onContentChanged: triggered after changes in the editor. Provides editor-object, html representation and text representation `on-content-changed="myCallback(editor, html, text, content, delta, oldDelta, source)"`
 - onSelectionChanged: triggered after text selection changed `on-selection-changed="myCallback(editor, range, oldRange, source)"` - content = quill editor content object, text = content as plain text, html = content as html string
+- trackChanges - check if only `user` (quill source user) or `all` change should be trigger model update, default `user`. Using `all` is not recommended, it cause some unexpected sideeffects. But useful for 3rd Party modules and blots to keep your model up to date
 
 ## Security Hint
 
