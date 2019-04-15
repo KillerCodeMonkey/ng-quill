@@ -135,8 +135,7 @@ app.config([
 
 ## Configuration
 
-
-- use `ngQuillConfigProvider.set({modules: { ... }, theme: 'snow', placeholder: 'placeholder', formats: { ... }, bounds: document.body, readyOnly: false) to config toolbar module, other modules, default theme, allowed formats, ...``
+- use `ngQuillConfigProvider.set({modules: { ... }, theme: 'snow', placeholder: 'placeholder', formats: { ... }, bounds: document.body, readyOnly: false) to config toolbar module, other modules, default theme, allowed formats, ...`
 - set theme name: `theme="snow"` (default: 'snow')
 - set readOnly: `read-only=""` (default: false) - requires true or false
 - overwrite global config for each editor: `modules="modulesConfig"`
@@ -152,13 +151,16 @@ app.config([
 - styles - set dynamic inline editor styles - `styles="{ backgroundColor: 'red' }"`
 - sanitize - santize the model content if format is `html` (default: `false`)
 - debug - set debug level, allowed `'error', 'warn', 'log', true, false` (default: `'warn'`)
+- trackChanges - check if only `user` (quill source user) or `all` change should be trigger model update, default `user`. Using `all` is not recommended, it cause some unexpected sideeffects. But useful for 3rd Party modules and blots to keep your model up to date
+- preserveWhitespace - default: false - possbility to use a pre-tag instead of a div-tag for the contenteditable area to preserve duplicated whitespaces | caution if used with syntax plugin [Related issue](https://github.com/quilljs/quill/issues/1751)
 
 ## Callback/Outputs
 
 - onEditorCreated: triggered after editor is created and provides editor-object `on-editor-created="myCallback(editor)"`
 - onContentChanged: triggered after changes in the editor. Provides editor-object, html representation and text representation `on-content-changed="myCallback(editor, html, text, content, delta, oldDelta, source)"`
 - onSelectionChanged: triggered after text selection changed `on-selection-changed="myCallback(editor, range, oldRange, source)"` - content = quill editor content object, text = content as plain text, html = content as html string
-- trackChanges - check if only `user` (quill source user) or `all` change should be trigger model update, default `user`. Using `all` is not recommended, it cause some unexpected sideeffects. But useful for 3rd Party modules and blots to keep your model up to date
+- onFocus: triggered if editor gets focus `on-focus="myCallback(editor, source)"`
+- onBlur: triggered if editor gets focus `on-blur="myCallback(editor, source)"`
 
 ## Security Hint
 

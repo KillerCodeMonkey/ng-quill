@@ -103,12 +103,18 @@
               $scope.selectionChanged = function (editor, range, oldRange, source) {
                 console.log('editor: ', editor, 'range: ', range, 'oldRange:', oldRange, 'source:', source)
               }
+              $scope.onFocus = function (editor, source) {
+                console.log('focus: ', editor, 'source:', source)
+              }
+              $scope.onBlur = function (editor, source) {
+                console.log('blur: ', editor, 'source:', source)
+              }
             }
           ])
         </script>
     </head>
     <body ng-app="quillTest" ng-controller="AppCtrl">
-        <h3>Default editor + Callbacks/Outputs in JS console + track-changes="all"</h3>
+        <h3>Default editor + PreserveWhitespac + Callbacks/Outputs in JS console + track-changes="all"</h3>
         <pre><code>{{title}}</code></pre>
         <ng-quill-editor bounds="self" ng-model="title" placeholder="'override default placeholder'" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(
           editor,
@@ -118,7 +124,7 @@
           delta,
           oldDelta,
           source
-        )" on-selection-changed="selectionChanged(editor, range, oldRange, source)" track-changes="all"></ng-quill-editor>
+        )" on-selection-changed="selectionChanged(editor, range, oldRange, source)" on-focus="onFocus(editor, source)" on-blur="onBlur(editor, source)" preserve-whitespace="true" track-changes="all"></ng-quill-editor>
 
         <h3>Default editor + Callbacks/Outputs in JS console and empty init model + Object-Format</h3>
         <button ng-click="changeJSON()">Change the model!</button>

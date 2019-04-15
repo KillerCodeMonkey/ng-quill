@@ -31,7 +31,8 @@ describe('ng-quill', function () {
     bounds: document.body,
     debug: 'warn',
     scrollingContainer: null,
-    trackChanges: 'user'
+    trackChanges: 'user',
+    preserveWhitespace: false
   }
 
   beforeEach(module('ngQuill'))
@@ -536,7 +537,8 @@ describe('ng-quill', function () {
           formats: [],
           readOnly: true,
           bounds: true,
-          trackChanges: 'all'
+          trackChanges: 'all',
+          preserveWhitespace: true
         })
       })
     })
@@ -551,7 +553,8 @@ describe('ng-quill', function () {
         formats: [],
         readOnly: true,
         bounds: true,
-        trackChanges: 'all'
+        trackChanges: 'all',
+        preserveWhitespace: true
       })
     }))
   })

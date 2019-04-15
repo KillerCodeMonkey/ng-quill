@@ -45,7 +45,8 @@
       scrollingContainer: null,
       placeholder: 'Insert text here ...',
       readOnly: false,
-      trackChanges: 'user'
+      trackChanges: 'user',
+      preserveWhitespace: false
     }
 
     this.set = function (customConf) {
@@ -78,6 +79,9 @@
       if (customConf.trackChanges && ['all', 'user'].indexOf(customConf.trackChanges) > -1) {
         config.trackChanges = customConf.trackChanges
       }
+      if (customConf.preserveWhitespace) {
+        config.preserveWhitespace = true
+      }
     }
 
     this.$get = function () {
@@ -99,6 +103,8 @@
       'strict': '<?',
       'onEditorCreated': '&?',
       'onContentChanged': '&?',
+      'onBlur': '&?',
+      'onFocus': '&?',
       'onSelectionChanged': '&?',
       'ngModel': '<',
       'maxLength': '<',
@@ -107,7 +113,8 @@
       'styles': '<?',
       'sanitize': '<?',
       'customToolbarPosition': '@?',
-      'trackChanges': '@?'
+      'trackChanges': '@?',
+      'preserveWhitespace': '<?',
     },
     require: {
       ngModelCtrl: 'ngModel'
@@ -252,7 +259,7 @@
       }
 
       this._initEditor = function () {
-        var $editorElem = angular.element('<div></div>')
+        var $editorElem = this.preserveWhitespace ? angular.element('<pre></pre>') : angular.element('<div></div>')
         var container = $element.children()
 
         editorElem = $editorElem[0]
@@ -297,6 +304,18 @@
 
         // mark model as touched if editor lost focus
         selectionChangeEvent = editor.on('selection-change', function (range, oldRange, source) {
+          if (range === null && this.onBlur) {
+            this.onBlur({
+              editor: editor,
+              source: source
+            })
+          } else if (oldRange === null && this.onFocus) {
+            this.onFocus({
+              editor: editor,
+              source: source
+            })
+          }
+
           if (this.onSelectionChanged) {
             this.onSelectionChanged({
               editor: editor,
