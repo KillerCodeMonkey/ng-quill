@@ -406,5 +406,5 @@
     }]
   })
 
-  return app.name
+  return app;
 }))
