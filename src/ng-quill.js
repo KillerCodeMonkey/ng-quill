@@ -150,6 +150,7 @@
 
       this.validate = function (text) {
         var textLength = text.trim().length
+
         if (this.maxLength) {
           if (textLength > this.maxLength) {
             this.ngModelCtrl.$setValidity('maxlength', false)
@@ -397,6 +398,7 @@
 
           editor.history.clear()
         }
+        this.validate(editor.getText())
 
         // provide event to get informed when editor is created -> pass editor object.
         if (this.onEditorCreated) {
