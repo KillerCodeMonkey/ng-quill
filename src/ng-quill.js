@@ -352,7 +352,13 @@
             if (source === 'user' || trackChanges && trackChanges === 'all') {
               editorChanged = true
               if (format === 'text') {
-                this.ngModelCtrl.$setViewValue(text)
+                // if nothing changed $ngOnChanges is not called again
+                // But we have to reset editorChanged flag
+                if (text === this.ngModelCtrl.$viewValue) {
+                  editorChanged = false
+                } else {
+                  this.ngModelCtrl.$setViewValue(text)
+                }
               } else if (format === 'object') {
                 this.ngModelCtrl.$setViewValue(content)
               } else if (this.format === 'json') {
