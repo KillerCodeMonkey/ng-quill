@@ -10,7 +10,7 @@
     "angular-mocks": "^1.7.8",
     "angular-sanitize": "^1.7.8",
     "jasmine-core": "^3.5.0",
-    "karma": "^4.3.0",
+    "karma": "^5.0.1",
     "karma-coverage": "^2.0.1",
     "karma-jasmine": "^3.0.1",
     "karma-mocha-reporter": "2.2.5",
