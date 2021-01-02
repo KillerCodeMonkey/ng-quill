@@ -23,9 +23,6 @@ ETH Wallet Address:
 LTC Wallet Address:
 `MFif769WSZ1g7ReAzzDE7TJVqtkFpmoTyT`
 
-XRP Wallet Address:
-`rXieaAC3nevTKgVu2SYoShjTCS2Tfczqx?dt=159046833`
-
 ## Examples
 
 - [Advanced Demo](https://killercodemonkey.github.io/ng-quill/demo.html)
