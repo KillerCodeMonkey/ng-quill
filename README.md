@@ -1,3 +1,7 @@
+### PROJECT IS NO LONGER MAINTAINED - angularjs lts period ends on 2021/12/31 
+
+------
+
 # ng-quill [![Build Status](https://travis-ci.org/KillerCodeMonkey/ng-quill.svg?branch=master)](https://travis-ci.org/KillerCodeMonkey/ng-quill)
 
 <img src="https://cloud.githubusercontent.com/assets/2264672/12809927/fd4c3416-cb22-11e5-9b02-80ebd9138255.png" width="120">
